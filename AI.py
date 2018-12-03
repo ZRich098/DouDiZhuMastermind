@@ -31,9 +31,9 @@ class ExpectiMiniMaxAI:
         #[12] stores number of 2's held, [13] stores number of black jokers, and [14] stores number of colored jokers
         simplifiedHand = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for x in hand:
-            if x.color = 'joker':
+            if x.color == 'joker':
                 #black joker
-                if x.value = 16:
+                if x.value == 16:
                     simplifiedHand[13] = simplifiedHand[13] + 1
                 #colored joker
                 else:
@@ -68,7 +68,7 @@ class ExpectiMiniMaxAI:
         #previousCards keeps track of how many cards we have already scanned, so as to 
         #properly fetch cards from the Hand array
         previousCards = 0
-        for (x in range 15):
+        for x in range(15):
             #if we are scanning jokers:
             if (x == 13):
                 if simplifiedHand[x] == 1:
@@ -98,7 +98,7 @@ class ExpectiMiniMaxAI:
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 4
                 runningTripletSequence = [runningTriplet]
-                for (y in range 7):
+                for y in range(7):
                     if ((simplifiedHand[x+y+1] >= 3) and (x+y+1 < 12)):
                         newTriplet = [hand[lookaheadCards], hand[lookaheadCards+1], hand[lookaheadCards+2]]
                         runningTripletSequence.append(newTriplet)
@@ -114,7 +114,7 @@ class ExpectiMiniMaxAI:
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 4
                 runningPairSequence = [runningPair]
-                for (y in range 9):
+                for y in range(9):
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence.append(newPair)
@@ -127,7 +127,7 @@ class ExpectiMiniMaxAI:
                 #similar logic for singleton sequences
                 lookaheadCards = previousCards + 4
                 runningSingleSequence = [hand[previousCards]]
-                for (y in range 12):
+                for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
@@ -154,7 +154,7 @@ class ExpectiMiniMaxAI:
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 3
                 runningTripletSequence = [runningTriplet]
-                for (y in range 7):
+                for y in range(7):
                     if ((simplifiedHand[x+y+1] >= 3) and (x+y+1 < 12)):
                         newTriplet = [hand[lookaheadCards], hand[lookaheadCards+1], hand[lookaheadCards+2]]
                         runningTripletSequence.append(newTriplet)
@@ -169,7 +169,7 @@ class ExpectiMiniMaxAI:
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 3
                 runningPairSequence = [runningPair]
-                for (y in range 9):
+                for y in range(9):
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence.append(newPair)
@@ -181,7 +181,7 @@ class ExpectiMiniMaxAI:
                 #similar logic for singleton sequences
                 lookaheadCards = previousCards + 3
                 runningSingleSequence = [hand[previousCards]]
-                for (y in range 12):
+                for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
@@ -206,7 +206,7 @@ class ExpectiMiniMaxAI:
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 2
                 runningPairSequence = [runningPair]
-                for (y in range 9):
+                for y in range(9):
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence.append(newPair)
@@ -218,7 +218,7 @@ class ExpectiMiniMaxAI:
                 #similar logic for singleton sequences
                 lookaheadCards = previousCards + 2
                 runningSingleSequence = [hand[previousCards]]
-                for (y in range 12):
+                for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
@@ -240,7 +240,7 @@ class ExpectiMiniMaxAI:
                 #Only need to check for singleton sequence
                 lookaheadCards = previousCards + 1
                 runningSingleSequence = [hand[previousCards]]
-                for (y in range 12):
+                for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
