@@ -45,6 +45,7 @@ def create_player(type, order):
     elif type == 'Other':
         return Other(order)
 
+#main function
 def main():
     #Parse players from Game State
     Player1 = 'ExpectiMiniMaxAI'
