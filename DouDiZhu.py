@@ -8,7 +8,7 @@ class DDZ:
         self.game_over = False
 
         self.deck1 =
-        #Get from parsing the Game. The following are examples of cards
+        #Get from parsing the Game. The following are examples of cards.
             [Card(1, 'spades'), #Ace of Spades
             Card(12, 'diamonds'), #Queen of Diamonds
             Card(1, 'joker'), #Uncolored Joker
