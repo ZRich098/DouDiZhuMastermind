@@ -69,6 +69,8 @@ class ExpectiMiniMaxAI:
         #properly fetch cards from the Hand array
         previousCards = 0
         for x in range(15):
+            #boolean to keep track of if the currently scanned card is part of any sequence
+            cardInSequence = False
             #if we are scanning jokers:
             if (x == 13):
                 if simplifiedHand[x] == 1:
@@ -86,9 +88,6 @@ class ExpectiMiniMaxAI:
             
             #if the hand has 4 of the current card being scanned 
             elif simplifiedHand[x] == 4:
-                #boolean to keep track of if the currently scanned card is part of any sequence
-                cardInSequence = false
-                
                 quad.append([hand[previousCards], hand[previousCards+1], hand[previousCards+2], hand[previousCards+3]])
                 runningTriplet = [hand[previousCards], hand[previousCards+1], hand[previousCards+2]]
                 triplet.append(runningTriplet)
@@ -104,7 +103,7 @@ class ExpectiMiniMaxAI:
                         runningTripletSequence.append(newTriplet)
                         sequenceTriplet.append(runningTripletSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break 
                         
@@ -120,7 +119,7 @@ class ExpectiMiniMaxAI:
                         runningPairSequence.append(newPair)
                         sequencePair.append(runningPairSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                         
@@ -133,7 +132,7 @@ class ExpectiMiniMaxAI:
                         runningSingleSequence.append(newSingle)
                         sequenceSingle.append(runningSingleSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                         
@@ -160,7 +159,7 @@ class ExpectiMiniMaxAI:
                         runningTripletSequence.append(newTriplet)
                         sequenceTriplet.append(runningTripletSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                 runningPair = [hand[previousCards], hand[previousCards+1]]
@@ -187,7 +186,7 @@ class ExpectiMiniMaxAI:
                         runningSingleSequence.append(newSingle)
                         sequenceSingle.append(runningSingleSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                 
@@ -212,7 +211,7 @@ class ExpectiMiniMaxAI:
                         runningPairSequence.append(newPair)
                         sequencePair.append(runningPairSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                 #similar logic for singleton sequences
@@ -224,7 +223,7 @@ class ExpectiMiniMaxAI:
                         runningSingleSequence.append(newSingle)
                         sequenceSingle.append(runningSingleSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                 
@@ -246,7 +245,7 @@ class ExpectiMiniMaxAI:
                         runningSingleSequence.append(newSingle)
                         sequenceSingle.append(runningSingleSequence.copy())
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                 
