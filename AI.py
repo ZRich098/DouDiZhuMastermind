@@ -31,13 +31,12 @@ class ExpectiMiniMaxAI:
         #[12] stores number of 2's held, [13] stores number of black jokers, and [14] stores number of colored jokers
         simplifiedHand = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         for x in hand:
-            if x.color == 'joker':
-                #black joker
-                if x.value == 16:
-                    simplifiedHand[13] = simplifiedHand[13] + 1
-                #colored joker
-                else:
-                    simplifiedHand[14] = simplifiedHand[14] + 1
+            #black joker
+            if x.value == 16:
+                simplifiedHand[13] = simplifiedHand[13] + 1
+            #colored joker
+            elif x.value == 17:
+                simplifiedHand[14] = simplifiedHand[14] + 1
             else:
                 simplifiedHand[(x.value - 3)] = simplifiedHand[(x.value - 3)] + 1
         
