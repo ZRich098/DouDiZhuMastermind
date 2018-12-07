@@ -262,8 +262,133 @@ class ExpectiMiniMaxAI:
         plays.append(single)
         return plays
 
+    #EXTREMELY IMPORTANT NOTE:
+    #ALL THE BELOW SEQUENCE CHECKING FUNCTIONS ASSUME A SORTED HAND
+    #Additionally, they will be updated later to have the following return format:
+    #
+    #returnFormat is a 2-length array where:
+    #returnFormat[0] is a boolean that is True if the hand is of the type being scanned
+    #returnFormat[1] is an array, determined by the type being scanned, that contains the 
+    #particulars of the hand, e.g. the starting card of a sequence or the values of a quadplex set
+    
+    def check_bomb(hand):
+        bombValue = hand[x].value 
+        return (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value)
+    
+    def check_rocket(hand):
+        return (hand[x].value == 16 and hand[x+1].value == 17)
+    
+    def check_single_sequence(hand):
+        prevHandValue = -1
+        sequenceStart = hand[0].value
+        for x in range (len(hand)):
+            if hand[x].value == prevHandValue+1 or prevHandValue == -1:
+                prevHandValue = hand[x].value
+                if x == len(hand) - 1:
+                    return True
+            else:
+                return False
+        
+    def check_pair_sequence(hand):
+        prevHandValue = -1
+        totalNumber = len(hand)
+        sequenceStart = hand[0].value
+        for x in range (0, totalNumber, 2):
+            if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue + 1 and hand[x].value == hand[x+1].value) or prevHandValue == -1:
+                prevHandValue = hand[x].value
+                if x >= len(hand) - 2:
+                    return True
+            else:
+                return False
+    
+    def check_triplet_sequence(hand):
+        prevHandValue = -1
+        totalNumber = len(hand)
+        sequenceStart = hand[0].value
+        for x in range (0, totalNumber, 3):
+            if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue and hand[x+2].value == prevHandValue) or prevHandValue == -1:
+                prevHandValue = hand[x].value
+                if x >= len(hand) - 3:
+                    return True
+            else:
+                return False
+    
+    def check_triplet_sequence_attachments(hand, needed):
+        prevHandValue = -1
+        totalNumber = len(hand)
+        sequenceStart = -1
+        for x in range (totalNumber):
+            prevHandValue = -1
+            totalTripletsNeeded = needed
+            noTripletFound = False
+            for x in range (totalNumber-2):
+                #found the beginning of the sequence
+                if hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value:
+                    sequenceStart = hand[x].value
+                    #note: y is a variable tracking the total number of triplets found, identical to totalTripletsFound
+                    for y in range (totalTripletsNeeded):
+                        if prevHandValue == -1 or (hand[x+(y*3)].value == prevHandValue + 1 and 
+                                                   hand[x+1+(y*3)].value == prevHandValue + 1 and
+                                                   hand[x+2+(y*3)].value == prevHandValue + 1):
+                            prevHandValue = hand[x+(y*3)].value
+                            if y >= int(totalTripletsNeeded) - 1:
+                                return True
+                        else:
+                            noTripletFound = True
+                            break
+                    if noTripletFound == True:
+                        return False
+    
+    def check_quadplex_set_1(hand):
+        prevHandValue = -1
+        totalNumber = len(hand)
+        attachment1 = -1
+        attachment2 = -1
+        quadValue = -1
+        for x in range (totalNumber):
+            if (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value):
+                quadValue = hand[x].value
+                break
+        if quadValue == -1:
+            return False
+        for y in range (totalNumber):
+            if (hand[y].value != quadValue):
+                if attachment1 == -1:
+                    attachment1 = hand[y].value
+                elif attachment2 == -1:
+                    attachment2 = hand[y].value
+        if (attachment1 != attachment2):
+            return True
+        else:
+            return False
+    
+    def check_quadplex_set_2(hand): 
+        prevHandValue = -1
+        totalNumber = len(hand)
+        pair1 = -1
+        pair2 = -1
+        quadValue = -1
+        for x in range (totalNumber):
+            if (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value):
+                quadValue = hand[x].value
+                break
+        if quadValue == -1:
+            return False
+        for y in range (totalNumber-1):
+            if (hand[y].value == hand[y+1].value and hand[y].value != quadValue):
+                if pair1 == -1:
+                    pair1 = hand[y].value
+                elif pair2 == -1:
+                    pair2 = hand[y].value
+        if (pair != pair):
+            return True
+        else:
+            return False
+                    
+    
     def analyze_play(self, hand):
         hand.sort(key = lambda card: card.value)
+        totalNumber = len(hand)
         #if 1, must be single card
         #if len(hand) == 1:
         
@@ -299,7 +424,23 @@ class ExpectiMiniMaxAI:
         # - Sequence of 4 pairs
         # - Sequence of 2 triplets with attached single cards
         # - Quadplex set #2 (bomb with 2 different pairs attached)
-        #elif len(hand) == 8
+        elif len(hand) == 8:
+            prevHandValue = -1
+            #checking single sequence
+            if (check_single_sequence(hand)):
+                pass
+                #return 
+            if (check_pair_sequence(hand)):
+                pass
+                #return
+            #checking triplets w/ attachment sequence
+            if (check_triplet_sequence_attachments(hand, 2)):
+                pass
+                #return
+            if (check_quadplex_set_2(hand)):
+                pass
+                #return
+            
         
         #at 9 and after, only the following cases exist:
         # - Sequence of X single cards, up to 12
@@ -308,7 +449,6 @@ class ExpectiMiniMaxAI:
         # - Sequence of X triplets with single card attachment each (multiples of 4 only), up to 20
         # - Sequence of X triplets with pair attachment each (multiples of 5 only), up to 20
         elif len(hand) > 8 and len(hand) <= 20:
-            totalNumber = len(hand)
             possibleSingles = (totalNumber <= 12)
             possiblePairs = (totalNumber%2 == 0)
             possibleTriplets = (totalNumber%3 == 0)
@@ -331,17 +471,17 @@ class ExpectiMiniMaxAI:
                             #return
                     else:
                         break
-            elif (possiblePairs):
+            if (possiblePairs):
                 prevHandValue = -1
                 for x in range (0, totalNumber, 2):
-                    if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue + 1) or prevHandValue == -1:
+                    if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue + 1 and hand[x].value == hand[x+1].value) or prevHandValue == -1:
                         prevHandValue = hand[x].value
                         if x >= len(hand) - 2:
                             actualPairs = True
                             #return that it's a single sequence array
                     else:
                         break
-            elif (possibleTriplets):
+            if (possibleTriplets):
                 prevHandValue = -1
                 for x in range (0, totalNumber, 3):
                     if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue and hand[x+2].value == prevHandValue) or prevHandValue == -1:
@@ -350,7 +490,7 @@ class ExpectiMiniMaxAI:
                             actualTriplets = True
                     else:
                         break
-            elif (possibleTripletsSingleAttachment):
+            if (possibleTripletsSingleAttachment):
                 prevHandValue = -1
                 totalTripletsNeeded = (totalNumber/4)
                 totalTripletsFound = 0
@@ -373,8 +513,8 @@ class ExpectiMiniMaxAI:
                         if noTripletFound == True:
                             break
             
-            else:
-                possibleTripletsPairAttachment = True
+            if (possibleTripletsPairAttachment:
+                actualTripletsPairAttachment = True
                 #return
                         
     
