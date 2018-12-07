@@ -334,7 +334,7 @@ class ExpectiMiniMaxAI:
             elif (possiblePairs):
                 prevHandValue = -1
                 for x in range (0, totalNumber, 2):
-                    if hand[x].value == prevHandValue+1 or prevHandValue == -1:
+                    if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue + 1) or prevHandValue == -1:
                         prevHandValue = hand[x].value
                         if x >= len(hand) - 2:
                             actualPairs = True
@@ -344,7 +344,7 @@ class ExpectiMiniMaxAI:
             elif (possibleTriplets):
                 prevHandValue = -1
                 for x in range (0, totalNumber, 3):
-                    if hand[x].value == prevHandValue+1 or prevHandValue == 01:
+                    if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue and hand[x+2].value == prevHandValue) or prevHandValue == -1:
                         prevHandValue = hand[x].value
                         if x >= len(hand) - 3:
                             actualTriplets = True
@@ -356,14 +356,15 @@ class ExpectiMiniMaxAI:
                 totalTripletsFound = 0
                 for x in range (totalNumber):
                     #found the beginning of the sequence
-                    if hand[x].value == hand[x+1] and hand[x].value == hand[x+2]:
+                    if hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value:
                         noTripletFound = False
+                        #note: y is a variable tracking the total number of triplets found, identical to totalTripletsFound
                         for y in range (totalTripletsNeeded):
-                            if prevHandValue == -1 or (hand[x+(totalTripletsNeeded*3)].value == prevHandValue +1 and 
-                                                       hand[x+1+(totalTripletsNeeded*3)].value == prevHandValue +1 and
-                                                       hand[x+2+(totalTripletsNeeded*3)].value == prevHandValue +1):
-                                prevHandValue = hand[x+(totalTripletsNeeded*3)].value
-                                if y >= totalTripletsNeeded - 1:
+                            if prevHandValue == -1 or (hand[x+(y*3)].value == prevHandValue + 1 and 
+                                                       hand[x+1+(y*3)].value == prevHandValue + 1 and
+                                                       hand[x+2+(y*3)].value == prevHandValue + 1):
+                                prevHandValue = hand[x+(y*3)].value
+                                if y >= int(totalTripletsNeeded) - 1:
                                     actualTripletsSingleAttachment = True
                                     #return
                             else:
