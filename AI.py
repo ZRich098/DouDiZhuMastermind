@@ -273,7 +273,7 @@ class ExpectiMiniMaxAI:
     
     def check_bomb(hand):
         bombValue = hand[x].value 
-        return (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value)
+        return [(hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value), bombValue]
     
     def check_rocket(hand):
         return (hand[x].value == 16 and hand[x+1].value == 17)
@@ -285,9 +285,9 @@ class ExpectiMiniMaxAI:
             if hand[x].value == prevHandValue+1 or prevHandValue == -1:
                 prevHandValue = hand[x].value
                 if x == len(hand) - 1:
-                    return True
+                    return [True, sequenceStart]
             else:
-                return False
+                return [False, sequenceStart]
         
     def check_pair_sequence(hand):
         prevHandValue = -1
@@ -297,9 +297,9 @@ class ExpectiMiniMaxAI:
             if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue + 1 and hand[x].value == hand[x+1].value) or prevHandValue == -1:
                 prevHandValue = hand[x].value
                 if x >= len(hand) - 2:
-                    return True
+                    return [True, sequenceStart]
             else:
-                return False
+                return [False, sequenceStart]
     
     def check_triplet_sequence(hand):
         prevHandValue = -1
@@ -309,9 +309,9 @@ class ExpectiMiniMaxAI:
             if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue and hand[x+2].value == prevHandValue) or prevHandValue == -1:
                 prevHandValue = hand[x].value
                 if x >= len(hand) - 3:
-                    return True
+                    return [True, sequenceStart]
             else:
-                return False
+                return [False, sequenceStart]
     
     def check_triplet_sequence_attachments(hand, needed):
         prevHandValue = -1
@@ -332,12 +332,12 @@ class ExpectiMiniMaxAI:
                                                    hand[x+2+(y*3)].value == prevHandValue + 1):
                             prevHandValue = hand[x+(y*3)].value
                             if y >= int(totalTripletsNeeded) - 1:
-                                return True
+                                return [True, sequenceStart]
                         else:
                             noTripletFound = True
                             break
                     if noTripletFound == True:
-                        return False
+                        return [False, sequenceStart]
     
     def check_quadplex_set_1(hand):
         prevHandValue = -1
@@ -358,9 +358,9 @@ class ExpectiMiniMaxAI:
                 elif attachment2 == -1:
                     attachment2 = hand[y].value
         if (attachment1 != attachment2):
-            return True
+            return [True, quadValue]
         else:
-            return False
+            return [False, quadValue]
     
     def check_quadplex_set_2(hand): 
         prevHandValue = -1
@@ -380,68 +380,148 @@ class ExpectiMiniMaxAI:
                     pair1 = hand[y].value
                 elif pair2 == -1:
                     pair2 = hand[y].value
-        if (pair != pair):
-            return True
+        if (pair1 != pair2 and pair1 != 16 and pair1 != 17 and pair2 != 16 and pair2 != 17):
+            return [True, quadValue]
         else:
-            return False
+            return [False, quadValue]
                     
-    
+    #return format:
+    #
+    #returns analyzedPlay[], which is an array of length 3, formatted as follows:
+    #analyedPlay[0] = int, which corresponds to the type of play of the hand, as follows:
+    #   - 0: Rocket
+    #   - 1: Quad (Bomb)
+    #   - 2: Quad (Set with pair attachments)
+    #   - 3: Quad (Set with single attachments)
+    #   - 4: Triplet Sequence with pair attachments
+    #   - 5: Triplet Sequence with single attachments
+    #   - 6: Triplet Sequence
+    #   - 7: Triplet
+    #   - 8: Pair Sequence
+    #   - 9: Pair
+    #   - 10: Single Sequence
+    #   - 11: Single
+    #analyzedPlay[1] = int, which is the "value" of the play (lowest card in sequence if sequence)
+    #analyzedPlay[2] = int, which is the size of the hand
+    #
+    #Note: perhaps analyzedPlay[2] should be the number of sequence elements needed? we'll have to calculate this anyways
+    #
+    #External functions that use this function should be able to find a necessary play from these
     def analyze_play(self, hand):
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
+        analyzedPlay = [-1, -1, -1]
         #if 1, must be single card
-        #if len(hand) == 1:
+        if len(hand) == 1:
+            analyzedPlay = [11, hand[0].value, 1]
+            return analyzedPlay
         
         #if 2, must be pair, or rocket
-        #elif len(hand) == 2:
+        elif len(hand) == 2:
+            if check_rocket(hand):
+                analyzedPlay = [0, 16, 2]
+                return analyzedPlay
+            else:
+                checkedPair = check_pair_sequence(hand)
+                if checkedPair[0]:
+                    analyzedPlay = [9, checkedPair[1], 2]
+                    return analyzedPlay
+            #Throw error
+            return analyzedPlay
         
         #if 3, must be triplet
-        #elif len(hand) == 3:
+        elif len(hand) == 3:
+            checkedTriplet = check_triplet_sequence(hand)
+            if checkedTriplet[0]:
+                analyzedPlay = [7, checkedTriplet[1], 3]
+                return analyzedPlay
+            #throw error
         
         #if 4, could be one of the following:
         # - Triplet with attachment
         # - Bomb
-        #elif len(hand) == 4:
+        elif len(hand) == 4:
+            checkedBomb = check_bomb(hand)
+            checkedTripletSingleAttachment = check_triplet_sequence_attachments(hand, 1)
+            if checkedBomb[0]:
+                analyzedPlay = [1, checkedBomb[1], 4]
+                return analyzedPlay
+            elif checkedTripletsSingleAttachment[0]:
+                analyzedPlay = [5, checkedTripletSingleAttachment[1], 4]
+                return analyzedPlay
+            #throw error
         
         #if 5, could be one of the following:
         # - Triplet with attached pair
         # - Sequence of 5 single cards
-        #elif len(hand) == 5:
+        elif len(hand) == 5:
+            checkedTripletPairAttachment = check_triplet_sequence_attachments(hand)
+            checkedSequence = check_single_sequence(hand)
+            if checkedTripletPairAttachment[0]:
+                analyzedPlay = [4, checkedTripletPairAttachment[1], 5]
+                return analyzedPlay
+            elif checkedSequence[0]:
+                analyzedPlay = [10, checkedSequence[1], 5]
+                return analyzedPlay
+            #throw error
         
         #if 6, could be one of the following:
         # - Sequence of 6 single cards
         # - Sequence of 2 triplets
         # - Sequence of 3 pairs
         # - Quadplex set #1 (bomb with 2 different single cards attached)
-        #elif len(hand) == 6:
+        elif len(hand) == 6:
+            checkedSequence = check_single_sequence(hand)
+            checkedTripletSequence = check_triplet_sequence(hand)
+            checkedPairSequence = check_pair_sequence(hand)
+            checkedQuadplexSet1 = check_quadplex_set_1(hand)
+            if checkedSequence[0]:
+                analyzedPlay = [10, checkedSequence[1], 6]
+                return analyzedPlay
+            elif checkedTripletSequence[0]:
+                analyzedPlay = [6, checkedTripletSequence[1], 6]
+                return analyzedPlay
+            elif checkedPairSequence[0]:
+                analyzedPlay = [8, checkedPairSequence[1], 6]
+                return analyzedPlay
+            elif checkedQuadplexSet1[0]:
+                analyzedPlay = [3, checkedQuadplexSet1[1], 6]
+                return analyzedPlay
+            #throw error
         
         #if 7, could be one of the following:
         # - Sequence of 7 single cards
-        #elif len(hand) == 7:
-        
+        elif len(hand) == 7:
+            checkedSequence = check_single_sequence(hand)
+            if checkedSequence[0]:
+                analyzedPlay = [10, checkedSequence[1], 7]
+                return analyzedPlay
+            #throw error
         #if 8, could be one of the following:
         # - Sequence of 8 single cards
         # - Sequence of 4 pairs
         # - Sequence of 2 triplets with attached single cards
         # - Quadplex set #2 (bomb with 2 different pairs attached)
         elif len(hand) == 8:
-            prevHandValue = -1
-            #checking single sequence
-            if (check_single_sequence(hand)):
-                pass
-                #return 
-            if (check_pair_sequence(hand)):
-                pass
-                #return
+            checkedSequence = check_single_sequence(hand)
+            checkedPairSequence = check_pair_sequence(hand)
+            checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, 2)
+            checkedQuadplexSet2 = check_quadplex_set_2(hand)
+            if (checkedSequence[0]):
+                analyzedPlay = [10, checkedSequence[1], 8]
+                return analyzedPlay
+            elif checkedPairSequence[0]:
+                analyzedPlay = [8, checkedPairSequence[1], 8]
+                return analyzedPlay
             #checking triplets w/ attachment sequence
-            if (check_triplet_sequence_attachments(hand, 2)):
-                pass
-                #return
-            if (check_quadplex_set_2(hand)):
-                pass
-                #return
-            
-        
+            elif checkedTripletSequenceSingleAttachment[0]:
+                analyzedPlay = [5, checkedTripletSequenceSingleAttachment[1], 8]
+                return analyzedPlay
+            if (checkedQuadplexSet2[0]):
+                analyzedPlay = [2, checkedQuadplexSet2[1], 8]
+                return analyzedPlay
+            #throw error
+
         #at 9 and after, only the following cases exist:
         # - Sequence of X single cards, up to 12
         # - Sequence of X pairs (at even numbers only), up to 20
