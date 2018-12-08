@@ -93,7 +93,7 @@ class ExpectiMiniMaxAI:
                 if simplifiedHand[x] == 1:
                     #checking for rocket
                     if simplifiedHand[x+1] == 1:
-                        rocket.append(hand[previousCards], hand[previousCards+1])
+                        rocket.append([hand[previousCards], hand[previousCards+1]])
                         isRocket.append(hand[previousCards])
                         isRocket.append(hand[previousCards+1])
 
@@ -275,8 +275,8 @@ class ExpectiMiniMaxAI:
 
 
 
-        #single = single + isPair + isTriplet + isQuad + isSequence + isRocket
-        single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
+        single = single + isPair + isTriplet + isQuad + isSequence + isRocket
+        #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
         plays.append(single)
         return plays
 
@@ -579,8 +579,93 @@ class ExpectiMiniMaxAI:
                 if (checkedTripletsPairAttachment[0]):
                     return [4, checkedTripletsPairAttachment[1], totalNumber]
             #throw error if we get here: no matches
+<<<<<<< HEAD
 
 
+=======
+            
+    #takes the current hand and currently on-board play, and returns a list of all legal plays from this state
+    #Input FORMATTING NOTE: hand and play must both be lists of cards
+    #
+    #Return format: 
+    #combinedPlays[] defined as a list of all legal plays of cards, where each play is a list of cards. 
+    #Note that this function will return the empty list if there are no legal plays. Functions utilizing combine_play
+    #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass). 
+    def combine_play(self, hand, play):
+        #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
+        analyzedPlay = analyze_play(self, play)
+        validPlays = valid_plays(self, hand)
+        #separating out plays
+        rockets = validPlays[0]
+        quads = validPlays[1]
+        tripletSequences = validPlays[2]
+        triplets = validPlays[3]
+        pairSequences = validPlays[4]
+        pairs = validPlays[5]
+        singleSequences = validPlays[6]
+        #note that singles is constructed by concatenation, not multiple lists, so you can access it normally
+        singles = validPlays[7]
+        
+        typeOfPlay = analyzedPlay[0]
+        rankOfPlay = analyzedPlay[1]
+        #rocket: Can't be beaten
+        if typeOfPlay == 0:
+            return []
+        #quad(bomb): Beaten by higher bombs or rockets
+        if typeOfPlay == 1:
+            legalQuads = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    legalQuads.append(quads[x])
+            return rockets + legalQuads
+        #quad(pair attachments): beaten by higher quad-pair sets, any bombs, or rockets
+        if typeOfPlay == 2:
+            legalQuadPairs = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(pairs)):
+                        if len(pairs) <=1:
+                            break
+                        if pairs[y][0].value != quads[x][0].value:
+                            for z in range (len(pairs)):
+                                if pairs[z][0].value != quads[x][0].value and pairs[z][0].value != pairs[y][0].value:  
+                                    attachmentPlay = quads[x]+pairs[y]+pairs[z]
+                                    legalQuadPairs.append(attachmentPlay)
+            return rockets + quads + legalQuadPairs
+        #quad(single attachments): beaten by higher quad-single sets, any bombs, or rockets
+        if typeOfPlay == 3:
+            legalQuadSingles = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(singles)):
+                        if singles[y].value != quads[x][0].value:
+                            for z in range (len(singles)):
+                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):  
+                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                    legalQuadSingles.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles
+        #triplet sequence with pair attachments: beaten by higher rank same-length pair-attached sequences, and bombs/rockets
+        if typeOfPlay == 4:
+            legalTripletPairSequences = []
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/5)*3)):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x], 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    for y in range (len(pairs)):
+                        if len(pairs) < (int(len(play)/5)*2):
+                            break
+                        neededPairs = int(len(play)/5)
+                        foundPairs = []
+                        for b in range (neededPairs):
+                            if usedNumbers.count(pairs[y][0].value) == 0:
+                                foundPairs.append(pairs[y])
+                        if len(foundPairs) == neededPairs:
+                            attachmentPlay = tripletSequences[x]+foundPairs
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalTripletPairSequences
+ 
+>>>>>>> 4d5872a16ebb55b88bc5d1d51947ad20bdd58924
     #gets the raw value of a card
     def value_lookup(card):
         table = {
