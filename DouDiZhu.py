@@ -3,6 +3,34 @@ import Cards
 import sys
 import numpy as np
 
+""" debug code for hydrogen
+class ExpectiMiniMaxAI:
+    #order is the order the AIs go: 0, 1, 2 for first, second, third
+    def __init__(self, order):
+        self.order = order
+        self.str = 'ExpectiMiniMaxAI ' + str(order)
+
+    def get_move(self, a, b):
+        return []
+class HillClimbAI:
+    #order is the order the AIs go: 0, 1, 2 for first, second, third
+    def __init__(self, order):
+        self.order = order
+        self.str = 'HillClimbAI ' + str(order)
+
+    def get_move(self, a, b):
+        return [Card(1,"a")]
+
+class SimulatedAnnealingAI:
+    #order is the order the AIs go: 0, 1, 2 for first, second, third
+    def __init__(self, order):
+        self.order = order
+        self.str = 'SimulatedAnnealingAI ' + str(order)
+
+    def get_move(self, a, b):
+        return [Card(2,"b")]
+"""
+
 class DDZ:
     def __init__(self, player1, player2, player3):
         self.players = [player1, player2, player3]
@@ -27,12 +55,12 @@ class DDZ:
         self.landlord = 0 # The landlord represented as an integer
         self.currentPlay = [] #Current play on the board
         self.turn = 0 #Turn number
-        
-        
-    
+
+
+
         #Shuffle cards
         self.origDeck = np.random.shuffle(self.origDeck)
-    
+
         self.deck1 = self.origDeck[:18]
         p1_cards.sort(key = lambda x: x.rank)
         self.deck2 = self.origDeck[18:36]
@@ -41,36 +69,36 @@ class DDZ:
         p3_cards.sort(key = lambda x: x.rank)
         self.hands = [self.deck1,self.deck2,self.deck3] #Hands for all of the players in the order of p1,p2,p3
         #the hidden cards in the center of the table
-        self.hidden_cards = [52:] #Get from parsing the Game
-    
+        self.hidden_cards = self.origDeck[52:] #Get from parsing the Game
+
     #get the stakes [1,2,3] from current_player for the hidden cards.
     def stakes(self):
         return 3
-    
+
     def unPlayed(self,current_player):
-        [card for card in self.origDeck not in self.field and not in hands[current_player]]
-    
+        [card for card in self.origDeck not in (self.field + hands[current_player])]
+
 
     def updateCurrentPlay(self,move):
         self.currentPlay.clear()
         self.currentPlay = move
-    
+
 
 
     #get the move they wish to make from current_player.
     def move(self, current_player):
-        if(current_player = 0):
+        if(current_player == 0):
             self.players[current_player].get_move(self.deck2, self.currentPlay)
-        
+
 #        self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
-        elif(current_player = 1):
+        elif(current_player == 1):
             self.players[current_player].get_move(self.deck2, self.currentPlay)
-        
-        
+
+
         else:
             self.players[current_player].get_move(self.deck3,self.turn, self.currentPlay)
 
-    
+
     #update the Game State in response to a move
     def update_game_state(self,move, current_player):
         for ele in move:
@@ -78,36 +106,34 @@ class DDZ:
             self.field.append(ele) #Append it to the list representing the table
         # if one of the players has no more cards, then they win, and if they're not the landlord, then, their
         # partner wins as well.
-        if(len(self.deck1) == 0 || len(self.deck2) == 0 || len(self.deck3) == 0):
+        if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
             game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
             update_game_state(move(current_player),(current_player+1)%3)
             updateCurrentPlay(move(current_player))
             self.turn += 1
 
-#Note for this function I have not decided how the stakes function should run yet so I have just hard coded it for now
-def game_over(self, current_player):
-    if(self.game_over == true and self.deck1 == 0): #if the game is over and player1's hand is empty
-        print ("You have won Landlord!!")
-        print ("Game over filthy Peasants")
-    elif(self.game_over == false and self.deck2 == 0): #if the game is over and player2's hand is empty
-        print ("You and your partner have won " + current_player)
-        print ("Game over Landlord")
-    else:  #if the game is over and player3's hand is empty
-        print ("You and your partner have won " + current_player)
-        print ("Game over Landlord")
+    #Note for this function I have not decided how the stakes function should run yet so I have just hard coded it for now
+    def game_over(self, current_player):
+        if(self.game_over == true and self.deck1 == 0): #if the game is over and player1's hand is empty
+            print ("You have won Landlord!!")
+            print ("Game over filthy Peasants")
+        elif(self.game_over == false and self.deck2 == 0): #if the game is over and player2's hand is empty
+            print ("You and your partner have won " + current_player)
+            print ("Game over Landlord")
+        else:  #if the game is over and player3's hand is empty
+            print ("You and your partner have won " + current_player)
+            print ("Game over Landlord")
 
-
-
-def create_player(type, order):
-    if type == 'ExpectiMiniMaxAI':
-        return ExpectiMiniMaxAI(order)
-    elif type == 'HillClimbAI':
-        return HillClimbAI(order)
-    elif type == 'SimulatedAnnealingAI':
-        return SimulatedAnnealingAI(order)
-    elif type == 'Other':
-        return Other(order)
+    def create_player(type, order):
+        if type == 'ExpectiMiniMaxAI':
+            return ExpectiMiniMaxAI(order)
+        elif type == 'HillClimbAI':
+            return HillClimbAI(order)
+        elif type == 'SimulatedAnnealingAI':
+            return SimulatedAnnealingAI(order)
+        elif type == 'Other':
+            return Other(order)
 
 #main function
 def main():
@@ -116,7 +142,7 @@ def main():
     Player1 = 'HillClimbAI'
     Player2 = 'HillClimbAI'
     Player3 = 'SimulatedAnnealingAI'
-    
+
     DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
 
 if __name__== '__main__':
