@@ -2920,7 +2920,6 @@ class SimulatedAnnealingAI:
     def get_move(self, hand, play, turn):
         temperature = 10./turn
         index = int(math.floor(random.random() * temperature))
-        print(index)
         plays = evaluate_hand_list(self, hand, play)
         if (not plays or 0 > index or index >= len(plays)): return []
         if (index >= len(plays)):
