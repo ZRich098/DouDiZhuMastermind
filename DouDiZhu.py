@@ -61,6 +61,7 @@ class DDZ:
         #Shuffle cards
         np.random.shuffle(self.origDeck)
         self.deck1 = self.origDeck[:18]
+        print(self.deck1)
         self.deck1.sort(key = lambda a,b: a)
         self.deck2 = self.origDeck[18:36]
         self.deck2.sort(key = lambda a,b: a)
@@ -121,18 +122,18 @@ class DDZ:
             print ("You and your partner have won " + current_player)
             print ("Game over Landlord")
 
-    def create_player(type, order):
-        if type == 'ExpectiMiniMaxAI':
-            return ExpectiMiniMaxAI(order)
-        elif type == 'HillClimbAI':
-            return HillClimbAI(order)
-        elif type == 'SimulatedAnnealingAI':
-            return SimulatedAnnealingAI(order)
-        elif type == 'Other':
-            return Other(order)
-
     def updateLandlord(self,current_player):
         return evalueate_other_player(17,hand,unplayed(current_player))
+
+def create_player(type, order):
+    if type == 'ExpectiMiniMaxAI':
+        return ExpectiMiniMaxAI(order)
+    elif type == 'HillClimbAI':
+        return HillClimbAI(order)
+    elif type == 'SimulatedAnnealingAI':
+        return SimulatedAnnealingAI(order)
+    elif type == 'Other':
+        return Other(order)
 
 #main function
 def main():
