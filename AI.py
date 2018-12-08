@@ -822,6 +822,15 @@ class ExpectiMiniMaxAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return dict(zip(poss_play, value_of_plays))
 
+    #find expected value of own hand, taking into account different plays
+    #that could be made on the current board
+    def evaluate_hand_given_play(self, hand, play):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = combine_play(self, hand, play)
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
@@ -841,10 +850,7 @@ class ExpectiMiniMaxAI:
         total_other_value = evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
-
-    #
-    def evaluate_game_state(self, hand, unplayed_cards, landlord, hand_sizes, player_number):
-        return 0
+    
     #return the best move based on expectiminimax using pruning
     def get_move(self):
         return valid_plays[1]
@@ -1636,9 +1642,15 @@ class HillClimbAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
+    #find expected value of a play based on own hand
+    def evaluate_play(self, hand, play):
+        leftover_hand = [card for card in hand if card not in play]
+        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
+        return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
+
     #return the best move based on expectiminimax using pruning
     def get_move(self, hand):
-        poss_plays = to_plays_array(valid_plays(self, hand))
+        poss_plays = combine_play(self, hand, play)
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
@@ -2429,20 +2441,24 @@ class SimulatedAnnealingAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
+    #find expected value of a play based on own hand
+    def evaluate_play(self, hand, play):
+        leftover_hand = [card for card in hand if card not in play]
+        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
+        return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
+
     #returns a (play, value) pair of expected values of plays
-    def evaluate_hand_dict(self, hand):
-        #if hand empty then win
-        if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
+    def evaluate_hand_dict(self, hand, play):
+        poss_plays = combine_play(self, hand, play)
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         dict = dict(zip(poss_play, value_of_plays))
         return sorted(dict.values())
 
     #return the best move based on simulated annealing, given a hand and a turn (starting at 1)
-    def get_move(self, hand, turn):
+    def get_move(self, hand, play, turn):
         temperature = 10/turn
         index = math.floor(random.random() * temperature)
-        dict = evaluate_hand_dict(self, hand)
+        dict = evaluate_hand_dict(self, hand, play)
         if (index > len(dict)):
             return dict.get(len(dict) - 1)
         return dict.get(index)
