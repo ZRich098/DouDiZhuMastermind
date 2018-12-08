@@ -59,8 +59,7 @@ class DDZ:
 
 
         #Shuffle cards
-        self.origDeck = np.random.shuffle(self.origDeck)
-
+        np.random.shuffle(self.origDeck)
         self.deck1 = self.origDeck[:18]
         p1_cards.sort(key = lambda x: x.rank)
         self.deck2 = self.origDeck[18:36]
@@ -89,12 +88,9 @@ class DDZ:
     def move(self, current_player):
         if(current_player == 0):
             self.players[current_player].get_move(self.deck2, self.currentPlay)
-
 #        self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
             self.players[current_player].get_move(self.deck2, self.currentPlay)
-
-
         else:
             self.players[current_player].get_move(self.deck3,self.turn, self.currentPlay)
 
@@ -135,15 +131,20 @@ class DDZ:
         elif type == 'Other':
             return Other(order)
 
-#main function
-def main():
-    #Parse players from Game State
-#    Player1 = 'ExpectiMiniMaxAI'
-    Player1 = 'HillClimbAI'
-    Player2 = 'HillClimbAI'
-    Player3 = 'SimulatedAnnealingAI'
+    def updateLandlord(self,current_player):
+        return evalueate_other_player(17,hand,unplayed(current_player))
 
-    DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
+    #main function
+    def main():
+        #Parse players from Game State
+    #    Player1 = 'ExpectiMiniMaxAI'
+        Player1 = 'HillClimbAI'
+        Player2 = 'HillClimbAI'
+        Player3 = 'SimulatedAnnealingAI'
 
-if __name__== '__main__':
-    main()
+        DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
+        DDZ.landlord = updateLandlord(self.current_player)
+        DDZ.hands[DDZ.landlord] = DDZ.hands[DDZ.landlord] + DDZ.hidden_cards
+
+    if __name__== '__main__':
+        main()
