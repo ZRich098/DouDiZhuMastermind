@@ -2511,21 +2511,22 @@ class SimulatedAnnealingAI:
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
-    #returns a (play, value) pair of expected values of plays
-    def evaluate_hand_dict(self, hand, play):
+    #returns a sorted list of plays based on expected values
+    def evaluate_hand_list(self, hand, play):
         poss_plays = combine_play(self, hand, play)
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
-        dict = dict(zip(poss_play, value_of_plays))
-        return sorted(dict.values())
+        indexes = sorted(range(len(value_of_plays)),key=lambda x:value_of_plays[x])
+        plays = [poss_plays[i] for i in indexes]
+        return plays
 
     #return the best move based on simulated annealing, given a hand and a turn (starting at 1)
     def get_move(self, hand, play, turn):
         temperature = 10/turn
-        index = math.floor(random.random() * temperature)
-        dict = evaluate_hand_dict(self, hand, play)
-        if (index > len(dict)):
-            return dict.get(len(dict) - 1)
-        return dict.get(index)
+        index = int(math.floor(random.random() * temperature))
+        plays = evaluate_hand_list(self, hand, play)
+        if (index > len(plays)):
+            return plays[len(plays) - 1]
+        return plays[index]
 
 #Other Actual Non-AI Players
 class Other:
@@ -2551,4 +2552,5 @@ hai.get_move(hand, current_play)
 
 #tests
 sai = SimulatedAnnealingAI(1)
+sai.combine_play(hand, current_play)
 sai.get_move(hand,current_play, 1) #move on turn 1
