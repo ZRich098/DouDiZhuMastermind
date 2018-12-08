@@ -94,7 +94,16 @@ class DDZ:
             print ("Game over Landlord")
 
     def updateLandlord(self):
-        self.landlord = evaluate_other_player(17,hand,unplayed(self.current_player))
+        val1 = player1[0].evaluate_other_player(17,hand,unplayed(1))
+        val2 = player1[1].evaluate_other_player(17,hand,unplayed(0))
+        val3 = player1[2].evaluate_other_player(17,hand,unplayed(1))
+
+        if(val1 >= val2 and val1 >= val3):
+            reutrn 0
+        elif(val2 >= val1 and val2 >= val3):
+            return 1
+        else:
+            return 2
 
 def create_player(type, order):
     if type == 'ExpectiMiniMaxAI':
