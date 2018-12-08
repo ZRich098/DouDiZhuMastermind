@@ -882,7 +882,7 @@ class ExpectiMiniMaxAI:
         if typeOfPlay == 11:
             legalSingles = []
             for x in range (len(singles)):
-                if singles[x].value > rankOfPlay:
+                if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
 
@@ -1839,7 +1839,7 @@ class HillClimbAI:
         if typeOfPlay == 11:
             legalSingles = []
             for x in range (len(singles)):
-                if singles[x].value > rankOfPlay:
+                if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
 
@@ -2798,7 +2798,7 @@ class SimulatedAnnealingAI:
         if typeOfPlay == 11:
             legalSingles = []
             for x in range (len(singles)):
-                if singles[x].value > rankOfPlay:
+                if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
 
