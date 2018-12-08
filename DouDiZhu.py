@@ -61,11 +61,11 @@ class DDZ:
         #Shuffle cards
         np.random.shuffle(self.origDeck)
         self.deck1 = self.origDeck[:18]
-        self.deck1.sort(key = lambda x: x.value)
+        self.deck1.sort(key = lambda (a,b): a)
         self.deck2 = self.origDeck[18:36]
-        self.deck2.sort(key = lambda x: x.value)
+        self.deck2.sort(key = lambda (a,b): a)
         self.deck3 = self.origDeck[36:52]
-        self.deck3.sort(key = lambda x: x.value)
+        self.deck3.sort(key = lambda (a,b): a)
         self.hands = [self.deck1,self.deck2,self.deck3] #Hands for all of the players in the order of p1,p2,p3
         #the hidden cards in the center of the table
         self.hidden_cards = self.origDeck[52:] #Get from parsing the Game
