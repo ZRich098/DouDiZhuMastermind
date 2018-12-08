@@ -366,11 +366,13 @@ class ExpectiMiniMaxAI:
         attachment2 = -1
         quadValue = -1
         for x in range (totalNumber):
+            if (x+3 >= totalNumber):
+                break
             if (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value):
                 quadValue = hand[x].value
                 break
         if quadValue == -1:
-            return False
+            return [False, quadValue]
         for y in range (totalNumber):
             if (hand[y].value != quadValue):
                 if attachment1 == -1:
@@ -389,11 +391,13 @@ class ExpectiMiniMaxAI:
         pair2 = -1
         quadValue = -1
         for x in range (totalNumber):
+            if (x+3 >= totalNumber):
+                break
             if (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value):
                 quadValue = hand[x].value
                 break
         if quadValue == -1:
-            return False
+            return [False, quadValue]
         for y in range (totalNumber-1):
             if (hand[y].value == hand[y+1].value and hand[y].value != quadValue):
                 if pair1 == -1:
@@ -653,13 +657,92 @@ class ExpectiMiniMaxAI:
                     foundPairs = []
                     for y in range (len(pairs)):
                         if usedNumbers.count(pairs[y][0].value) == 0:
-                            foundPairs = foundPairs + pairs[y]
-                        if len(foundPairs) == neededPairs*2:
-                            attachmentPlay = tripletSequences[x]+foundPairs
-                            legalTripletPairSequences.append(attachmentPlay)
-                            break
+                            foundPairs.append(pairs[y])
+                    print(foundPairs)
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        for r in range (len(foundPairs)):
+                            firstPair = foundPairs[r]
+                            finalFoundPairs.append(firstPair)
+                            if (len(finalFoundPairs) == neededPairs):
+                                attachmentPlay = tripletSequences[x]+finalFoundPairs[0]
+                                legalTripletPairSequences.append(attachmentPlay)
+                                finalFoundPairs.pop()
+                            else:
+                                for j in range (r+1, len(foundPairs)):
+                                    nextPair = foundPairs[j]
+                                    finalFoundPairs.append(nextPair)
+                                    if (len(finalFoundPairs) == neededPairs):
+                                        attachmentPlay = tripletSequences[x]+finalFoundPairs[0]+finalFoundPairs[1]
+                                        legalTripletPairSequences.append(attachmentPlay)
+                                        finalFoundPairs.pop()
+                                    else:
+                                        for k in range (j+1, len(foundPairs)):
+                                            nextPair = foundPairs[k]
+                                            finalFoundPairs.append(nextPair)
+                                            if (len(finalFoundPairs) == neededPairs):
+                                                attachmentPlay = tripletSequences[x]+finalFoundPairs[0]+finalFoundPairs[1]+finalFoundPairs[2]
+                                                legalTripletPairSequences.append(attachmentPlay)
+                                                finalFoundPairs.pop()
+                                            else:
+                                                for l in range (k+1, len(foundPairs)):
+                                                    nextPair = foundPairs[l]
+                                                    finalFoundPairs.append(nextPair)
+                                                    if (len(finalFoundPairs) == neededPairs):
+                                                        attachmentPlay = tripletSequences[x]+finalFoundPairs[0]+finalFoundPairs[1]+finalFoundPairs[2]+finalFoundPairs[3]
+                                                        legalTripletPairSequences.append(attachmentPlay)
+                                                        finalFoundPairs.pop()
+                                                finalFoundPairs.pop()
+                                        finalFoundPairs.pop()
+                                finalFoundPairs.pop()
             return rockets + quads + legalTripletPairSequences
+        #Triplet sequence with single attachment, beatable by higher ranked triplet-with-single or rocket/bomb
+        if typeOfPlay == 5:
+            #tbd
+            return rockets + quads
+        #standard triplet sequence
+        if typeOfPlay == 6:
+            legalTripletSequences = []
+            for x in range (len(tripletSequences)):
+                if tripletSequences[x][0].value > rankOfPlay:
+                    legalTripletSequences.append(tripletSequences[x])
+            return rockets + quads + legalTripletSequences
+        #single triplet
+        if typeOfPlay == 7:
+            legalTriplets = []
+            for x in range (len(triplets)):
+                if triplets[x][0].value > rankOfPlay:
+                    legalTriplets.append(triples[x])
+            return rockets + quads + legalTriplets
+        #pair sequence
+        if typeOfPlay == 8:
+            legalPairSequences = []
+            for x in range (len(pairSequences)):
+                if pairSequences[x][0].value > rankOfPlay and len(pairSequences[x]) == len(play):
+                    legalPairSequences.append(pairSequences[x])
+            return rockets + quads + legalPairSequences
 
+        #pair
+        if typeOfPlay == 9:
+            legalPairs = []
+            for x in range (len(pairs)):
+                if pairs[x][0].value > rankOfPlay:
+                    legalPairs.append(pairs[x])
+            return rockets + quads + legalPairs
+        #single sequence
+        if typeOfPlay == 10:
+            legalSingleSequences = []
+            for x in range (len(singleSequences)):
+                if singleSequences[x][0].value > rankOfPlay and len(singleSequences[x]) == len(play):
+                    legalSingleSequences.append(singleSequences[x])
+            return rockets + quads + legalSingleSequences
+        #singles
+        if typeOfPlay == 11:
+            legalSingles = []
+            for x in range (len(singles)):
+                if singles[x].value > rankOfPlay:
+                    legalSingles.append(singles[x])
+            return rockets + quads + legalSingles
     #gets the raw value of a card
     def value_lookup(card):
         table = {
