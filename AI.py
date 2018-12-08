@@ -1642,14 +1642,50 @@ class HillClimbAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
+    def return_best_play_from_hand(self, hand):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = to_plays_array(valid_plays(self, hand))
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return poss_plays[value_of_plays.index(max(value_of_plays))]
+
+    #returns a (play, value) pair of expected values of plays
+    def evaluate_hand_dict(self, hand):
+        poss_plays = to_plays_array(valid_plays(self, hand))
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return dict(zip(poss_play, value_of_plays))
+
+    #find expected value of own hand, taking into account different plays
+    #that could be made on the current board
+    def evaluate_hand_given_play(self, hand, play):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = combine_play(self, hand, play)
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([value_lookup(card) for card in leftover_hand])
         return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
 
+    #find expected value of a hand, disregarding combinations of cards
+    def evaluate_hand_separate(self, hand):
+        return sum([value_lookup(card) for card in hand])
+
+    #find expected values of another player's hand in comparison to your own
+    #value > 0 means on average the your hand is better than their's
+    #value < 0 means on average the your hand is worse than their's
+    #requires other player hand size, your hand, and the cards still not played
+    def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
+        own_value = evaluate_hand_separate(hand)
+        total_other_value = evaluate_hand_separate(unplayed_cards)
+        other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
+        return own_value - other_value
+
     #return the best move based on expectiminimax using pruning
-    def get_move(self, hand):
+    def get_move(self, hand, play):
         poss_plays = combine_play(self, hand, play)
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
@@ -2441,11 +2477,39 @@ class SimulatedAnnealingAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
+    def return_best_play_from_hand(self, hand):
+        poss_plays = to_plays_array(valid_plays(self, hand))
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return poss_plays[value_of_plays.index(max(value_of_plays))]
+
+    #find expected value of own hand, taking into account different plays
+    #that could be made on the current board
+    def evaluate_hand_given_play(self, hand, play):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = combine_play(self, hand, play)
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([value_lookup(card) for card in leftover_hand])
         return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
+
+    #find expected value of a hand, disregarding combinations of cards
+    def evaluate_hand_separate(self, hand):
+        return sum([value_lookup(card) for card in hand])
+
+    #find expected values of another player's hand in comparison to your own
+    #value > 0 means on average the your hand is better than their's
+    #value < 0 means on average the your hand is worse than their's
+    #requires other player hand size, your hand, and the cards still not played
+    def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
+        own_value = evaluate_hand_separate(hand)
+        total_other_value = evaluate_hand_separate(unplayed_cards)
+        other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
+        return own_value - other_value
 
     #returns a (play, value) pair of expected values of plays
     def evaluate_hand_dict(self, hand, play):
@@ -2470,18 +2534,21 @@ class Other:
         self.str = 'Other ' + str(order)
 
 #tests
+hand = [Card(5, "hearts"), Card(6, "diamonds"), Card(6,"spades")]
+current_play = [Card(3,"clubs"), Card(3, "spades")]
+current_play = [Card(3,"clubs")]
+current_play = []
+
+
 eai = ExpectiMiniMaxAI(1)
-hand = [Card(5, "hearts"), Card(6, "diamonds")]
 eai.valid_plays(hand)
 eai.evaluate_hand(hand)
 
-
 #tests
 hai = HillClimbAI(1)
-hand = [Card(5, "hearts"), Card(6, "diamonds")]
-hai.get_move(hand)
+hai.combine_play(hand, current_play)
+hai.get_move(hand, current_play)
 
 #tests
 sai = SimulatedAnnealingAI(1)
-hand = [Card(5, "hearts"), Card(6, "diamonds")]
-sai.get_move(hand, 1) #move on turn 1
+sai.get_move(hand,current_play, 1) #move on turn 1
