@@ -61,11 +61,11 @@ class DDZ:
         #Shuffle cards
         np.random.shuffle(self.origDeck)
         self.deck1 = self.origDeck[:18]
-        p1_cards.sort(key = lambda x: x.rank)
+        self.deck1.sort(key = lambda x: x.value)
         self.deck2 = self.origDeck[18:36]
-        p2_cards.sort(key = lambda x: x.rank)
+        self.deck2.sort(key = lambda x: x.value)
         self.deck3 = self.origDeck[36:52]
-        p3_cards.sort(key = lambda x: x.rank)
+        self.deck3.sort(key = lambda x: x.value)
         self.hands = [self.deck1,self.deck2,self.deck3] #Hands for all of the players in the order of p1,p2,p3
         #the hidden cards in the center of the table
         self.hidden_cards = self.origDeck[52:] #Get from parsing the Game
@@ -134,17 +134,17 @@ class DDZ:
     def updateLandlord(self,current_player):
         return evalueate_other_player(17,hand,unplayed(current_player))
 
-    #main function
-    def main():
-        #Parse players from Game State
-    #    Player1 = 'ExpectiMiniMaxAI'
-        Player1 = 'HillClimbAI'
-        Player2 = 'HillClimbAI'
-        Player3 = 'SimulatedAnnealingAI'
+#main function
+def main():
+    #Parse players from Game State
+#    Player1 = 'ExpectiMiniMaxAI'
+    Player1 = 'HillClimbAI'
+    Player2 = 'HillClimbAI'
+    Player3 = 'SimulatedAnnealingAI'
 
-        DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
-        DDZ.landlord = updateLandlord(self.current_player)
-        DDZ.hands[DDZ.landlord] = DDZ.hands[DDZ.landlord] + DDZ.hidden_cards
+    DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
+    DDZ.landlord = updateLandlord(self.current_player)
+    DDZ.hands[DDZ.landlord] = DDZ.hands[DDZ.landlord] + DDZ.hidden_cards
 
-    if __name__== '__main__':
-        main()
+if __name__== '__main__':
+    main()
