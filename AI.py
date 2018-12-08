@@ -3,6 +3,18 @@ class Card:
         self.value = value
         self.color = color
 
+    def __repr__ (self):
+        table = {
+            11: "Jack",
+            12: "Queen",
+            13: "King",
+            14: "Ace",
+            15: "Two"}
+
+        if self.value == 16: return "Uncolored Joker"
+        elif self.value == 17: return "Colored Joker"
+        return table.get(self.value,str(self.value)) + " of " + self.color
+
 class ExpectiMiniMaxAI:
     #order is the order the AIs go: 0, 1, 2 for first, second, third
     def __init__(self, order):
@@ -277,7 +289,7 @@ class ExpectiMiniMaxAI:
     #particulars of the hand, e.g. the starting card of a sequence or the values of a quadplex set
 
     def check_bomb(hand):
-        bombValue = hand[0].value 
+        bombValue = hand[0].value
         return [(hand[0].value == hand[1].value and hand[0].value == hand[2].value and hand[0].value == hand[3].value), bombValue]
 
     def check_rocket(hand):
@@ -317,7 +329,7 @@ class ExpectiMiniMaxAI:
                     return [True, sequenceStart]
             else:
                 return [False, sequenceStart]
-            
+
     def check_triplet_sequence_attachments(hand, needed):
         prevHandValue = -1
         totalNumber = len(hand)
@@ -369,8 +381,8 @@ class ExpectiMiniMaxAI:
             return [True, quadValue]
         else:
             return [False, quadValue]
-    
-    def check_quadplex_set_2(hand): 
+
+    def check_quadplex_set_2(hand):
         prevHandValue = -1
         totalNumber = len(hand)
         pair1 = -1
@@ -392,7 +404,7 @@ class ExpectiMiniMaxAI:
             return [True, quadValue]
         else:
             return [False, quadValue]
-                    
+
     #return format:
     #
     #returns analyzedPlay[], which is an array of length 3, formatted as follows:
@@ -423,7 +435,7 @@ class ExpectiMiniMaxAI:
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
             return analyzedPlay
-        
+
         #if 2, must be pair, or rocket
         elif len(hand) == 2:
             if check_rocket(hand):
@@ -436,7 +448,7 @@ class ExpectiMiniMaxAI:
                     return analyzedPlay
             #Throw error
             return analyzedPlay
-        
+
         #if 3, must be triplet
         elif len(hand) == 3:
             checkedTriplet = check_triplet_sequence(hand)
@@ -444,7 +456,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [7, checkedTriplet[1], 3]
                 return analyzedPlay
             #throw error
-        
+
         #if 4, could be one of the following:
         # - Triplet with attachment
         # - Bomb
@@ -458,7 +470,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [5, checkedTripletSingleAttachment[1], 4]
                 return analyzedPlay
             #throw error
-        
+
         #if 5, could be one of the following:
         # - Triplet with attached pair
         # - Sequence of 5 single cards
@@ -495,7 +507,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [3, checkedQuadplexSet1[1], 6]
                 return analyzedPlay
             #throw error
-        
+
         #if 7, could be one of the following:
         # - Sequence of 7 single cards
         elif len(hand) == 7:
@@ -504,7 +516,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [10, checkedSequence[1], 7]
                 return analyzedPlay
             #throw error
-            
+
         #if 8, could be one of the following:
         # - Sequence of 8 single cards
         # - Sequence of 4 pairs
@@ -566,14 +578,14 @@ class ExpectiMiniMaxAI:
                 if (checkedTripletsPairAttachment[0]):
                     return [4, checkedTripletsPairAttachment[1], totalNumber]
             #throw error if we get here: no matches
-            
+
     #takes the current hand and currently on-board play, and returns a list of all legal plays from this state
     #Input FORMATTING NOTE: hand and play must both be lists of cards
     #
-    #Return format: 
-    #combinedPlays[] defined as a list of all legal plays of cards, where each play is a list of cards. 
+    #Return format:
+    #combinedPlays[] defined as a list of all legal plays of cards, where each play is a list of cards.
     #Note that this function will return the empty list if there are no legal plays. Functions utilizing combine_play
-    #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass). 
+    #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
     def combine_play(self, hand, play):
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
         analyzedPlay = analyze_play(self, play)
@@ -588,7 +600,7 @@ class ExpectiMiniMaxAI:
         singleSequences = validPlays[6]
         #note that singles is constructed by concatenation, not multiple lists, so you can access it normally
         singles = validPlays[7]
-        
+
         typeOfPlay = analyzedPlay[0]
         rankOfPlay = analyzedPlay[1]
         #rocket: Can't be beaten
@@ -611,7 +623,7 @@ class ExpectiMiniMaxAI:
                             break
                         if pairs[y][0].value != quads[x][0].value:
                             for z in range (len(pairs)):
-                                if pairs[z][0].value != quads[x][0].value and pairs[z][0].value != pairs[y][0].value:  
+                                if pairs[z][0].value != quads[x][0].value and pairs[z][0].value != pairs[y][0].value:
                                     attachmentPlay = quads[x]+pairs[y]+pairs[z]
                                     legalQuadPairs.append(attachmentPlay)
             return rockets + quads + legalQuadPairs
@@ -623,7 +635,7 @@ class ExpectiMiniMaxAI:
                     for y in range (len(singles)):
                         if singles[y].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):  
+                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
                                     attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
                                     legalQuadSingles.append(attachmentPlay)
             return rockets + quads + legalQuadSingles
@@ -650,7 +662,7 @@ class ExpectiMiniMaxAI:
                             attachmentPlay = tripletSequences[x]+foundPairs
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalTripletPairSequences
- 
+
     #gets the raw value of a card
     def value_lookup(card):
         table = {
@@ -671,9 +683,23 @@ class ExpectiMiniMaxAI:
             17: 50 } #colored joker
         return table.get(card.value, 0)
 
+    turn_penalty = 50
+
     #find expected value of own hand, taking into account different plays that could be made
     def evaluate_hand(self, hand):
-        return 0
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = valid_plays(self, hand)
+        value_of_plays = [evaluate_play(hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+        #this would return the best evaluated play instead
+        #return poss_plays[value_of_plays.index(max(value_of_plays))]
+
+    #find expected value of a play based on own hand
+    def evaluate_play(self, hand, play):
+        leftover_hand = [card for card in hand if card not in play]
+        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
+        return leftover_quality - turn_penalty + evaluate_hand(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
@@ -697,8 +723,8 @@ class ExpectiMiniMaxAI:
         return valid_plays[1]
 
 eai = ExpectiMiniMaxAI(1)
-
-eai.valid_plays([Card(5, "hearts"), Card(6, "diamonds")])
+hand = [Card(5, "hearts"), Card(6, "diamonds")]
+eai.valid_plays(hand)
 
 class HillClimbAI:
     def __init__(self, order):
