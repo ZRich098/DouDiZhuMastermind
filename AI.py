@@ -783,11 +783,21 @@ class ExpectiMiniMaxAI:
 
     turn_penalty = 50
 
+    def to_plays_array(array):
+        arr = []
+        for e in array:
+            if (isinstance(e, list)):
+                for sube in e:
+                    arr.append(sube)
+            else:
+                arr.append(e)
+        return arr
+
     #find expected value of own hand, taking into account different plays that could be made
     def evaluate_hand(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = valid_plays(self, hand)
+        poss_plays = to_plays_array(valid_plays(self, hand))
         value_of_plays = [evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
         #this would return the best evaluated play instead
