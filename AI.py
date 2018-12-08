@@ -1,23 +1,7 @@
 from itertools import permutations
+from Cards import Card
 import random
 import math
-
-class Card:
-    def __init__(self, value, color):
-        self.value = value
-        self.color = color
-
-    def __repr__ (self):
-        table = {
-            11: "Jack",
-            12: "Queen",
-            13: "King",
-            14: "Ace",
-            15: "Two"}
-
-        if self.value == 16: return "Uncolored Joker"
-        elif self.value == 17: return "Colored Joker"
-        return table.get(self.value,str(self.value)) + " of " + self.color
 
 class ExpectiMiniMaxAI:
     #order is the order the AIs go: 0, 1, 2 for first, second, third
@@ -2931,34 +2915,3 @@ class Other:
     def __init__(self, order):
         self.order = order
         self.str = 'Other ' + str(order)
-
-#tests
-hand = [
-Card(4, "hearts"), Card(5, "diamonds"), Card(6,"spades"),
-Card(7, "hearts"), Card(8, "diamonds"), Card(9,"spades")]
-"""
-hand = [
-Card(4, "hearts"), Card(5, "diamonds"), Card(6,"spades"),
-Card(7, "hearts"), Card(8, "diamonds"), Card(9,"spades"),
-Card(11, "hearts"), Card(11, "diamonds"), Card(12,"spades"),
-Card(13, "hearts"), Card(14, "diamonds"), Card(15,"spades"),
-Card(15, "hearts"), Card(16, "joker"), Card(17,"joker")]
-"""
-current_play = [Card(3,"clubs"), Card(3, "spades")]
-current_play = [Card(3,"clubs")]
-current_play = []
-
-
-eai = ExpectiMiniMaxAI(1)
-eai.valid_plays(hand)
-eai.evaluate_hand(hand)
-
-#tests
-hai = HillClimbAI(1)
-hai.combine_play(hand, current_play)
-hai.get_move(hand, current_play)
-
-#tests
-sai = SimulatedAnnealingAI(1)
-sai.combine_play(hand, current_play)
-sai.get_move(hand,current_play, 1) #move on turn 1

@@ -1,5 +1,5 @@
+from Cards import Card
 from AI import ExpectiMiniMaxAI, HillClimbAI, SimulatedAnnealingAI, Other
-import Cards
 import sys
 import numpy as np
 
@@ -120,3 +120,34 @@ def main():
 
 if __name__== '__main__':
     main()
+
+
+
+#tests
+hand = [
+Card(4, "hearts"), Card(5, "diamonds"), Card(6,"spades"),
+Card(7, "hearts"), Card(8, "diamonds"), Card(9,"spades")]
+"""
+hand = [
+Card(4, "hearts"), Card(5, "diamonds"), Card(6,"spades"),
+Card(7, "hearts"), Card(8, "diamonds"), Card(9,"spades"),
+Card(11, "hearts"), Card(11, "diamonds"), Card(12,"spades"),
+Card(13, "hearts"), Card(14, "diamonds"), Card(15,"spades"),
+Card(15, "hearts"), Card(16, "joker"), Card(17,"joker")]
+"""
+current_play = [Card(3,"clubs"), Card(3, "spades")]
+current_play = [Card(3,"clubs")]
+current_play = []
+
+
+eai = ExpectiMiniMaxAI(1)
+
+#tests
+hai = HillClimbAI(1)
+hai.combine_play(hand, current_play)
+hai.get_move(hand, current_play)
+
+#tests
+sai = SimulatedAnnealingAI(1)
+sai.combine_play(hand, current_play)
+sai.get_move(hand,current_play, 1) #move on turn 1
