@@ -833,6 +833,7 @@ class ExpectiMiniMaxAI:
 eai = ExpectiMiniMaxAI(1)
 hand = [Card(5, "hearts"), Card(6, "diamonds")]
 eai.valid_plays(hand)
+eai.evaluate_hand(hand)
 
 class HillClimbAI:
     def __init__(self, order):
