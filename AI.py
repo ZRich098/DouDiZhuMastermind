@@ -2109,6 +2109,10 @@ class SimulatedAnnealingAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+        
+        if len(hand) == 0:
+            return analyzedPlay
+        
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
@@ -2334,6 +2338,32 @@ class SimulatedAnnealingAI:
                             foundPairs.append(pairs[y])
                     if len(foundPairs) >= neededPairs:
                         finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalTripletPairSequences
+        '''
+        if typeOfPlay == 4:
+            legalTripletPairSequences = []
+            if analyzedPlay[2] == 5:
+                tripletSequences = triplets
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/5)*3)):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(play)/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
                         for r in range (len(foundPairs)):
                             firstPair = foundPairs[r]
                             finalFoundPairs.append(firstPair)
@@ -2369,6 +2399,7 @@ class SimulatedAnnealingAI:
                                         finalFoundPairs.pop()
                                 finalFoundPairs.pop()
             return rockets + quads + legalTripletPairSequences
+            '''
         #Triplet sequence with single attachment, beatable by higher ranked triplet-with-single or rocket/bomb
         if typeOfPlay == 5:
             legalTripletSingleSequences = []
