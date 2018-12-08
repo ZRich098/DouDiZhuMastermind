@@ -2378,7 +2378,7 @@ class SimulatedAnnealingAI:
                                 attachmentPlay = attachmentPlay + i2[j]
                                 print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
-            return rockets + bombs + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
         #rocket: Can't be beaten
         if typeOfPlay == 0:
