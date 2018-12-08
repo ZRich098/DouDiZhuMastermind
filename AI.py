@@ -277,15 +277,9 @@ class ExpectiMiniMaxAI:
     #particulars of the hand, e.g. the starting card of a sequence or the values of a quadplex set
 
     def check_bomb(hand):
-<<<<<<< HEAD
         bombValue = hand[x].value
-        return (hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value)
-
-=======
-        bombValue = hand[x].value 
         return [(hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value and hand[x].value == hand[x+3].value), bombValue]
-    
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
+
     def check_rocket(hand):
         return (hand[x].value == 16 and hand[x+1].value == 17)
 
@@ -298,13 +292,8 @@ class ExpectiMiniMaxAI:
                 if x == len(hand) - 1:
                     return [True, sequenceStart]
             else:
-<<<<<<< HEAD
-                return False
-
-=======
                 return [False, sequenceStart]
-        
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
+
     def check_pair_sequence(hand):
         prevHandValue = -1
         totalNumber = len(hand)
@@ -315,13 +304,8 @@ class ExpectiMiniMaxAI:
                 if x >= len(hand) - 2:
                     return [True, sequenceStart]
             else:
-<<<<<<< HEAD
-                return False
-
-=======
                 return [False, sequenceStart]
-    
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
+
     def check_triplet_sequence(hand):
         prevHandValue = -1
         totalNumber = len(hand)
@@ -332,13 +316,8 @@ class ExpectiMiniMaxAI:
                 if x >= len(hand) - 3:
                     return [True, sequenceStart]
             else:
-<<<<<<< HEAD
-                return False
-
-=======
                 return [False, sequenceStart]
-    
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
+
     def check_triplet_sequence_attachments(hand, needed):
         prevHandValue = -1
         totalNumber = len(hand)
@@ -363,13 +342,8 @@ class ExpectiMiniMaxAI:
                             noTripletFound = True
                             break
                     if noTripletFound == True:
-<<<<<<< HEAD
-                        return False
-
-=======
                         return [False, sequenceStart]
-    
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
+
     def check_quadplex_set_1(hand):
         prevHandValue = -1
         totalNumber = len(hand)
@@ -391,15 +365,9 @@ class ExpectiMiniMaxAI:
         if (attachment1 != attachment2):
             return [True, quadValue]
         else:
-<<<<<<< HEAD
-            return False
+            return [False, quadValue]
 
     def check_quadplex_set_2(hand):
-=======
-            return [False, quadValue]
-    
-    def check_quadplex_set_2(hand): 
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
         prevHandValue = -1
         totalNumber = len(hand)
         pair1 = -1
@@ -420,13 +388,8 @@ class ExpectiMiniMaxAI:
         if (pair1 != pair2 and pair1 != 16 and pair1 != 17 and pair2 != 16 and pair2 != 17):
             return [True, quadValue]
         else:
-<<<<<<< HEAD
-            return False
-
-
-=======
             return [False, quadValue]
-                    
+
     #return format:
     #
     #returns analyzedPlay[], which is an array of length 3, formatted as follows:
@@ -449,36 +412,15 @@ class ExpectiMiniMaxAI:
     #Note: perhaps analyzedPlay[2] should be the number of sequence elements needed? we'll have to calculate this anyways
     #
     #External functions that use this function should be able to find a necessary play from these
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
     def analyze_play(self, hand):
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
         #if 1, must be single card
-<<<<<<< HEAD
-        #if len(hand) == 1:
-
-        #if 2, must be pair, or rocket
-        #elif len(hand) == 2:
-
-        #if 3, must be triplet
-        #elif len(hand) == 3:
-
-        #if 4, could be one of the following:
-        # - Triplet with attachment
-        # - Bomb
-        #elif len(hand) == 4:
-
-        #if 5, could be one of the following:
-        # - Triplet with attached pair
-        # - Sequence of 5 single cards
-        #elif len(hand) == 5:
-
-=======
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
             return analyzedPlay
-        
+
         #if 2, must be pair, or rocket
         elif len(hand) == 2:
             if check_rocket(hand):
@@ -491,7 +433,7 @@ class ExpectiMiniMaxAI:
                     return analyzedPlay
             #Throw error
             return analyzedPlay
-        
+
         #if 3, must be triplet
         elif len(hand) == 3:
             checkedTriplet = check_triplet_sequence(hand)
@@ -499,7 +441,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [7, checkedTriplet[1], 3]
                 return analyzedPlay
             #throw error
-        
+
         #if 4, could be one of the following:
         # - Triplet with attachment
         # - Bomb
@@ -513,7 +455,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [5, checkedTripletSingleAttachment[1], 4]
                 return analyzedPlay
             #throw error
-        
+
         #if 5, could be one of the following:
         # - Triplet with attached pair
         # - Sequence of 5 single cards
@@ -527,21 +469,12 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [10, checkedSequence[1], 5]
                 return analyzedPlay
             #throw error
-        
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
+
         #if 6, could be one of the following:
         # - Sequence of 6 single cards
         # - Sequence of 2 triplets
         # - Sequence of 3 pairs
         # - Quadplex set #1 (bomb with 2 different single cards attached)
-<<<<<<< HEAD
-        #elif len(hand) == 6:
-
-        #if 7, could be one of the following:
-        # - Sequence of 7 single cards
-        #elif len(hand) == 7:
-
-=======
         elif len(hand) == 6:
             checkedSequence = check_single_sequence(hand)
             checkedTripletSequence = check_triplet_sequence(hand)
@@ -560,7 +493,7 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [3, checkedQuadplexSet1[1], 6]
                 return analyzedPlay
             #throw error
-        
+
         #if 7, could be one of the following:
         # - Sequence of 7 single cards
         elif len(hand) == 7:
@@ -569,31 +502,11 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [10, checkedSequence[1], 7]
                 return analyzedPlay
             #throw error
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
         #if 8, could be one of the following:
         # - Sequence of 8 single cards
         # - Sequence of 4 pairs
         # - Sequence of 2 triplets with attached single cards
         # - Quadplex set #2 (bomb with 2 different pairs attached)
-<<<<<<< HEAD
-        if len(hand) == 8:
-            prevHandValue = -1
-            #checking single sequence
-            if (check_single_sequence(hand)):
-                pass
-                #return
-            if (check_pair_sequence(hand)):
-                pass
-                #return
-            #checking triplets w/ attachment sequence
-            if (check_triplet_sequence_attachments(hand, 2)):
-                pass
-                #return
-            if (check_quadplex_set_2(hand)):
-                pass
-                #return
-
-=======
         elif len(hand) == 8:
             checkedSequence = check_single_sequence(hand)
             checkedPairSequence = check_pair_sequence(hand)
@@ -613,7 +526,6 @@ class ExpectiMiniMaxAI:
                 analyzedPlay = [2, checkedQuadplexSet2[1], 8]
                 return analyzedPlay
             #throw error
->>>>>>> 8babfbb1d3bf1bc239208ffd3e7230f8639fb28f
 
         #at 9 and after, only the following cases exist:
         # - Sequence of X single cards, up to 12
@@ -710,9 +622,23 @@ class ExpectiMiniMaxAI:
             17: 50 } #colored joker
         return table.get(card.value, 0)
 
+    turn_penalty = 50 #penalty for taking more turns
+
     #find expected value of own hand, taking into account different plays that could be made
     def evaluate_hand(self, hand):
-        return 0
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = valid_plays(hand)
+        value_of_plays = [evaluate_play(hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+        #this would return the best evaluated play instead
+        #return poss_plays[value_of_plays.index(max(value_of_plays))]
+
+    #find expected value of a play based on own hand
+    def evaluate_play(self, hand, play):
+        leftover_hand = [card for card in hand if card not in play]
+        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
+        return leftover_quality - turn_penalty + evaluate_hand(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
@@ -735,9 +661,10 @@ class ExpectiMiniMaxAI:
     def get_move(self):
         return valid_plays[1]
 
-eai = ExpectiMiniMaxAI(1)
 
-eai.valid_plays([Card(5, "hearts"), Card(6, "diamonds")])
+eai = ExpectiMiniMaxAI(1)
+hand = [Card(5, "hearts"), Card(6, "diamonds")]
+eai.valid_plays(hand)
 
 class HillClimbAI:
     def __init__(self, order):
