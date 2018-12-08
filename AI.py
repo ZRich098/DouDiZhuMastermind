@@ -112,11 +112,11 @@ class ExpectiMiniMaxAI:
                 #to the sequenceTriplet[] array
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 4
-                runningTripletSequence = [runningTriplet]
+                runningTripletSequence = runningTriplet
                 for y in range(7):
                     if ((simplifiedHand[x+y+1] >= 3) and (x+y+1 < 12)):
                         newTriplet = [hand[lookaheadCards], hand[lookaheadCards+1], hand[lookaheadCards+2]]
-                        runningTripletSequence.append(newTriplet)
+                        runningTripletSequence = runningTripletSequence + newTriplet
                         sequenceTriplet.append(list(runningTripletSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -128,11 +128,11 @@ class ExpectiMiniMaxAI:
                 #similar logic to triplet sequences for pair sequences
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 4
-                runningPairSequence = [runningPair]
+                runningPairSequence = runningPair
                 for y in range(9):
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
-                        runningPairSequence.append(newPair)
+                        runningPairSequence = runningPairSequence + newPair
                         sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -145,7 +145,7 @@ class ExpectiMiniMaxAI:
                 for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
-                        runningSingleSequence.append(newSingle)
+                        runningSingleSequence= runningSingleSequence + newSingle
                         sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -168,12 +168,12 @@ class ExpectiMiniMaxAI:
                 #to the sequenceTriplet[] array
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 3
-                runningTripletSequence = [runningTriplet]
+                runningTripletSequence = runningTriplet
                 for y in range(7):
                     if ((simplifiedHand[x+y+1] >= 3) and (x+y+1 < 12)):
                         newTriplet = [hand[lookaheadCards], hand[lookaheadCards+1], hand[lookaheadCards+2]]
-                        runningTripletSequence.append(newTriplet)
-                        sequenceTriplet.append(list(runningTripletSequence))
+                        runningTripletSequence = runningTripletSequence + newTriplet
+                        sequenceTriplet.append(runningTripletSequence)
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -183,14 +183,14 @@ class ExpectiMiniMaxAI:
                 #similar logic to triplet sequences for pair sequences
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 3
-                runningPairSequence = [runningPair]
+                runningPairSequence = runningPair
                 for y in range(9):
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
-                        runningPairSequence.append(newPair)
+                        runningPairSequence = runningPairSequence + newPair
                         sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
-                        cardInSequence = true
+                        cardInSequence = True
                     else:
                         break
                 #similar logic for singleton sequences
@@ -199,7 +199,7 @@ class ExpectiMiniMaxAI:
                 for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
-                        runningSingleSequence.append(newSingle)
+                        runningSingleSequence= runningSingleSequence + newSingle
                         sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -220,11 +220,11 @@ class ExpectiMiniMaxAI:
                 #similar logic to triplet sequences for pair sequences
                 #lookaheadCards helps track where the next numerical value of card starts
                 lookaheadCards = previousCards + 2
-                runningPairSequence = [runningPair]
+                runningPairSequence = runningPair
                 for y in range(9):
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
-                        runningPairSequence.append(newPair)
+                        runningPairSequence = runningPairSequence + newPair
                         sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -236,7 +236,7 @@ class ExpectiMiniMaxAI:
                 for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
-                        runningSingleSequence.append(newSingle)
+                        runningSingleSequence= runningSingleSequence + newSingle
                         sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -258,7 +258,7 @@ class ExpectiMiniMaxAI:
                 for y in range(12):
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
-                        runningSingleSequence.append(newSingle)
+                        runningSingleSequence= runningSingleSequence + newSingle
                         sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
@@ -649,18 +649,15 @@ class ExpectiMiniMaxAI:
                     usedNumbers = []
                     for a in range (0, len(tripletSequences[x]), 3):
                         usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(play)/5)
+                    foundPairs = []
                     for y in range (len(pairs)):
-                        if len(pairs) < (int(len(play)/5)*2):
-                            break
-                        neededPairs = int(len(play)/5)
-                        foundPairs = []
-                        for b in range (neededPairs):
-                            if usedNumbers.count(pairs[y][0].value) == 0:
-                                #foundPairs.append(pairs[y])
-                                foundPairs = foundPairs + pairs[y]
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs = foundPairs + pairs[y]
                         if len(foundPairs) == neededPairs*2:
                             attachmentPlay = tripletSequences[x]+foundPairs
                             legalTripletPairSequences.append(attachmentPlay)
+                            break
             return rockets + quads + legalTripletPairSequences
 
     #gets the raw value of a card
