@@ -137,7 +137,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -150,7 +151,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -192,7 +194,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -204,7 +207,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -229,7 +233,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -241,7 +246,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -263,7 +269,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -275,8 +282,6 @@ class ExpectiMiniMaxAI:
                 else:
                     single.append([hand[previousCards]])
                 previousCards = previousCards + 1
-
-
 
         single = single + isPair + isTriplet + isQuad + isSequence + isRocket
         #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
@@ -1099,7 +1104,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1112,7 +1118,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1154,7 +1161,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1166,7 +1174,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1191,7 +1200,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1203,7 +1213,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1225,7 +1236,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1237,8 +1249,6 @@ class HillClimbAI:
                 else:
                     single.append([hand[previousCards]])
                 previousCards = previousCards + 1
-
-
 
         single = single + isPair + isTriplet + isQuad + isSequence + isRocket
         #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
@@ -1941,6 +1951,7 @@ class HillClimbAI:
     #return the best move based on expectiminimax using pruning
     def get_move(self, hand, play):
         poss_plays = combine_play(self, hand, play)
+        if (not poss_plays): return []
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
@@ -1948,8 +1959,6 @@ class SimulatedAnnealingAI:
     def __init__(self, order):
         self.order = order
         self.str = 'SimulatedAnnealingAI ' + str(order)
-
-
 
     #valid_plays(self,hand) returns the list of all valid sub hands to play from the current hand.
     #
@@ -2063,7 +2072,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2076,7 +2086,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2118,7 +2129,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2130,7 +2142,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2155,7 +2168,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2167,7 +2181,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2189,7 +2204,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -2201,8 +2217,6 @@ class SimulatedAnnealingAI:
                 else:
                     single.append([hand[previousCards]])
                 previousCards = previousCards + 1
-
-
 
         single = single + isPair + isTriplet + isQuad + isSequence + isRocket
         #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
@@ -2904,10 +2918,12 @@ class SimulatedAnnealingAI:
 
     #return the best move based on simulated annealing, given a hand and a turn (starting at 1)
     def get_move(self, hand, play, turn):
-        temperature = 10/turn
+        temperature = 10./turn
         index = int(math.floor(random.random() * temperature))
+        print(index)
         plays = evaluate_hand_list(self, hand, play)
-        if (index > len(plays)):
+        if (not plays or 0 > index or index >= len(plays)): return []
+        if (index >= len(plays)):
             return plays[len(plays) - 1]
         return plays[index]
 
@@ -2918,7 +2934,17 @@ class Other:
         self.str = 'Other ' + str(order)
 
 #tests
-hand = [Card(5, "hearts"), Card(6, "diamonds"), Card(6,"spades")]
+hand = [
+Card(4, "hearts"), Card(5, "diamonds"), Card(6,"spades"),
+Card(7, "hearts"), Card(8, "diamonds"), Card(9,"spades")]
+"""
+hand = [
+Card(4, "hearts"), Card(5, "diamonds"), Card(6,"spades"),
+Card(7, "hearts"), Card(8, "diamonds"), Card(9,"spades"),
+Card(11, "hearts"), Card(11, "diamonds"), Card(12,"spades"),
+Card(13, "hearts"), Card(14, "diamonds"), Card(15,"spades"),
+Card(15, "hearts"), Card(16, "joker"), Card(17,"joker")]
+"""
 current_play = [Card(3,"clubs"), Card(3, "spades")]
 current_play = [Card(3,"clubs")]
 current_play = []
