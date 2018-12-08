@@ -842,9 +842,9 @@ class ExpectiMiniMaxAI:
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
-    def evaluate_game_state(self, hand, unplayed_cards):
+    #
+    def evaluate_game_state(self, hand, unplayed_cards, landlord, hand_sizes, player_number):
         return 0
-
     #return the best move based on expectiminimax using pruning
     def get_move(self):
         return valid_plays[1]
