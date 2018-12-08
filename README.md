@@ -11,4 +11,16 @@ Tasks:
 
 - Each individual card will have a value 
 
+Victor
+    Valid plays takes in a hand and returns a list of all possible plays in the hand  
+    Valid plays for the hand and valid plays for the board
+Jackson
+    Rules / Internal game state
+Richard
+    Evaluation Function - Takes in the valid plays and the current state of the game 
+Jonathan
+    Decision Tree 
+Xueshi
+    Linking/ Determining other game state
+
 
