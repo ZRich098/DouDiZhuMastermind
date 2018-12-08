@@ -3,34 +3,6 @@ import Cards
 import sys
 import numpy as np
 
-""" debug code for hydrogen
-class ExpectiMiniMaxAI:
-    #order is the order the AIs go: 0, 1, 2 for first, second, third
-    def __init__(self, order):
-        self.order = order
-        self.str = 'ExpectiMiniMaxAI ' + str(order)
-
-    def get_move(self, a, b):
-        return []
-class HillClimbAI:
-    #order is the order the AIs go: 0, 1, 2 for first, second, third
-    def __init__(self, order):
-        self.order = order
-        self.str = 'HillClimbAI ' + str(order)
-
-    def get_move(self, a, b):
-        return [Card(1,"a")]
-
-class SimulatedAnnealingAI:
-    #order is the order the AIs go: 0, 1, 2 for first, second, third
-    def __init__(self, order):
-        self.order = order
-        self.str = 'SimulatedAnnealingAI ' + str(order)
-
-    def get_move(self, a, b):
-        return [Card(2,"b")]
-"""
-
 class DDZ:
     def __init__(self, player1, player2, player3):
         self.players = [player1, player2, player3]
@@ -121,8 +93,8 @@ class DDZ:
             print ("You and your partner have won " + current_player)
             print ("Game over Landlord")
 
-    def updateLandlord(self,current_player):
-        return evalueate_other_player(17,hand,unplayed(current_player))
+    def updateLandlord(self):
+        self.landlord = evaluate_other_player(17,hand,unplayed(self.current_player))
 
 def create_player(type, order):
     if type == 'ExpectiMiniMaxAI':
@@ -142,9 +114,9 @@ def main():
     Player2 = 'HillClimbAI'
     Player3 = 'SimulatedAnnealingAI'
 
-    DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
-    DDZ.landlord = updateLandlord(self.current_player)
-    DDZ.hands[DDZ.landlord] = DDZ.hands[DDZ.landlord] + DDZ.hidden_cards
+    game = DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
+    game.updateLandlord()
+    game.hands[game.landlord] = game.hands[game.landlord] + game.hidden_cards
 
 if __name__== '__main__':
     main()
