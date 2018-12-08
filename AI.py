@@ -105,7 +105,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 3) and (x+y+1 < 12)):
                         newTriplet = [hand[lookaheadCards], hand[lookaheadCards+1], hand[lookaheadCards+2]]
                         runningTripletSequence.append(newTriplet)
-                        sequenceTriplet.append(runningTripletSequence.copy())
+                        sequenceTriplet.append(list(runningTripletSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -121,7 +121,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence.append(newPair)
-                        sequencePair.append(runningPairSequence.copy())
+                        sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -134,7 +134,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
-                        sequenceSingle.append(runningSingleSequence.copy())
+                        sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -161,7 +161,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 3) and (x+y+1 < 12)):
                         newTriplet = [hand[lookaheadCards], hand[lookaheadCards+1], hand[lookaheadCards+2]]
                         runningTripletSequence.append(newTriplet)
-                        sequenceTriplet.append(runningTripletSequence.copy())
+                        sequenceTriplet.append(list(runningTripletSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -176,7 +176,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence.append(newPair)
-                        sequencePair.append(runningPairSequence.copy())
+                        sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = true
                     else:
@@ -188,7 +188,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
-                        sequenceSingle.append(runningSingleSequence.copy())
+                        sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -213,7 +213,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence.append(newPair)
-                        sequencePair.append(runningPairSequence.copy())
+                        sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -225,7 +225,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
-                        sequenceSingle.append(runningSingleSequence.copy())
+                        sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -238,7 +238,7 @@ class ExpectiMiniMaxAI:
                     isPair.append(hand[previousCards])
                 previousCards = previousCards + 2
 
-            #If current hand only has 1 copy of the scanned card
+            #If current hand only has 1 of the scanned card
             elif simplifiedHand[x] == 1:
                 #Only need to check for singleton sequence
                 lookaheadCards = previousCards + 1
@@ -247,7 +247,7 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence.append(newSingle)
-                        sequenceSingle.append(runningSingleSequence.copy())
+                        sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -548,40 +548,46 @@ class ExpectiMiniMaxAI:
 
             if (possibleSingles):
                 prevHandValue = -1
+                startValue = hand[0].value
                 for x in range (len(hand)):
                     if hand[x].value == prevHandValue+1 or prevHandValue == -1:
                         prevHandValue = hand[x].value
                         if x == len(hand) - 1:
                             actualSingles = True
-                            #return
+                            return [10, startValue, totalNumber]
                     else:
                         break
             if (possiblePairs):
                 prevHandValue = -1
+                startValue = hand[0].value
                 for x in range (0, totalNumber, 2):
                     if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue + 1 and hand[x].value == hand[x+1].value) or prevHandValue == -1:
                         prevHandValue = hand[x].value
                         if x >= len(hand) - 2:
                             actualPairs = True
-                            #return that it's a single sequence array
+                            return [8, startValue, totalNumber]
                     else:
                         break
             if (possibleTriplets):
                 prevHandValue = -1
+                startValue = hand[0].value
                 for x in range (0, totalNumber, 3):
                     if (hand[x].value == prevHandValue+1 and hand[x+1].value == prevHandValue and hand[x+2].value == prevHandValue) or prevHandValue == -1:
                         prevHandValue = hand[x].value
                         if x >= len(hand) - 3:
                             actualTriplets = True
+                            return [6, startValue, totalNumber]
                     else:
                         break
             if (possibleTripletsSingleAttachment):
                 prevHandValue = -1
                 totalTripletsNeeded = (totalNumber/4)
                 totalTripletsFound = 0
+                startValue = -1
                 for x in range (totalNumber):
                     #found the beginning of the sequence
                     if hand[x].value == hand[x+1].value and hand[x].value == hand[x+2].value:
+                        startValue = hand[x].value
                         noTripletFound = False
                         #note: y is a variable tracking the total number of triplets found, identical to totalTripletsFound
                         for y in range (totalTripletsNeeded):
@@ -591,7 +597,7 @@ class ExpectiMiniMaxAI:
                                 prevHandValue = hand[x+(y*3)].value
                                 if y >= int(totalTripletsNeeded) - 1:
                                     actualTripletsSingleAttachment = True
-                                    #return
+                                    return [5, startValue, totalNumber]
                             else:
                                 noTripletFound = True
                                 break
@@ -599,8 +605,13 @@ class ExpectiMiniMaxAI:
                             break
 
             if (possibleTripletsPairAttachment):
-                actualTripletsPairAttachment = True
-                #return
+                totalTripletsNeeded = int(totalNumber/5)
+                checkedTripletsPairAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                if (checkedTripletsPairAttachment[0]):
+                    actualTripletsPairAttachment = True
+                    return [4, checkedTripletsPairAttachment[1], totalNumber]
+            #throw error if we get here: no matches
+            
 
     #gets the raw value of a card
     def value_lookup(card):
