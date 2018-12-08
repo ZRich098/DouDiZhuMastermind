@@ -37,20 +37,20 @@ class DDZ:
         self.current_player = 0 #0 represents player1, 1 represents player2 and 2 represents player3
         self.game_over = False
         self.field = []
-        self.origDeck = [(3,'diamonds'),(3,'clubs'),(3,'hearts'),(3,'spades'),
-                         (4,'diamonds'),(4,'clubs'),(4,'hearts'),(4,'spades'),
-                         (5,'diamonds'),(5,'clubs'),(5,'hearts'),(5,'spades'),
-                         (6,'diamonds'),(6,'clubs'),(6,'hearts'),(6,'spades'),
-                         (7,'diamonds'),(7,'clubs'),(7,'hearts'),(7,'spades'),
-                         (8,'diamonds'),(8,'clubs'),(8,'hearts'),(8,'spades'),
-                         (9,'diamonds'),(9,'clubs'),(9,'hearts'),(9,'spades'),
-                         (10,'diamonds'),(10,'clubs'),(10,'hearts'),(10,'spades'),
-                         (11,'diamonds'),(11,'clubs'),(11,'hearts'),(11,'spades'),
-                         (12,'diamonds'),(12,'clubs'),(12,'hearts'),(12,'spades'),
-                         (13,'diamonds'),(13,'clubs'),(13,'hearts'),(13,'spades'),
-                         (14,'diamonds'),(14,'clubs'),(14,'hearts'),(14,'spades'),
-                         (15,'diamonds'),(15,'clubs'),(15,'hearts'),(15,'spades'),
-                         (16,'joker'),(17,'joker')]
+        self.origDeck = [Card(3,'diamonds'),Card(3,'clubs'),Card(3,'hearts'),Card(3,'spades'),
+                         Card(4,'diamonds'),Card(4,'clubs'),Card(4,'hearts'),Card(4,'spades'),
+                         Card(5,'diamonds'),Card(5,'clubs'),Card(5,'hearts'),Card(5,'spades'),
+                         Card(6,'diamonds'),Card(6,'clubs'),Card(6,'hearts'),Card(6,'spades'),
+                         Card(7,'diamonds'),Card(7,'clubs'),Card(7,'hearts'),Card(7,'spades'),
+                         Card(8,'diamonds'),Card(8,'clubs'),Card(8,'hearts'),Card(8,'spades'),
+                         Card(9,'diamonds'),Card(9,'clubs'),Card(9,'hearts'),Card(9,'spades'),
+                         Card(10,'diamonds'),Card(10,'clubs'),Card(10,'hearts'),Card(10,'spades'),
+                         Card(11,'diamonds'),Card(11,'clubs'),Card(11,'hearts'),Card(11,'spades'),
+                         Card(12,'diamonds'),Card(12,'clubs'),Card(12,'hearts'),Card(12,'spades'),
+                         Card(13,'diamonds'),Card(13,'clubs'),Card(13,'hearts'),Card(13,'spades'),
+                         Card(14,'diamonds'),Card(14,'clubs'),Card(14,'hearts'),Card(14,'spades'),
+                         Card(15,'diamonds'),Card(15,'clubs'),Card(15,'hearts'),Card(15,'spades'),
+                         Card(16,'joker'),Card(17,'joker')]
                          #The original deck of 54 cards including the jokers
         self.landlord = 0 # The landlord represented as an integer
         self.currentPlay = [] #Current play on the board
@@ -61,11 +61,11 @@ class DDZ:
         #Shuffle cards
         np.random.shuffle(self.origDeck)
         self.deck1 = self.origDeck[:18]
-        self.deck1.sort(key = lambda a,b: a)
+        self.deck1.sort(key = lambda x: x.value)
         self.deck2 = self.origDeck[18:36]
-        self.deck2.sort(key = lambda a,b: a)
+        self.deck2.sort(key = lambda x: x.value)
         self.deck3 = self.origDeck[36:52]
-        self.deck3.sort(key = lambda a,b: a)
+        self.deck3.sort(key = lambda x: x.value)
         self.hands = [self.deck1,self.deck2,self.deck3] #Hands for all of the players in the order of p1,p2,p3
         #the hidden cards in the center of the table
         self.hidden_cards = self.origDeck[52:] #Get from parsing the Game
