@@ -439,6 +439,11 @@ class ExpectiMiniMaxAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+
+        #if 0
+        if len(hand) == 0:
+            return analyzedPlay
+
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
@@ -980,7 +985,7 @@ class ExpectiMiniMaxAI:
 class HillClimbAI:
     def __init__(self, order):
         self.order = order
-            self.str = 'HillClimbAI ' + str(order)
+        self.str = 'HillClimbAI ' + str(order)
 
     #valid_plays(self,hand) returns the list of all valid sub hands to play from the current hand.
     #
@@ -1396,6 +1401,11 @@ class HillClimbAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+
+        #if 0
+        if len(hand) == 0:
+            return analyzedPlay
+
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
@@ -2355,6 +2365,11 @@ class SimulatedAnnealingAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+
+        #if 0
+        if len(hand) == 0:
+            return analyzedPlay
+
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
