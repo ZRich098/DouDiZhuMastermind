@@ -1,7 +1,8 @@
 import numpy as np
 
  
-#The function that displays cards
+#The function that displays cards Cards is the card itself
+#info is the card name and value
 def card_show(cards, info, n):
     
     #Display the record of the cards
