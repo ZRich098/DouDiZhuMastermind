@@ -1,3 +1,5 @@
+from itertools import permutations
+
 class Card:
     def __init__(self, value, color):
         self.value = value
@@ -658,7 +660,6 @@ class ExpectiMiniMaxAI:
                     for y in range (len(pairs)):
                         if usedNumbers.count(pairs[y][0].value) == 0:
                             foundPairs.append(pairs[y])
-                    print(foundPairs)
                     if len(foundPairs) >= neededPairs:
                         finalFoundPairs = []
                         for r in range (len(foundPairs)):
@@ -698,8 +699,25 @@ class ExpectiMiniMaxAI:
             return rockets + quads + legalTripletPairSequences
         #Triplet sequence with single attachment, beatable by higher ranked triplet-with-single or rocket/bomb
         if typeOfPlay == 5:
-            #tbd
-            return rockets + quads
+            legalTripletSingleSequences = []
+            if analyzedPlay[2] == 4:
+                tripletSequences = triplets
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededSingles = int(len(play)/4)
+                    foundSingles = []
+                    for y in range (len(singles)):
+                        if usedNumbers.count(singles[y].value) == 0:
+                            foundSingles.append(singles[y])
+                    if len(foundSingles) >= neededSingles:
+                        perm = permutations(foundSingles, neededSingles)
+                        for i in perm:
+                            attachmentPlay = tripletSequences[x]+list(i)
+                            legalTripletSingleSequences.append(attachmentPlay)
+            return rockets + quads + legalTripletSingleSequences
         #standard triplet sequence
         if typeOfPlay == 6:
             legalTripletSequences = []
