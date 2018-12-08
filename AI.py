@@ -101,9 +101,9 @@ class ExpectiMiniMaxAI:
                         isRocket.append(hand[previousCards+1])
 
                     else:
-                        single.append(hand[previousCards])
+                        single.append([hand[previousCards]])
                 elif simplifiedHand[x+1] == 1:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 break
 
             #if the hand has 4 of the current card being scanned
@@ -158,9 +158,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isQuad.append(hand[previousCards])
+                    isQuad.append([hand[previousCards]])
                 previousCards = previousCards + 4
 
             #If the current hand has 3 of the current card being scanned
@@ -212,9 +212,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isTriplet.append(hand[previousCards])
+                    isTriplet.append([hand[previousCards]])
                 previousCards = previousCards + 3
 
             #If the current hand has 2 copies of the card being scanned
@@ -249,9 +249,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isPair.append(hand[previousCards])
+                    isPair.append([hand[previousCards]])
                 previousCards = previousCards + 2
 
             #If current hand only has 1 of the scanned card
@@ -271,9 +271,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 previousCards = previousCards + 1
 
 
@@ -2378,7 +2378,7 @@ class SimulatedAnnealingAI:
                                 attachmentPlay = attachmentPlay + i2[j]
                                 print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
-            return rockets + bombs + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
         #rocket: Can't be beaten
         if typeOfPlay == 0:
