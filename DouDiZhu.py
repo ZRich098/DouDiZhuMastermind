@@ -74,7 +74,7 @@ class DDZ:
     #update the Game State in response to a move
     def update_game_state(self, move, current_player):
         print(move)
-        if (ele is not None):
+        if (move is not None):
             for ele in move:
                 self.hands[current_player].remove(ele) #Removes every card that is being played
                 self.field.append(ele) #Append it to the list representing the table
