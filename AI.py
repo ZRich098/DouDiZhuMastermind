@@ -902,7 +902,7 @@ class ExpectiMiniMaxAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length):
+    def play_lookup(self,play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -921,7 +921,7 @@ class ExpectiMiniMaxAI:
         for x in range(len(plays)):
             for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
-        sum_cards = self.evaluate_hand_seperate(hand)
+        sum_cards = self.evaluate_hand_separate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -987,8 +987,8 @@ class ExpectiMiniMaxAI:
     #value < 0 means on average the your hand is worse than their's
     #requires other player hand size, your hand, and the cards still not played
     def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
-        own_value = evaluate_hand_separate(hand)
-        total_other_value = evaluate_hand_separate(unplayed_cards)
+        own_value = self.evaluate_hand_separate(hand)
+        total_other_value = self.evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
@@ -1011,7 +1011,7 @@ class ExpectiMiniMaxAI:
                 alpha = max(alpha, exp_val(hand, unplayed_cards, hand_sizes,depth+1, play, max_depth))
 
         return expectimax(hand, unplayed_cards, hand_sizes, play, 4)'''
-        return return_best_play_from_hand(hand):
+        return return_best_play_from_hand(hand)
 
 class HillClimbAI:
     def __init__(self, order):
@@ -1911,7 +1911,7 @@ class HillClimbAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length):
+    def play_lookup(self, play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -1930,7 +1930,7 @@ class HillClimbAI:
         for x in range(len(plays)):
             for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
-        sum_cards = self.evaluate_hand_seperate(hand)
+        sum_cards = self.evaluate_hand_separate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -1994,8 +1994,8 @@ class HillClimbAI:
     #value < 0 means on average the your hand is worse than their's
     #requires other player hand size, your hand, and the cards still not played
     def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
-        own_value = evaluate_hand_separate(hand)
-        total_other_value = evaluate_hand_separate(unplayed_cards)
+        own_value = self.evaluate_hand_separate(hand)
+        total_other_value = self.evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
@@ -2904,7 +2904,7 @@ class SimulatedAnnealingAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length):
+    def play_lookup(self, play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -2923,7 +2923,7 @@ class SimulatedAnnealingAI:
         for x in range(len(plays)):
             for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
-        sum_cards = self.evaluate_hand_seperate(hand)
+        sum_cards = self.evaluate_hand_separate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -2979,8 +2979,8 @@ class SimulatedAnnealingAI:
     #value < 0 means on average the your hand is worse than their's
     #requires other player hand size, your hand, and the cards still not played
     def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
-        own_value = evaluate_hand_separate(hand)
-        total_other_value = evaluate_hand_separate(unplayed_cards)
+        own_value = self.evaluate_hand_separate(hand)
+        total_other_value = self.evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
@@ -3007,21 +3007,22 @@ class SimulatedAnnealingAI:
 class Other:
     def __init__(self, order):
         self.order = order
-        self.str = 'Other ' + str(order
+        self.str = 'Other ' + str(order)
 
-
-hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
-Card(7,"a"), Card(8,"b"), Card(8,"c"),
-Card(10,"a"), Card(11,"b"), Card(12,"c"),
-Card(13,"a"), Card(14,"b"), Card(15,"c"),
-Card(15,"a"), Card(16,"b"), Card(17,"c")
-]
-play = [Card(3,"a")]
-play = [Card(3,"a"), Card(3,"b")]
-
-hai = HillClimbAI(1)
-hai.get_move(hand, play)
-
-sai = SimulatedAnnealingAI(1)
-sai.combine_play(hand,play)
-sai.get_move(hand, play, 100)
+#
+#hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
+#Card(7,"a"), Card(8,"b"), Card(8,"c"),
+#Card(10,"a"), Card(11,"b"), Card(12,"c"),
+#Card(13,"a"), Card(14,"b"), Card(15,"c"),
+#Card(15,"a"), Card(16,"b"), Card(17,"c")
+#]
+#play = [Card(3,"a")]
+#play = [Card(3,"a"), Card(3,"b")]
+#
+#hai = HillClimbAI(1)
+#hai.combine_play(hand,play)
+#hai.get_move(hand, play)
+#
+#sai = SimulatedAnnealingAI(1)
+#sai.combine_play(hand,play)
+#sai.get_move(hand, play, 100)
