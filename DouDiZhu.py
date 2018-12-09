@@ -26,7 +26,7 @@ class DDZ:
                          #The original deck of 54 cards including the jokers
         self.landlord = 0 # The landlord represented as an integer
         self.currentPlay = [] #Current play on the board
-        self.turn = 0 #Turn number
+        self.turn = 1 #Turn number
 
 
 
@@ -63,17 +63,18 @@ class DDZ:
     #get the move they wish to make from current_player.
     def move(self, current_player):
         if(current_player == 0):
-            return self.players[current_player].get_move(self.deck1, self.currentPlay)
-#        self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
+            r1 = self.players[current_player].get_move(self.deck1, self.currentPlay)
+
+            return r1
+#            self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
             return self.players[current_player].get_move(self.deck2, self.currentPlay)
         else:
-            return self.players[current_player].get_move(self.deck3,self.turn, self.currentPlay)
+            return self.players[current_player].get_move(self.deck3, self.currentPlay,self.turn)
 
 
     #update the Game State in response to a move
     def update_game_state(self, mv, current_player):
-        print(mv)
         if (mv is not None):
             for ele in mv:
                 self.hands[current_player].remove(ele) #Removes every card that is being played
@@ -83,7 +84,7 @@ class DDZ:
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
             game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
-            print(str(current_player)+" is playing "+ str(mv))
+#            print(str(current_player)+" is playing "+ str(mv))
             self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
             self.updateCurrentPlay(mv)
             self.turn += 1
