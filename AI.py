@@ -876,7 +876,12 @@ class ExpectiMiniMaxAI:
                 if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
-
+        
+        if (rockets is not None):
+            return rockets
+        else:
+            return []
+        
     #gets the raw value of a card
     def value_lookup(self, card):
         table = {
@@ -1878,6 +1883,11 @@ class HillClimbAI:
                 if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
+        
+        if (rockets is not None):
+            return rockets
+        else:
+            return []
 
     #gets the raw value of a card
     def value_lookup(self, card):
@@ -2868,6 +2878,11 @@ class SimulatedAnnealingAI:
                 if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
+        
+        if (rockets is not None):
+            return rockets
+        else:
+            return []
 
     #gets the raw value of a card
     def value_lookup(self, card):
