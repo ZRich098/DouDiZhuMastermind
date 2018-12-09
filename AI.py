@@ -81,8 +81,8 @@ class ExpectiMiniMaxAI:
                     #checking for rocket
                     if simplifiedHand[x+1] == 1:
                         rocket.append([hand[previousCards], hand[previousCards+1]])
-                        isRocket.append(hand[previousCards])
-                        isRocket.append(hand[previousCards+1])
+                        isRocket.append([hand[previousCards]])
+                        isRocket.append([hand[previousCards+1]])
 
                     else:
                         single.append([hand[previousCards]])
@@ -590,8 +590,8 @@ class ExpectiMiniMaxAI:
     #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
     def combine_play(self, hand, play):
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
-        analyzedPlay = analyze_play(self, play)
-        validPlays = valid_plays(self, hand)
+        analyzedPlay = self.analyze_play(play)
+        validPlays = self.valid_plays(hand)
         #separating out plays
         rockets = validPlays[0]
         quads = validPlays[1]
@@ -881,7 +881,7 @@ class ExpectiMiniMaxAI:
             return rockets + quads + legalSingles
 
     #gets the raw value of a card
-    def value_lookup(card):
+    def value_lookup(self, card):
         table = {
             3: 1,
             4: 2,
@@ -902,7 +902,7 @@ class ExpectiMiniMaxAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length)
+    def play_lookup(play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -910,13 +910,12 @@ class ExpectiMiniMaxAI:
             3: 100,
             4: length*85,
             5: 50,
-            6: length*90
+            6: length*90,
             7: 0}
         return table.get(play_number,0)
-    
+
     #find the estimated value of a hand to use as a base in evaluation
-    def evaluation_heuristic(hand):
-        
+    def evaluation_heuristic(self, hand):
         plays = valid_plays(hand)
         sum_plays = 0
         for x in range(plays):
@@ -927,8 +926,6 @@ class ExpectiMiniMaxAI:
         if (length_penalty == 0):
             return 1000000
         return sum_plays + sum_cards - length_penalty
-
-    turn_penalty = 50
 
     def to_plays_array(array):
         arr = []
@@ -942,28 +939,28 @@ class ExpectiMiniMaxAI:
             else:
                 arr.append(e)
         return ar
-        
+
     #find expected value of own hand, taking into account different plays that could be made
     def evaluate_hand(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
     def return_best_play_from_hand(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
     #returns a (play, value) pair of expected values of plays
     def evaluate_hand_dict(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return dict(zip(poss_play, value_of_plays))
 
     #find expected value of own hand, taking into account different plays
@@ -971,19 +968,19 @@ class ExpectiMiniMaxAI:
     def evaluate_hand_given_play(self, hand, play):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = combine_play(self, hand, play)
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = self.combine_play(hand, play)
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
-        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
-        return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
+        leftover_quality = sum([self.value_lookup(card) for card in leftover_hand])
+        return leftover_quality - 50 + self.evaluate_hand(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
-        return sum([value_lookup(card) for card in hand])
+        return sum([self.value_lookup(card) for card in hand])
 
     #find expected values of another player's hand in comparison to your own
     #value > 0 means on average the your hand is better than their's
@@ -994,25 +991,25 @@ class ExpectiMiniMaxAI:
         total_other_value = evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
-    
+
     #return the best move based on expectimax
     def get_move((self, hand, unplayed_cards, hand_sizes, play):
         '''def max_value(hand, unplayed_cards, hand_sizes, depth, play, max_depth):
             if(depth == max_depth):
                 return (hand,evaluate_hand_given_play(hand, play))
             best = -1000000;
-            for hand,value in 
-                
-        
+            for hand,value in
+
+
         def exp_value(hand, unplayed_cards, hand_sizes, depth, play, max_depth)
             if(depth == max_depth):
-                return 
-            
+                return
+
         def expectimax(hand, unplayed_cards, hand_sizes, max_depth):
             alpha = -10000000
             for plays in self.valid_plays(hand):
                 alpha = max(alpha, exp_val(hand, unplayed_cards, hand_sizes,depth+1, play, max_depth))
-            
+
         return expectimax(hand, unplayed_cards, hand_sizes, play, 4)'''
         return return_best_play_from_hand(hand):
 
@@ -1093,8 +1090,8 @@ class HillClimbAI:
                     #checking for rocket
                     if simplifiedHand[x+1] == 1:
                         rocket.append([hand[previousCards], hand[previousCards+1]])
-                        isRocket.append(hand[previousCards])
-                        isRocket.append(hand[previousCards+1])
+                        isRocket.append([hand[previousCards]])
+                        isRocket.append([hand[previousCards+1]])
 
                     else:
                         single.append([hand[previousCards]])
@@ -1602,8 +1599,8 @@ class HillClimbAI:
     #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
     def combine_play(self, hand, play):
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
-        analyzedPlay = analyze_play(self, play)
-        validPlays = valid_plays(self, hand)
+        analyzedPlay = self.analyze_play(play)
+        validPlays = self.valid_plays(hand)
         #separating out plays
         rockets = validPlays[0]
         quads = validPlays[1]
@@ -1893,7 +1890,7 @@ class HillClimbAI:
             return rockets + quads + legalSingles
 
     #gets the raw value of a card
-    def value_lookup(card):
+    def value_lookup(self, card):
         table = {
             3: 1,
             4: 2,
@@ -1914,7 +1911,7 @@ class HillClimbAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length)
+    def play_lookup(play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -1922,13 +1919,12 @@ class HillClimbAI:
             3: 100,
             4: length*85,
             5: 50,
-            6: length*90
+            6: length*90,
             7: 0}
         return table.get(play_number,0)
-    
+
     #find the estimated value of a hand to use as a base in evaluation
-    def evaluation_heuristic(hand):
-        
+    def evaluation_heuristic(self, hand):
         plays = valid_plays(hand)
         sum_plays = 0
         for x in range(plays):
@@ -1939,8 +1935,6 @@ class HillClimbAI:
         if (length_penalty == 0):
             return 1000000
         return sum_plays + sum_cards - length_penalty
-    
-    turn_penalty = 50
 
     def to_plays_array(array):
         arr = []
@@ -1959,21 +1953,21 @@ class HillClimbAI:
     def evaluate_hand(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
     def return_best_play_from_hand(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
     #returns a (play, value) pair of expected values of plays
     def evaluate_hand_dict(self, hand):
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return dict(zip(poss_play, value_of_plays))
 
     #find expected value of own hand, taking into account different plays
@@ -1981,19 +1975,19 @@ class HillClimbAI:
     def evaluate_hand_given_play(self, hand, play):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = combine_play(self, hand, play)
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = self.combine_play(hand, play)
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
-        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
-        return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
+        leftover_quality = sum([self.value_lookup(card) for card in leftover_hand])
+        return leftover_quality - 50 + evaluation_heuristic(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
-        return sum([value_lookup(card) for card in hand])
+        return sum([self.value_lookup(card) for card in hand])
 
     #find expected values of another player's hand in comparison to your own
     #value > 0 means on average the your hand is better than their's
@@ -2007,9 +2001,9 @@ class HillClimbAI:
 
     #return the best move based on expectiminimax using pruning
     def get_move(self, hand, play):
-        poss_plays = combine_play(self, hand, play)
+        poss_plays = self.combine_play(hand, play)
         if (not poss_plays): return []
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
 class SimulatedAnnealingAI:
@@ -2089,8 +2083,8 @@ class SimulatedAnnealingAI:
                     #checking for rocket
                     if simplifiedHand[x+1] == 1:
                         rocket.append([hand[previousCards], hand[previousCards+1]])
-                        isRocket.append(hand[previousCards])
-                        isRocket.append(hand[previousCards+1])
+                        isRocket.append([hand[previousCards]])
+                        isRocket.append([hand[previousCards+1]])
 
                     else:
                         single.append([hand[previousCards]])
@@ -2598,8 +2592,8 @@ class SimulatedAnnealingAI:
     #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
     def combine_play(self, hand, play):
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
-        analyzedPlay = analyze_play(self, play)
-        validPlays = valid_plays(self, hand)
+        analyzedPlay = self.analyze_play(play)
+        validPlays = self.valid_plays(hand)
         #separating out plays
         rockets = validPlays[0]
         quads = validPlays[1]
@@ -2889,7 +2883,7 @@ class SimulatedAnnealingAI:
             return rockets + quads + legalSingles
 
     #gets the raw value of a card
-    def value_lookup(card):
+    def value_lookup(self, card):
         table = {
             3: 1,
             4: 2,
@@ -2910,7 +2904,7 @@ class SimulatedAnnealingAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length)
+    def play_lookup(play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -2918,13 +2912,13 @@ class SimulatedAnnealingAI:
             3: 100,
             4: length*85,
             5: 50,
-            6: length*90
+            6: length*90,
             7: 0}
         return table.get(play_number,0)
-    
+
     #find the estimated value of a hand to use as a base in evaluation
     def evaluation_heuristic(hand):
-        
+
         plays = valid_plays(hand)
         sum_plays = 0
         for x in range(plays):
@@ -2935,8 +2929,6 @@ class SimulatedAnnealingAI:
         if (length_penalty == 0):
             return 1000000
         return sum_plays + sum_cards - length_penalty
-    
-    turn_penalty = 50
 
     def to_plays_array(array):
         arr = []
@@ -2955,13 +2947,13 @@ class SimulatedAnnealingAI:
     def evaluate_hand(self, hand):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
     def return_best_play_from_hand(self, hand):
-        poss_plays = to_plays_array(valid_plays(self, hand))
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = to_plays_array(self.valid_plays(hand))
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
     #find expected value of own hand, taking into account different plays
@@ -2969,19 +2961,19 @@ class SimulatedAnnealingAI:
     def evaluate_hand_given_play(self, hand, play):
         #if hand empty then win
         if (not hand): return 1000000
-        poss_plays = combine_play(self, hand, play)
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = self.combine_play(hand, play)
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
-        leftover_quality = sum([value_lookup(card) for card in leftover_hand])
-        return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
+        leftover_quality = sum([self.value_lookup(card) for card in leftover_hand])
+        return leftover_quality - 50 + evaluation_heuristic(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
-        return sum([value_lookup(card) for card in hand])
+        return sum([self.value_lookup(card) for card in hand])
 
     #find expected values of another player's hand in comparison to your own
     #value > 0 means on average the your hand is better than their's
@@ -2995,8 +2987,8 @@ class SimulatedAnnealingAI:
 
     #returns a sorted list of plays based on expected values
     def evaluate_hand_list(self, hand, play):
-        poss_plays = combine_play(self, hand, play)
-        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        poss_plays = self.combine_play(hand, play)
+        value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         indexes = sorted(range(len(value_of_plays)),key=lambda x:value_of_plays[x])
         plays = [poss_plays[i] for i in indexes]
         return plays
@@ -3005,7 +2997,7 @@ class SimulatedAnnealingAI:
     def get_move(self, hand, play, turn):
         temperature = 10./turn
         index = int(math.floor(random.random() * temperature))
-        plays = evaluate_hand_list(self, hand, play)
+        plays = self.evaluate_hand_list(hand, play)
         if (not plays or 0 > index or index >= len(plays)): return []
         if (index >= len(plays)):
             return plays[len(plays) - 1]
@@ -3015,4 +3007,21 @@ class SimulatedAnnealingAI:
 class Other:
     def __init__(self, order):
         self.order = order
-        self.str = 'Other ' + str(order)
+        self.str = 'Other ' + str(order
+
+
+hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
+Card(7,"a"), Card(8,"b"), Card(8,"c"),
+Card(10,"a"), Card(11,"b"), Card(12,"c"),
+Card(13,"a"), Card(14,"b"), Card(15,"c"),
+Card(15,"a"), Card(16,"b"), Card(17,"c")
+]
+play = [Card(3,"a")]
+play = [Card(3,"a"), Card(3,"b")]
+
+hai = HillClimbAI(1)
+hai.get_move(hand, play)
+
+sai = SimulatedAnnealingAI(1)
+sai.combine_play(hand,play)
+sai.get_move(hand, play, 100)
