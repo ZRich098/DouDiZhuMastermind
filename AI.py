@@ -2476,7 +2476,7 @@ class SimulatedAnnealingAI:
             if checkedBomb[0]:
                 analyzedPlay = [1, checkedBomb[1], 4]
                 return analyzedPlay
-            elif checkedTripletsSingleAttachment[0]:
+            elif checkedTripletSingleAttachment[0]:
                 analyzedPlay = [5, checkedTripletSingleAttachment[1], 4]
                 return analyzedPlay
             #throw error
