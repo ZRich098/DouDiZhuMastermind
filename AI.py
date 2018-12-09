@@ -902,7 +902,7 @@ class ExpectiMiniMaxAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length):
+    def play_lookup(self,play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -921,7 +921,7 @@ class ExpectiMiniMaxAI:
         for x in range(len(plays)):
             for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
-        sum_cards = self.evaluate_hand_seperate(hand)
+        sum_cards = self.evaluate_hand_separate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -1011,7 +1011,7 @@ class ExpectiMiniMaxAI:
                 alpha = max(alpha, exp_val(hand, unplayed_cards, hand_sizes,depth+1, play, max_depth))
 
         return expectimax(hand, unplayed_cards, hand_sizes, play, 4)'''
-        return return_best_play_from_hand(hand):
+        return return_best_play_from_hand(hand)
 
 class HillClimbAI:
     def __init__(self, order):
@@ -1911,7 +1911,7 @@ class HillClimbAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length):
+    def play_lookup(self, play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -1930,7 +1930,7 @@ class HillClimbAI:
         for x in range(len(plays)):
             for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
-        sum_cards = self.evaluate_hand_seperate(hand)
+        sum_cards = self.evaluate_hand_separate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -2904,7 +2904,7 @@ class SimulatedAnnealingAI:
 
     #play numbers in order starting from 0
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
-    def play_lookup(play_number,length):
+    def play_lookup(self, play_number,length):
         table = {
             0: 500,
             1: 450,
@@ -2923,7 +2923,7 @@ class SimulatedAnnealingAI:
         for x in range(len(plays)):
             for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
-        sum_cards = self.evaluate_hand_seperate(hand)
+        sum_cards = self.evaluate_hand_separate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
