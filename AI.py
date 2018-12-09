@@ -901,13 +901,13 @@ class ExpectiMiniMaxAI:
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
     def play_lookup(self,play_number,length):
         table = {
-            0: 500,
-            1: 450,
-            2: length*80,
-            3: 100,
-            4: length*85,
-            5: 50,
-            6: length*90,
+            0: 50,
+            1: 45,
+            2: length*8,
+            3: 10,
+            4: length*8,
+            5: 5,
+            6: length*9,
             7: 0}
         return table.get(play_number,0)
 
@@ -1903,13 +1903,13 @@ class HillClimbAI:
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
     def play_lookup(self, play_number,length):
         table = {
-            0: 500,
-            1: 450,
-            2: length*80,
-            3: 100,
-            4: length*85,
-            5: 50,
-            6: length*90,
+            0: 50,
+            1: 45,
+            2: length*8,
+            3: 10,
+            4: length*8,
+            5: 5,
+            6: length*9,
             7: 0}
         return table.get(play_number,0)
 
@@ -2893,13 +2893,13 @@ class SimulatedAnnealingAI:
     #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
     def play_lookup(self, play_number,length):
         table = {
-            0: 500,
-            1: 450,
-            2: length*80,
-            3: 100,
-            4: length*85,
-            5: 50,
-            6: length*90,
+            0: 50,
+            1: 45,
+            2: length*8,
+            3: 10,
+            4: length*8,
+            5: 5,
+            6: length*9,
             7: 0}
         return table.get(play_number,0)
 
@@ -2975,8 +2975,8 @@ class SimulatedAnnealingAI:
     def evaluate_hand_list(self, hand, play):
         poss_plays = self.combine_play(hand, play)
         value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
-        indexes = sorted(range(len(value_of_plays)),key=lambda x:value_of_plays[x])
-        plays = [poss_plays[i] for i in indexes]
+        indexes = sorted(range(len(value_of_plays)) ,key=lambda x:value_of_plays[x])
+        plays = [poss_plays[len(indexes) - i - 1] for i in indexes]
         return plays
 
     #return the best move based on simulated annealing, given a hand and a turn (starting at 1)
@@ -2985,8 +2985,6 @@ class SimulatedAnnealingAI:
         plays = self.evaluate_hand_list(hand, play)
         index = int(math.floor(random.random() * temperature))%len(plays)
         if (not plays or 0 > index or index >= len(plays)): return []
-        if (index >= len(plays)):
-            return plays[len(plays) - 1]
         return plays[index]
 
 #Other Actual Non-AI Players
@@ -2994,29 +2992,4 @@ class Other:
     def __init__(self, order):
         self.order = order
         self.str = 'Other ' + str(order)
-
-
-tests
-
-hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"), Card(6,"a"), Card(6,"d"),
-Card(7,"a"), Card(8,"b"), Card(8,"c"),
-Card(10,"a"), Card(11,"b"), Card(12,"c"),
-Card(13,"a"), Card(14,"b"), Card(15,"c"),
-Card(15,"a"), Card(16,"b"), Card(17,"c")]
-play = []
-play = [Card(3,"a")]
-play = [Card(3,"a"), Card(3,"b")]
-
-eai = ExpectiMiniMaxAI(1)
-others_data=((5,True),(6,False))
-eai.combine_play(hand, play)
-eai.get_move(hand,[Card(5,"a")], others_data, play)
-
-hai = HillClimbAI(1)
-hai.combine_play(hand,play)
-hai.get_move(hand, play)
-
-sai = SimulatedAnnealingAI(1)
-sai.combine_play(hand,play)
-sai.get_move(hand, play, 100)
-"""
+        
