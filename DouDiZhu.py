@@ -82,6 +82,7 @@ class DDZ:
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
             game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
+            print(current_player+" is playing "+ move)
             update_game_state(move(current_player),(current_player+1)%3)
             updateCurrentPlay(move(current_player))
             self.turn += 1
