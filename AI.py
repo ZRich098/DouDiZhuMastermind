@@ -281,14 +281,14 @@ class ExpectiMiniMaxAI:
     #returnFormat[1] is an array, determined by the type being scanned, that contains the
     #particulars of the hand, e.g. the starting card of a sequence or the values of a quadplex set
 
-    def check_bomb(hand):
+    def check_bomb(self, hand):
         bombValue = hand[0].value
         return [(hand[0].value == hand[1].value and hand[0].value == hand[2].value and hand[0].value == hand[3].value), bombValue]
 
-    def check_rocket(hand):
-        return (hand[0].value == 16 and hand[1].value == 17)
+    def check_rocket(self, hand):
+        return (hand[len(hand) - 2].value == 16 and hand[len(hand) - 1].value == 17)
 
-    def check_single_sequence(hand):
+    def check_single_sequence(self, hand):
         prevHandValue = -1
         sequenceStart = hand[0].value
         for x in range (len(hand)):
@@ -299,7 +299,7 @@ class ExpectiMiniMaxAI:
             else:
                 return [False, sequenceStart]
 
-    def check_pair_sequence(hand):
+    def check_pair_sequence(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = hand[0].value
@@ -311,7 +311,7 @@ class ExpectiMiniMaxAI:
             else:
                 return [False, sequenceStart]
 
-    def check_triplet_sequence(hand):
+    def check_triplet_sequence(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = hand[0].value
@@ -323,7 +323,7 @@ class ExpectiMiniMaxAI:
             else:
                 return [False, sequenceStart]
 
-    def check_triplet_sequence_attachments(hand, needed):
+    def check_triplet_sequence_attachments(self, hand, needed):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = -1
@@ -352,7 +352,7 @@ class ExpectiMiniMaxAI:
                     if noTripletFound == True:
                         return [False, sequenceStart]
 
-    def check_quadplex_set_1(hand):
+    def check_quadplex_set_1(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         attachment1 = -1
@@ -377,7 +377,7 @@ class ExpectiMiniMaxAI:
         else:
             return [False, quadValue]
 
-    def check_quadplex_set_2(hand):
+    def check_quadplex_set_2(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         pair1 = -1
@@ -440,11 +440,11 @@ class ExpectiMiniMaxAI:
 
         #if 2, must be pair, or rocket
         elif len(hand) == 2:
-            if check_rocket(hand):
+            if self.check_rocket(hand):
                 analyzedPlay = [0, 16, 2]
                 return analyzedPlay
             else:
-                checkedPair = check_pair_sequence(hand)
+                checkedPair = self.check_pair_sequence(hand)
                 if checkedPair[0]:
                     analyzedPlay = [9, checkedPair[1], 2]
                     return analyzedPlay
@@ -453,7 +453,7 @@ class ExpectiMiniMaxAI:
 
         #if 3, must be triplet
         elif len(hand) == 3:
-            checkedTriplet = check_triplet_sequence(hand)
+            checkedTriplet = self.check_triplet_sequence(hand)
             if checkedTriplet[0]:
                 analyzedPlay = [7, checkedTriplet[1], 3]
                 return analyzedPlay
@@ -463,8 +463,8 @@ class ExpectiMiniMaxAI:
         # - Triplet with attachment
         # - Bomb
         elif len(hand) == 4:
-            checkedBomb = check_bomb(hand)
-            checkedTripletSingleAttachment = check_triplet_sequence_attachments(hand, 1)
+            checkedBomb = self.check_bomb(hand)
+            checkedTripletSingleAttachment = self.check_triplet_sequence_attachments(hand, 1)
             if checkedBomb[0]:
                 analyzedPlay = [1, checkedBomb[1], 4]
                 return analyzedPlay
@@ -477,8 +477,8 @@ class ExpectiMiniMaxAI:
         # - Triplet with attached pair
         # - Sequence of 5 single cards
         elif len(hand) == 5:
-            checkedTripletPairAttachment = check_triplet_sequence_attachments(hand, 1)
-            checkedSequence = check_single_sequence(hand)
+            checkedTripletPairAttachment = self.check_triplet_sequence_attachments(hand, 1)
+            checkedSequence = self.check_single_sequence(hand)
             if checkedTripletPairAttachment[0]:
                 analyzedPlay = [4, checkedTripletPairAttachment[1], 5]
                 return analyzedPlay
@@ -492,10 +492,10 @@ class ExpectiMiniMaxAI:
         # - Sequence of 3 pairs
         # - Quadplex set #1 (bomb with 2 different single cards attached)
         elif len(hand) == 6:
-            checkedSequence = check_single_sequence(hand)
-            checkedTripletSequence = check_triplet_sequence(hand)
-            checkedPairSequence = check_pair_sequence(hand)
-            checkedQuadplexSet1 = check_quadplex_set_1(hand)
+            checkedSequence = self.check_single_sequence(hand)
+            checkedTripletSequence = self.check_triplet_sequence(hand)
+            checkedPairSequence = self.check_pair_sequence(hand)
+            checkedQuadplexSet1 = self.check_quadplex_set_1(hand)
             if checkedSequence[0]:
                 analyzedPlay = [10, checkedSequence[1], 6]
                 return analyzedPlay
@@ -513,7 +513,7 @@ class ExpectiMiniMaxAI:
         #if 7, could be one of the following:
         # - Sequence of 7 single cards
         elif len(hand) == 7:
-            checkedSequence = check_single_sequence(hand)
+            checkedSequence = self.check_single_sequence(hand)
             if checkedSequence[0]:
                 analyzedPlay = [10, checkedSequence[1], 7]
                 return analyzedPlay
@@ -525,10 +525,10 @@ class ExpectiMiniMaxAI:
         # - Sequence of 2 triplets with attached single cards
         # - Quadplex set #2 (bomb with 2 different pairs attached)
         elif len(hand) == 8:
-            checkedSequence = check_single_sequence(hand)
-            checkedPairSequence = check_pair_sequence(hand)
-            checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, 2)
-            checkedQuadplexSet2 = check_quadplex_set_2(hand)
+            checkedSequence = self.check_single_sequence(hand)
+            checkedPairSequence = self.check_pair_sequence(hand)
+            checkedTripletSequenceSingleAttachment = self.check_triplet_sequence_attachments(hand, 2)
+            checkedQuadplexSet2 = self.check_quadplex_set_2(hand)
             if (checkedSequence[0]):
                 analyzedPlay = [10, checkedSequence[1], 8]
                 return analyzedPlay
@@ -558,25 +558,25 @@ class ExpectiMiniMaxAI:
             possibleTripletsPairAttachment = (totalNumber%5 == 0)
 
             if (possibleSingles):
-                checkedSequence = check_single_sequence(hand)
+                checkedSequence = self.check_single_sequence(hand)
                 if (checkedSequence[0]):
                     return [10, checkedSequence[1], totalNumber]
             if (possiblePairs):
-                checkedPairSequence = check_pair_sequence(hand)
+                checkedPairSequence = self.check_pair_sequence(hand)
                 if (checkedPairSequence[0]):
                     return [8, checkedPairSequence[1], totalNumber]
             if (possibleTriplets):
-                checkedTripletSequence = check_triplet_sequence(hand)
+                checkedTripletSequence = self.check_triplet_sequence(hand)
                 if (checkedTripletSequence[0]):
                     return [6, checkedTripletSequence[1], totalNumber]
             if (possibleTripletsSingleAttachment):
                 totalTripletsNeeded = int(totalNumber/4)
-                checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                checkedTripletSequenceSingleAttachment = self.check_triplet_sequence_attachments(hand, totalTripletsNeeded)
                 if (checkedTripletSequenceSingleAttachment[0]):
                     return [5, checkedTripletSequenceSingleAttachment[1], totalNumber]
             if (possibleTripletsPairAttachment):
                 totalTripletsNeeded = int(totalNumber/5)
-                checkedTripletsPairAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                checkedTripletsPairAttachment = self.check_triplet_sequence_attachments(hand, totalTripletsNeeded)
                 if (checkedTripletsPairAttachment[0]):
                     return [4, checkedTripletsPairAttachment[1], totalNumber]
             #throw error if we get here: no matches
@@ -655,7 +655,7 @@ class ExpectiMiniMaxAI:
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
-                            attachmentPlay = tripletSequences[x]+list(i)
+                            attachmentPlay = triplets[x]+list(i)
                             legalTripletSingleSequences.append(attachmentPlay)
             legalTripletPairSequences = []
             for x in range (len(tripletSequences)):
@@ -693,7 +693,7 @@ class ExpectiMiniMaxAI:
                         perm = permutations(foundPairs, neededPairs)
                         for i in perm:
                             i2 = list(i)
-                            attachmentPlay = tripletSequences[x]
+                            attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                                 print(attachmentPlay)
@@ -1285,14 +1285,14 @@ class HillClimbAI:
     #returnFormat[1] is an array, determined by the type being scanned, that contains the
     #particulars of the hand, e.g. the starting card of a sequence or the values of a quadplex set
 
-    def check_bomb(hand):
+    def check_bomb(self, hand):
         bombValue = hand[0].value
         return [(hand[0].value == hand[1].value and hand[0].value == hand[2].value and hand[0].value == hand[3].value), bombValue]
 
-    def check_rocket(hand):
-        return (hand[0].value == 16 and hand[1].value == 17)
+    def check_rocket(self, hand):
+        return (hand[len(hand) - 2].value == 16 and hand[len(hand) - 1].value == 17)
 
-    def check_single_sequence(hand):
+    def check_single_sequence(self, hand):
         prevHandValue = -1
         sequenceStart = hand[0].value
         for x in range (len(hand)):
@@ -1303,7 +1303,7 @@ class HillClimbAI:
             else:
                 return [False, sequenceStart]
 
-    def check_pair_sequence(hand):
+    def check_pair_sequence(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = hand[0].value
@@ -1315,7 +1315,7 @@ class HillClimbAI:
             else:
                 return [False, sequenceStart]
 
-    def check_triplet_sequence(hand):
+    def check_triplet_sequence(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = hand[0].value
@@ -1327,7 +1327,7 @@ class HillClimbAI:
             else:
                 return [False, sequenceStart]
 
-    def check_triplet_sequence_attachments(hand, needed):
+    def check_triplet_sequence_attachments(self, hand, needed):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = -1
@@ -1356,7 +1356,7 @@ class HillClimbAI:
                     if noTripletFound == True:
                         return [False, sequenceStart]
 
-    def check_quadplex_set_1(hand):
+    def check_quadplex_set_1(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         attachment1 = -1
@@ -1381,7 +1381,7 @@ class HillClimbAI:
         else:
             return [False, quadValue]
 
-    def check_quadplex_set_2(hand):
+    def check_quadplex_set_2(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         pair1 = -1
@@ -1444,11 +1444,11 @@ class HillClimbAI:
 
         #if 2, must be pair, or rocket
         elif len(hand) == 2:
-            if check_rocket(hand):
+            if self.check_rocket(hand):
                 analyzedPlay = [0, 16, 2]
                 return analyzedPlay
             else:
-                checkedPair = check_pair_sequence(hand)
+                checkedPair = self.check_pair_sequence(hand)
                 if checkedPair[0]:
                     analyzedPlay = [9, checkedPair[1], 2]
                     return analyzedPlay
@@ -1457,7 +1457,7 @@ class HillClimbAI:
 
         #if 3, must be triplet
         elif len(hand) == 3:
-            checkedTriplet = check_triplet_sequence(hand)
+            checkedTriplet = self.check_triplet_sequence(hand)
             if checkedTriplet[0]:
                 analyzedPlay = [7, checkedTriplet[1], 3]
                 return analyzedPlay
@@ -1467,8 +1467,8 @@ class HillClimbAI:
         # - Triplet with attachment
         # - Bomb
         elif len(hand) == 4:
-            checkedBomb = check_bomb(hand)
-            checkedTripletSingleAttachment = check_triplet_sequence_attachments(hand, 1)
+            checkedBomb = self.check_bomb(hand)
+            checkedTripletSingleAttachment = self.check_triplet_sequence_attachments(hand, 1)
             if checkedBomb[0]:
                 analyzedPlay = [1, checkedBomb[1], 4]
                 return analyzedPlay
@@ -1481,8 +1481,8 @@ class HillClimbAI:
         # - Triplet with attached pair
         # - Sequence of 5 single cards
         elif len(hand) == 5:
-            checkedTripletPairAttachment = check_triplet_sequence_attachments(hand, 1)
-            checkedSequence = check_single_sequence(hand)
+            checkedTripletPairAttachment = self.check_triplet_sequence_attachments(hand, 1)
+            checkedSequence = self.check_single_sequence(hand)
             if checkedTripletPairAttachment[0]:
                 analyzedPlay = [4, checkedTripletPairAttachment[1], 5]
                 return analyzedPlay
@@ -1496,10 +1496,10 @@ class HillClimbAI:
         # - Sequence of 3 pairs
         # - Quadplex set #1 (bomb with 2 different single cards attached)
         elif len(hand) == 6:
-            checkedSequence = check_single_sequence(hand)
-            checkedTripletSequence = check_triplet_sequence(hand)
-            checkedPairSequence = check_pair_sequence(hand)
-            checkedQuadplexSet1 = check_quadplex_set_1(hand)
+            checkedSequence = self.check_single_sequence(hand)
+            checkedTripletSequence = self.check_triplet_sequence(hand)
+            checkedPairSequence = self.check_pair_sequence(hand)
+            checkedQuadplexSet1 = self.check_quadplex_set_1(hand)
             if checkedSequence[0]:
                 analyzedPlay = [10, checkedSequence[1], 6]
                 return analyzedPlay
@@ -1517,7 +1517,7 @@ class HillClimbAI:
         #if 7, could be one of the following:
         # - Sequence of 7 single cards
         elif len(hand) == 7:
-            checkedSequence = check_single_sequence(hand)
+            checkedSequence = self.check_single_sequence(hand)
             if checkedSequence[0]:
                 analyzedPlay = [10, checkedSequence[1], 7]
                 return analyzedPlay
@@ -1529,10 +1529,10 @@ class HillClimbAI:
         # - Sequence of 2 triplets with attached single cards
         # - Quadplex set #2 (bomb with 2 different pairs attached)
         elif len(hand) == 8:
-            checkedSequence = check_single_sequence(hand)
-            checkedPairSequence = check_pair_sequence(hand)
-            checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, 2)
-            checkedQuadplexSet2 = check_quadplex_set_2(hand)
+            checkedSequence = self.check_single_sequence(hand)
+            checkedPairSequence = self.check_pair_sequence(hand)
+            checkedTripletSequenceSingleAttachment = self.check_triplet_sequence_attachments(hand, 2)
+            checkedQuadplexSet2 = self.check_quadplex_set_2(hand)
             if (checkedSequence[0]):
                 analyzedPlay = [10, checkedSequence[1], 8]
                 return analyzedPlay
@@ -1562,25 +1562,25 @@ class HillClimbAI:
             possibleTripletsPairAttachment = (totalNumber%5 == 0)
 
             if (possibleSingles):
-                checkedSequence = check_single_sequence(hand)
+                checkedSequence = self.check_single_sequence(hand)
                 if (checkedSequence[0]):
                     return [10, checkedSequence[1], totalNumber]
             if (possiblePairs):
-                checkedPairSequence = check_pair_sequence(hand)
+                checkedPairSequence = self.check_pair_sequence(hand)
                 if (checkedPairSequence[0]):
                     return [8, checkedPairSequence[1], totalNumber]
             if (possibleTriplets):
-                checkedTripletSequence = check_triplet_sequence(hand)
+                checkedTripletSequence = self.check_triplet_sequence(hand)
                 if (checkedTripletSequence[0]):
                     return [6, checkedTripletSequence[1], totalNumber]
             if (possibleTripletsSingleAttachment):
                 totalTripletsNeeded = int(totalNumber/4)
-                checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                checkedTripletSequenceSingleAttachment = self.check_triplet_sequence_attachments(hand, totalTripletsNeeded)
                 if (checkedTripletSequenceSingleAttachment[0]):
                     return [5, checkedTripletSequenceSingleAttachment[1], totalNumber]
             if (possibleTripletsPairAttachment):
                 totalTripletsNeeded = int(totalNumber/5)
-                checkedTripletsPairAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                checkedTripletsPairAttachment = self.check_triplet_sequence_attachments(hand, totalTripletsNeeded)
                 if (checkedTripletsPairAttachment[0]):
                     return [4, checkedTripletsPairAttachment[1], totalNumber]
             #throw error if we get here: no matches
@@ -1659,7 +1659,7 @@ class HillClimbAI:
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
-                            attachmentPlay = tripletSequences[x]+list(i)
+                            attachmentPlay = triplets[x]+list(i)
                             legalTripletSingleSequences.append(attachmentPlay)
             legalTripletPairSequences = []
             for x in range (len(tripletSequences)):
@@ -1697,7 +1697,7 @@ class HillClimbAI:
                         perm = permutations(foundPairs, neededPairs)
                         for i in perm:
                             i2 = list(i)
-                            attachmentPlay = tripletSequences[x]
+                            attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                                 print(attachmentPlay)
@@ -2278,14 +2278,14 @@ class SimulatedAnnealingAI:
     #returnFormat[1] is an array, determined by the type being scanned, that contains the
     #particulars of the hand, e.g. the starting card of a sequence or the values of a quadplex set
 
-    def check_bomb(hand):
+    def check_bomb(self, hand):
         bombValue = hand[0].value
         return [(hand[0].value == hand[1].value and hand[0].value == hand[2].value and hand[0].value == hand[3].value), bombValue]
 
-    def check_rocket(hand):
-        return (hand[0].value == 16 and hand[1].value == 17)
+    def check_rocket(self, hand):
+        return (hand[len(hand) - 2].value == 16 and hand[len(hand) - 1].value == 17)
 
-    def check_single_sequence(hand):
+    def check_single_sequence(self, hand):
         prevHandValue = -1
         sequenceStart = hand[0].value
         for x in range (len(hand)):
@@ -2296,7 +2296,7 @@ class SimulatedAnnealingAI:
             else:
                 return [False, sequenceStart]
 
-    def check_pair_sequence(hand):
+    def check_pair_sequence(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = hand[0].value
@@ -2308,7 +2308,7 @@ class SimulatedAnnealingAI:
             else:
                 return [False, sequenceStart]
 
-    def check_triplet_sequence(hand):
+    def check_triplet_sequence(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = hand[0].value
@@ -2320,7 +2320,7 @@ class SimulatedAnnealingAI:
             else:
                 return [False, sequenceStart]
 
-    def check_triplet_sequence_attachments(hand, needed):
+    def check_triplet_sequence_attachments(self, hand, needed):
         prevHandValue = -1
         totalNumber = len(hand)
         sequenceStart = -1
@@ -2349,7 +2349,7 @@ class SimulatedAnnealingAI:
                     if noTripletFound == True:
                         return [False, sequenceStart]
 
-    def check_quadplex_set_1(hand):
+    def check_quadplex_set_1(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         attachment1 = -1
@@ -2374,7 +2374,7 @@ class SimulatedAnnealingAI:
         else:
             return [False, quadValue]
 
-    def check_quadplex_set_2(hand):
+    def check_quadplex_set_2(self, hand):
         prevHandValue = -1
         totalNumber = len(hand)
         pair1 = -1
@@ -2437,11 +2437,11 @@ class SimulatedAnnealingAI:
 
         #if 2, must be pair, or rocket
         elif len(hand) == 2:
-            if check_rocket(hand):
+            if self.check_rocket(hand):
                 analyzedPlay = [0, 16, 2]
                 return analyzedPlay
             else:
-                checkedPair = check_pair_sequence(hand)
+                checkedPair = self.check_pair_sequence(hand)
                 if checkedPair[0]:
                     analyzedPlay = [9, checkedPair[1], 2]
                     return analyzedPlay
@@ -2450,7 +2450,7 @@ class SimulatedAnnealingAI:
 
         #if 3, must be triplet
         elif len(hand) == 3:
-            checkedTriplet = check_triplet_sequence(hand)
+            checkedTriplet = self.check_triplet_sequence(hand)
             if checkedTriplet[0]:
                 analyzedPlay = [7, checkedTriplet[1], 3]
                 return analyzedPlay
@@ -2460,8 +2460,8 @@ class SimulatedAnnealingAI:
         # - Triplet with attachment
         # - Bomb
         elif len(hand) == 4:
-            checkedBomb = check_bomb(hand)
-            checkedTripletSingleAttachment = check_triplet_sequence_attachments(hand, 1)
+            checkedBomb = self.check_bomb(hand)
+            checkedTripletSingleAttachment = self.check_triplet_sequence_attachments(hand, 1)
             if checkedBomb[0]:
                 analyzedPlay = [1, checkedBomb[1], 4]
                 return analyzedPlay
@@ -2474,8 +2474,8 @@ class SimulatedAnnealingAI:
         # - Triplet with attached pair
         # - Sequence of 5 single cards
         elif len(hand) == 5:
-            checkedTripletPairAttachment = check_triplet_sequence_attachments(hand, 1)
-            checkedSequence = check_single_sequence(hand)
+            checkedTripletPairAttachment = self.check_triplet_sequence_attachments(hand, 1)
+            checkedSequence = self.check_single_sequence(hand)
             if checkedTripletPairAttachment[0]:
                 analyzedPlay = [4, checkedTripletPairAttachment[1], 5]
                 return analyzedPlay
@@ -2489,10 +2489,10 @@ class SimulatedAnnealingAI:
         # - Sequence of 3 pairs
         # - Quadplex set #1 (bomb with 2 different single cards attached)
         elif len(hand) == 6:
-            checkedSequence = check_single_sequence(hand)
-            checkedTripletSequence = check_triplet_sequence(hand)
-            checkedPairSequence = check_pair_sequence(hand)
-            checkedQuadplexSet1 = check_quadplex_set_1(hand)
+            checkedSequence = self.check_single_sequence(hand)
+            checkedTripletSequence = self.check_triplet_sequence(hand)
+            checkedPairSequence = self.check_pair_sequence(hand)
+            checkedQuadplexSet1 = self.check_quadplex_set_1(hand)
             if checkedSequence[0]:
                 analyzedPlay = [10, checkedSequence[1], 6]
                 return analyzedPlay
@@ -2510,7 +2510,7 @@ class SimulatedAnnealingAI:
         #if 7, could be one of the following:
         # - Sequence of 7 single cards
         elif len(hand) == 7:
-            checkedSequence = check_single_sequence(hand)
+            checkedSequence = self.check_single_sequence(hand)
             if checkedSequence[0]:
                 analyzedPlay = [10, checkedSequence[1], 7]
                 return analyzedPlay
@@ -2522,10 +2522,10 @@ class SimulatedAnnealingAI:
         # - Sequence of 2 triplets with attached single cards
         # - Quadplex set #2 (bomb with 2 different pairs attached)
         elif len(hand) == 8:
-            checkedSequence = check_single_sequence(hand)
-            checkedPairSequence = check_pair_sequence(hand)
-            checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, 2)
-            checkedQuadplexSet2 = check_quadplex_set_2(hand)
+            checkedSequence = self.check_single_sequence(hand)
+            checkedPairSequence = self.check_pair_sequence(hand)
+            checkedTripletSequenceSingleAttachment = self.check_triplet_sequence_attachments(hand, 2)
+            checkedQuadplexSet2 = self.check_quadplex_set_2(hand)
             if (checkedSequence[0]):
                 analyzedPlay = [10, checkedSequence[1], 8]
                 return analyzedPlay
@@ -2555,25 +2555,25 @@ class SimulatedAnnealingAI:
             possibleTripletsPairAttachment = (totalNumber%5 == 0)
 
             if (possibleSingles):
-                checkedSequence = check_single_sequence(hand)
+                checkedSequence = self.check_single_sequence(hand)
                 if (checkedSequence[0]):
                     return [10, checkedSequence[1], totalNumber]
             if (possiblePairs):
-                checkedPairSequence = check_pair_sequence(hand)
+                checkedPairSequence = self.check_pair_sequence(hand)
                 if (checkedPairSequence[0]):
                     return [8, checkedPairSequence[1], totalNumber]
             if (possibleTriplets):
-                checkedTripletSequence = check_triplet_sequence(hand)
+                checkedTripletSequence = self.check_triplet_sequence(hand)
                 if (checkedTripletSequence[0]):
                     return [6, checkedTripletSequence[1], totalNumber]
             if (possibleTripletsSingleAttachment):
                 totalTripletsNeeded = int(totalNumber/4)
-                checkedTripletSequenceSingleAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                checkedTripletSequenceSingleAttachment = self.check_triplet_sequence_attachments(hand, totalTripletsNeeded)
                 if (checkedTripletSequenceSingleAttachment[0]):
                     return [5, checkedTripletSequenceSingleAttachment[1], totalNumber]
             if (possibleTripletsPairAttachment):
                 totalTripletsNeeded = int(totalNumber/5)
-                checkedTripletsPairAttachment = check_triplet_sequence_attachments(hand, totalTripletsNeeded)
+                checkedTripletsPairAttachment = self.check_triplet_sequence_attachments(hand, totalTripletsNeeded)
                 if (checkedTripletsPairAttachment[0]):
                     return [4, checkedTripletsPairAttachment[1], totalNumber]
             #throw error if we get here: no matches
@@ -2652,7 +2652,7 @@ class SimulatedAnnealingAI:
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
-                            attachmentPlay = tripletSequences[x]+list(i)
+                            attachmentPlay = triplets[x]+list(i)
                             legalTripletSingleSequences.append(attachmentPlay)
             legalTripletPairSequences = []
             for x in range (len(tripletSequences)):
@@ -2690,7 +2690,7 @@ class SimulatedAnnealingAI:
                         perm = permutations(foundPairs, neededPairs)
                         for i in perm:
                             i2 = list(i)
-                            attachmentPlay = tripletSequences[x]
+                            attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                                 print(attachmentPlay)
@@ -3003,10 +3003,10 @@ class Other:
         self.order = order
         self.str = 'Other ' + str(order)
 
-"""
+
 tests
 
-hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
+hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"), Card(6,"a"), Card(6,"d"),
 Card(7,"a"), Card(8,"b"), Card(8,"c"),
 Card(10,"a"), Card(11,"b"), Card(12,"c"),
 Card(13,"a"), Card(14,"b"), Card(15,"c"),
