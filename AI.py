@@ -993,7 +993,7 @@ class ExpectiMiniMaxAI:
         return own_value - other_value
 
     #return the best move based on expectimax
-    def get_move((self, hand, unplayed_cards, hand_sizes, play):
+    def get_move(self, hand, unplayed_cards, hand_sizes, play):
         '''def max_value(hand, unplayed_cards, hand_sizes, depth, play, max_depth):
             if(depth == max_depth):
                 return (hand,evaluate_hand_given_play(hand, play))
