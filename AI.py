@@ -916,12 +916,12 @@ class ExpectiMiniMaxAI:
 
     #find the estimated value of a hand to use as a base in evaluation
     def evaluation_heuristic(self, hand):
-        plays = valid_plays(hand)
+        plays = self.valid_plays(hand)
         sum_plays = 0
-        for x in range(plays):
+        for x in range(len(plays)):
             for y in x:
-                sum_plays = sum_plays + play_lookup(x,len(y))
-        sum_cards = evaluate_hand_seperate(hand)
+                sum_plays = sum_plays + self.play_lookup(x,len(y))
+        sum_cards = self.evaluate_hand_seperate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -1925,12 +1925,12 @@ class HillClimbAI:
 
     #find the estimated value of a hand to use as a base in evaluation
     def evaluation_heuristic(self, hand):
-        plays = valid_plays(hand)
+        plays = self.valid_plays(hand)
         sum_plays = 0
-        for x in range(plays):
+        for x in range(len(plays)):
             for y in x:
-                sum_plays = sum_plays + play_lookup(x,len(y))
-        sum_cards = evaluate_hand_seperate(hand)
+                sum_plays = sum_plays + self.play_lookup(x,len(y))
+        sum_cards = self.evaluate_hand_seperate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
@@ -2917,19 +2917,18 @@ class SimulatedAnnealingAI:
         return table.get(play_number,0)
 
     #find the estimated value of a hand to use as a base in evaluation
-    def evaluation_heuristic(hand):
-
-        plays = valid_plays(hand)
+    def evaluation_heuristic(self, hand):
+        plays = self.valid_plays(hand)
         sum_plays = 0
-        for x in range(plays):
+        for x in range(len(plays)):
             for y in x:
-                sum_plays = sum_plays + play_lookup(x,len(y))
-        sum_cards = evaluate_hand_seperate(hand)
+                sum_plays = sum_plays + self.play_lookup(x,len(y))
+        sum_cards = self.evaluate_hand_seperate(hand)
         length_penalty = len(hand)*110
         if (length_penalty == 0):
             return 1000000
         return sum_plays + sum_cards - length_penalty
-
+    
     def to_plays_array(array):
         arr = []
         for e in array:
