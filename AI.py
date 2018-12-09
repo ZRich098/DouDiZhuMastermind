@@ -941,11 +941,11 @@ class ExpectiMiniMaxAI:
         return arr
 
     #find expected value of own hand, taking into account different plays that could be made
-    def evaluate_hand(self, hand, depth):
+    def evaluate_hand(self, hand,unplayed_cards,others_data, depth):
         #if hand empty then win
         if (not hand): return 1000000
         poss_plays = self.to_plays_array(self.valid_plays(hand))
-        value_of_plays = [self.evaluate_play(hand, poss_play, depth) for poss_play in poss_plays]
+        value_of_plays = [self.evaluate_play(hand, poss_play,unplayed_cards,others_data, depth) for poss_play in poss_plays]
         return max(value_of_plays)
 
     #returns a (play, value) pair of expected values of plays
@@ -966,12 +966,24 @@ class ExpectiMiniMaxAI:
         return max(value_of_plays)
 
     #find expected value of a play based on own hand
-    def evaluate_play(self, hand, play, depth):
+    def evaluate_play(self, hand, play, unplayed_cards,others_data, depth):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([self.value_lookup(card) for card in leftover_hand])
         if (depth == 0):
-            return leftover_quality - 50
-        return leftover_quality - 50 + self.evaluate_hand(leftover_hand, depth - 1)
+            return leftover_quality - 50 + self.evaluation_heuristic(leftover_hand)
+        (next_player, player_after) = others_data
+        (next_size, next_allegiance) = next_player
+        (after_size, after_allegiance) = player_after
+        next_player_quality = self.evaluate_other_player(next_size, hand, unplayed_cards)
+        player_after_quality = self.evaluate_other_player(after_size, hand, unplayed_cards)
+        total = leftover_quality - 50
+        if next_allegiance:
+            total = total + next_player_quality
+        else: total = total - next_player_quality
+        if after_allegiance:
+            total = total + player_after_quality
+        else: total = total - player_after_quality
+        return total + self.evaluate_hand(leftover_hand,unplayed_cards,others_data, depth - 1)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
@@ -988,10 +1000,12 @@ class ExpectiMiniMaxAI:
         return own_value - other_value
 
     #return the best move based on expectimax
-    def get_move(self, hand, unplayed_cards, hand_sizes, play):
+    #others_data is a tuple of tuples:
+    #((next player's hand size, other player's allegiance),(player after's hand size, player after's allegiance))
+    def get_move(self, hand, unplayed_cards, others_data, play):
         poss_plays = self.combine_play(hand, play)
         if (not poss_plays): return []
-        value_of_plays = [self.evaluate_play(hand, poss_play, 3) for poss_play in poss_plays]
+        value_of_plays = [self.evaluate_play(hand, poss_play, unplayed_cards, others_data, 3) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
 class HillClimbAI:
@@ -2987,8 +3001,10 @@ class SimulatedAnnealingAI:
 class Other:
     def __init__(self, order):
         self.order = order
-        self.str = 'Other ' + str(order
+        self.str = 'Other ' + str(order)
 
+"""
+tests
 
 hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
 Card(7,"a"), Card(8,"b"), Card(8,"c"),
@@ -2996,14 +3012,14 @@ Card(10,"a"), Card(11,"b"), Card(12,"c"),
 Card(13,"a"), Card(14,"b"), Card(15,"c"),
 Card(15,"a"), Card(16,"b"), Card(17,"c")
 ]
+play = []
 play = [Card(3,"a")]
 play = [Card(3,"a"), Card(3,"b")]
 
 eai = ExpectiMiniMaxAI(1)
+others_data=((5,True),(6,False))
 eai.combine_play(hand, play)
-eai.get_move(hand,[], 0, play)
-
-def get_move(self, hand, unplayed_cards, hand_sizes, play):
+eai.get_move(hand,[Card(5,"a")], others_data, play)
 
 hai = HillClimbAI(1)
 hai.combine_play(hand,play)
@@ -3012,3 +3028,4 @@ hai.get_move(hand, play)
 sai = SimulatedAnnealingAI(1)
 sai.combine_play(hand,play)
 sai.get_move(hand, play, 100)
+"""
