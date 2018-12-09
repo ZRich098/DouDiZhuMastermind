@@ -2359,6 +2359,7 @@ class SimulatedAnnealingAI:
                             break
                     if noTripletFound == True:
                         return [False, sequenceStart]
+            return [False, sequenceStart]
 
     def check_quadplex_set_1(self, hand):
         prevHandValue = -1
