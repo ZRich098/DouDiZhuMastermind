@@ -642,6 +642,7 @@ class ExpectiMiniMaxAI:
                     for i in perm:
                         attachmentPlay = tripletSequences[x]+list(i)
                         legalTripletSingleSequences.append(attachmentPlay)
+            legalTripletSingles = []
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
                     usedNumbers = []
@@ -656,7 +657,7 @@ class ExpectiMiniMaxAI:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
                             attachmentPlay = triplets[x]+list(i)
-                            legalTripletSingleSequences.append(attachmentPlay)
+                            legalTripletSingles.append(attachmentPlay)
             legalTripletPairSequences = []
             for x in range (len(tripletSequences)):
                 if (tripletSequences[x][0].value > rankOfPlay):
@@ -677,6 +678,7 @@ class ExpectiMiniMaxAI:
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                             legalTripletPairSequences.append(attachmentPlay)
+            legalTripletPairs = []
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
                     usedNumbers = []
@@ -695,8 +697,8 @@ class ExpectiMiniMaxAI:
                             attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                            legalTripletPairSequences.append(attachmentPlay)
-            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+                            legalTripletPairs.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
         #rocket: Can't be beaten
         if typeOfPlay == 0:
@@ -1649,6 +1651,7 @@ class HillClimbAI:
                     for i in perm:
                         attachmentPlay = tripletSequences[x]+list(i)
                         legalTripletSingleSequences.append(attachmentPlay)
+            legalTripletSingles = []
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
                     usedNumbers = []
@@ -1663,7 +1666,7 @@ class HillClimbAI:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
                             attachmentPlay = triplets[x]+list(i)
-                            legalTripletSingleSequences.append(attachmentPlay)
+                            legalTripletSingles.append(attachmentPlay)
             legalTripletPairSequences = []
             for x in range (len(tripletSequences)):
                 if (tripletSequences[x][0].value > rankOfPlay):
@@ -1684,6 +1687,7 @@ class HillClimbAI:
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                             legalTripletPairSequences.append(attachmentPlay)
+            legalTripletPairs = []
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
                     usedNumbers = []
@@ -1702,8 +1706,8 @@ class HillClimbAI:
                             attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                            legalTripletPairSequences.append(attachmentPlay)
-            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+                            legalTripletPairs.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
         #rocket: Can't be beaten
         if typeOfPlay == 0:
@@ -2644,6 +2648,7 @@ class SimulatedAnnealingAI:
                     for i in perm:
                         attachmentPlay = tripletSequences[x]+list(i)
                         legalTripletSingleSequences.append(attachmentPlay)
+            legalTripletSingles = []
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
                     usedNumbers = []
@@ -2658,7 +2663,7 @@ class SimulatedAnnealingAI:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
                             attachmentPlay = triplets[x]+list(i)
-                            legalTripletSingleSequences.append(attachmentPlay)
+                            legalTripletSingles.append(attachmentPlay)
             legalTripletPairSequences = []
             for x in range (len(tripletSequences)):
                 if (tripletSequences[x][0].value > rankOfPlay):
@@ -2679,6 +2684,7 @@ class SimulatedAnnealingAI:
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                             legalTripletPairSequences.append(attachmentPlay)
+            legalTripletPairs = []
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
                     usedNumbers = []
@@ -2697,8 +2703,8 @@ class SimulatedAnnealingAI:
                             attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                            legalTripletPairSequences.append(attachmentPlay)
-            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+                            legalTripletPairs.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
         #rocket: Can't be beaten
         if typeOfPlay == 0:
