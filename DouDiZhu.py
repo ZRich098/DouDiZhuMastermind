@@ -74,9 +74,10 @@ class DDZ:
     #update the Game State in response to a move
     def update_game_state(self, move, current_player):
         print(move)
-        for ele in move:
-            self.hands[current_player].remove(ele) #Removes every card that is being played
-            self.field.append(ele) #Append it to the list representing the table
+        if (ele is not None):
+            for ele in move:
+                self.hands[current_player].remove(ele) #Removes every card that is being played
+                self.field.append(ele) #Append it to the list representing the table
         # if one of the players has no more cards, then they win, and if they're not the landlord, then, their
         # partner wins as well.
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
