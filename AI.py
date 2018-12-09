@@ -2010,9 +2010,6 @@ class HillClimbAI:
         if (not poss_plays): return []
         value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
         r2 =  poss_plays[value_of_plays.index(max(value_of_plays))]
-        print(len(r2))
-        print(r2[1])
-        print(r2)
         return r2
 
 class SimulatedAnnealingAI:
