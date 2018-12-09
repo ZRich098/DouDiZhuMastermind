@@ -92,9 +92,9 @@ class DDZ:
             self.game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
             print(str(current_player)+" is playing "+ str(mv))
-            self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
             self.updateCurrentPlay(mv)
             self.turn += 1
+            self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
 
     #Note for this function I have not decided how the stakes function should run yet so I have just hard coded it for now
     def game_over(self, current_player):
