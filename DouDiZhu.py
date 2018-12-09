@@ -47,7 +47,11 @@ class DDZ:
         return 3
 
     def unPlayed(self,current_player):
-        [card for card in self.origDeck not in (self.field + hands[current_player])]
+        list = []
+        for card in self.origDeck:
+            if card not in self.field + self.hands[current_player]:
+                list.append(card)
+        return list
 
 
     def updateCurrentPlay(self,move):
@@ -59,7 +63,7 @@ class DDZ:
     #get the move they wish to make from current_player.
     def move(self, current_player):
         if(current_player == 0):
-            self.players[current_player].get_move(self.deck2, self.currentPlay)
+            self.players[current_player].get_move(self.deck1, self.currentPlay)
 #        self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
             self.players[current_player].get_move(self.deck2, self.currentPlay)
@@ -68,7 +72,8 @@ class DDZ:
 
 
     #update the Game State in response to a move
-    def update_game_state(self,move, current_player):
+    def update_game_state(self, move, current_player):
+        print(move)
         for ele in move:
             self.hands[current_player].remove(ele) #Removes every card that is being played
             self.field.append(ele) #Append it to the list representing the table
@@ -77,6 +82,7 @@ class DDZ:
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
             game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
+            print(current_player+" is playing "+ move)
             update_game_state(move(current_player),(current_player+1)%3)
             updateCurrentPlay(move(current_player))
             self.turn += 1
@@ -94,12 +100,12 @@ class DDZ:
             print ("Game over Landlord")
 
     def updateLandlord(self):
-        val1 = player1[0].evaluate_other_player(17,hand,unplayed(1))
-        val2 = player1[1].evaluate_other_player(17,hand,unplayed(0))
-        val3 = player1[2].evaluate_other_player(17,hand,unplayed(1))
+        val1 = self.players[0].evaluate_other_player(17,self.deck1,self.unPlayed(1))
+        val2 = self.players[1].evaluate_other_player(17,self.deck2,self.unPlayed(0))
+        val3 = self.players[2].evaluate_other_player(17,self.deck3,self.unPlayed(1))
 
         if(val1 >= val2 and val1 >= val3):
-            reutrn 0
+            return 0
         elif(val2 >= val1 and val2 >= val3):
             return 1
         else:
@@ -126,6 +132,7 @@ def main():
     game = DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
     game.updateLandlord()
     game.hands[game.landlord] = game.hands[game.landlord] + game.hidden_cards
+    game.update_game_state(game.move(game.current_player),game.current_player)
 
 if __name__== '__main__':
     main()
