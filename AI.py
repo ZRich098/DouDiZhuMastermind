@@ -919,7 +919,7 @@ class ExpectiMiniMaxAI:
         plays = self.valid_plays(hand)
         sum_plays = 0
         for x in range(len(plays)):
-            for y in x:
+            for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
         sum_cards = self.evaluate_hand_seperate(hand)
         length_penalty = len(hand)*110
@@ -1928,7 +1928,7 @@ class HillClimbAI:
         plays = self.valid_plays(hand)
         sum_plays = 0
         for x in range(len(plays)):
-            for y in x:
+            for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
         sum_cards = self.evaluate_hand_seperate(hand)
         length_penalty = len(hand)*110
@@ -2921,7 +2921,7 @@ class SimulatedAnnealingAI:
         plays = self.valid_plays(hand)
         sum_plays = 0
         for x in range(len(plays)):
-            for y in x:
+            for y in plays[x]:
                 sum_plays = sum_plays + self.play_lookup(x,len(y))
         sum_cards = self.evaluate_hand_seperate(hand)
         length_penalty = len(hand)*110
