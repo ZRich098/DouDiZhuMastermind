@@ -2997,6 +2997,7 @@ class SimulatedAnnealingAI:
         temperature = 10./turn
         index = int(math.floor(random.random() * temperature))
         plays = self.evaluate_hand_list(hand, play)
+        plays.reverse()
         if (not plays or 0 > index or index >= len(plays)): return []
         if (index >= len(plays)):
             return plays[len(plays) - 1]
