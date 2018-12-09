@@ -1708,7 +1708,6 @@ class HillClimbAI:
                                 attachmentPlay = attachmentPlay + i2[j]
                             legalTripletPairs.append(attachmentPlay)
             r1 =  rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
-            print (r1)
             return r1
             
         #rocket: Can't be beaten
@@ -2010,7 +2009,9 @@ class HillClimbAI:
         poss_plays = self.combine_play(hand, play)
         if (not poss_plays): return []
         value_of_plays = [self.evaluate_play(hand, poss_play) for poss_play in poss_plays]
-        return poss_plays[value_of_plays.index(max(value_of_plays))]
+        r2 =  poss_plays[value_of_plays.index(max(value_of_plays))]
+        print(r2)
+        return r2
 
 class SimulatedAnnealingAI:
     def __init__(self, order):
