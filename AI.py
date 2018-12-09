@@ -3006,22 +3006,22 @@ class SimulatedAnnealingAI:
 class Other:
     def __init__(self, order):
         self.order = order
-        self.str = 'Other ' + str(order
+        self.str = 'Other ' + str(order)
 
-
-hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
-Card(7,"a"), Card(8,"b"), Card(8,"c"),
-Card(10,"a"), Card(11,"b"), Card(12,"c"),
-Card(13,"a"), Card(14,"b"), Card(15,"c"),
-Card(15,"a"), Card(16,"b"), Card(17,"c")
-]
-play = [Card(3,"a")]
-play = [Card(3,"a"), Card(3,"b")]
-
-hai = HillClimbAI(1)
-hai.combine_play(hand,play)
-hai.get_move(hand, play)
-
-sai = SimulatedAnnealingAI(1)
-sai.combine_play(hand,play)
-sai.get_move(hand, play, 100)
+#
+#hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"),
+#Card(7,"a"), Card(8,"b"), Card(8,"c"),
+#Card(10,"a"), Card(11,"b"), Card(12,"c"),
+#Card(13,"a"), Card(14,"b"), Card(15,"c"),
+#Card(15,"a"), Card(16,"b"), Card(17,"c")
+#]
+#play = [Card(3,"a")]
+#play = [Card(3,"a"), Card(3,"b")]
+#
+#hai = HillClimbAI(1)
+#hai.combine_play(hand,play)
+#hai.get_move(hand, play)
+#
+#sai = SimulatedAnnealingAI(1)
+#sai.combine_play(hand,play)
+#sai.get_move(hand, play, 100)

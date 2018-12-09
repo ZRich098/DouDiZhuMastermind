@@ -47,7 +47,11 @@ class DDZ:
         return 3
 
     def unPlayed(self,current_player):
-        [card for card in self.origDeck not in (self.field + hands[current_player])]
+        list = []
+        for card in self.origDeck:
+            if card not in self.field + self.hands[current_player]:
+                list.append(card)
+        return list
 
 
     def updateCurrentPlay(self,move):
@@ -94,12 +98,12 @@ class DDZ:
             print ("Game over Landlord")
 
     def updateLandlord(self):
-        val1 = player1[0].evaluate_other_player(17,hand,unplayed(1))
-        val2 = player1[1].evaluate_other_player(17,hand,unplayed(0))
-        val3 = player1[2].evaluate_other_player(17,hand,unplayed(1))
+        val1 = self.players[0].evaluate_other_player(17,self.deck1,self.unPlayed(1))
+        val2 = self.players[1].evaluate_other_player(17,self.deck2,self.unPlayed(0))
+        val3 = self.players[2].evaluate_other_player(17,self.deck3,self.unPlayed(1))
 
         if(val1 >= val2 and val1 >= val3):
-            reutrn 0
+            return 0
         elif(val2 >= val1 and val2 >= val3):
             return 1
         else:
