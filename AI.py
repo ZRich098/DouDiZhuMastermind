@@ -1,23 +1,7 @@
 from itertools import permutations
+from Cards import Card
 import random
 import math
-
-class Card:
-    def __init__(self, value, color):
-        self.value = value
-        self.color = color
-
-    def __repr__ (self):
-        table = {
-            11: "Jack",
-            12: "Queen",
-            13: "King",
-            14: "Ace",
-            15: "Two"}
-
-        if self.value == 16: return "Uncolored Joker"
-        elif self.value == 17: return "Colored Joker"
-        return table.get(self.value,str(self.value)) + " of " + self.color
 
 class ExpectiMiniMaxAI:
     #order is the order the AIs go: 0, 1, 2 for first, second, third
@@ -101,9 +85,9 @@ class ExpectiMiniMaxAI:
                         isRocket.append(hand[previousCards+1])
 
                     else:
-                        single.append(hand[previousCards])
+                        single.append([hand[previousCards]])
                 elif simplifiedHand[x+1] == 1:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 break
 
             #if the hand has 4 of the current card being scanned
@@ -137,7 +121,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -150,7 +135,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -158,9 +144,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isQuad.append(hand[previousCards])
+                    isQuad.append([hand[previousCards]])
                 previousCards = previousCards + 4
 
             #If the current hand has 3 of the current card being scanned
@@ -192,7 +178,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -204,7 +191,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -212,9 +200,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isTriplet.append(hand[previousCards])
+                    isTriplet.append([hand[previousCards]])
                 previousCards = previousCards + 3
 
             #If the current hand has 2 copies of the card being scanned
@@ -229,7 +217,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -241,7 +230,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -249,9 +239,9 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isPair.append(hand[previousCards])
+                    isPair.append([hand[previousCards]])
                 previousCards = previousCards + 2
 
             #If current hand only has 1 of the scanned card
@@ -263,7 +253,8 @@ class ExpectiMiniMaxAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -271,12 +262,10 @@ class ExpectiMiniMaxAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 previousCards = previousCards + 1
-
-
 
         single = single + isPair + isTriplet + isQuad + isSequence + isRocket
         #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
@@ -439,6 +428,11 @@ class ExpectiMiniMaxAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+
+        #if 0
+        if len(hand) == 0:
+            return analyzedPlay
+
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
@@ -611,6 +605,101 @@ class ExpectiMiniMaxAI:
 
         typeOfPlay = analyzedPlay[0]
         rankOfPlay = analyzedPlay[1]
+        #if empty play, can play anything
+        if typeOfPlay == -1:
+            legalQuadSingles = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(singles)):
+                        if singles[y].value != quads[x][0].value:
+                            for z in range (len(singles)):
+                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
+                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                    legalQuadSingles.append(attachmentPlay)
+            legalQuadPairs = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(pairs)):
+                        if len(pairs) <=1:
+                            break
+                        if pairs[y][0].value != quads[x][0].value:
+                            for z in range (len(pairs)):
+                                if pairs[z][0].value != quads[x][0].value and pairs[z][0].value != pairs[y][0].value:
+                                    attachmentPlay = quads[x]+pairs[y]+pairs[z]
+                                    legalQuadPairs.append(attachmentPlay)
+            legalTripletSingleSequences = []
+            for x in range (len(tripletSequences)):
+                usedNumbers = []
+                for a in range (0, len(tripletSequences[x]), 3):
+                    usedNumbers.append(tripletSequences[x][a].value)
+                neededSingles = int(len(tripletSequences[x])/4)
+                foundSingles = []
+                for y in range (len(singles)):
+                    if usedNumbers.count(singles[y].value) == 0:
+                        foundSingles.append(singles[y])
+                if len(foundSingles) >= neededSingles:
+                    perm = permutations(foundSingles, neededSingles)
+                    for i in perm:
+                        attachmentPlay = tripletSequences[x]+list(i)
+                        legalTripletSingleSequences.append(attachmentPlay)
+            for x in range (len(triplets)):
+                if (triplets[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(triplets[x]), 3):
+                        usedNumbers.append(triplets[x][a].value)
+                    neededSingles = 1
+                    foundSingles = []
+                    for y in range (len(singles)):
+                        if usedNumbers.count(singles[y].value) == 0:
+                            foundSingles.append(singles[y])
+                    if len(foundSingles) >= neededSingles:
+                        perm = permutations(foundSingles, neededSingles)
+                        for i in perm:
+                            attachmentPlay = tripletSequences[x]+list(i)
+                            legalTripletSingleSequences.append(attachmentPlay)
+            legalTripletPairSequences = []
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(tripletSequences[x])/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            for x in range (len(triplets)):
+                if (triplets[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(triplets[x]), 3):
+                        usedNumbers.append(triplets[x][a].value)
+                    neededPairs = 1
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+
         #rocket: Can't be beaten
         if typeOfPlay == 0:
             return []
@@ -664,6 +753,32 @@ class ExpectiMiniMaxAI:
                             foundPairs.append(pairs[y])
                     if len(foundPairs) >= neededPairs:
                         finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalTripletPairSequences
+        '''
+        if typeOfPlay == 4:
+            legalTripletPairSequences = []
+            if analyzedPlay[2] == 5:
+                tripletSequences = triplets
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/5)*3)):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(play)/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
                         for r in range (len(foundPairs)):
                             firstPair = foundPairs[r]
                             finalFoundPairs.append(firstPair)
@@ -699,6 +814,7 @@ class ExpectiMiniMaxAI:
                                         finalFoundPairs.pop()
                                 finalFoundPairs.pop()
             return rockets + quads + legalTripletPairSequences
+            '''
         #Triplet sequence with single attachment, beatable by higher ranked triplet-with-single or rocket/bomb
         if typeOfPlay == 5:
             legalTripletSingleSequences = []
@@ -760,7 +876,7 @@ class ExpectiMiniMaxAI:
         if typeOfPlay == 11:
             legalSingles = []
             for x in range (len(singles)):
-                if singles[x].value > rankOfPlay:
+                if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
 
@@ -981,9 +1097,9 @@ class HillClimbAI:
                         isRocket.append(hand[previousCards+1])
 
                     else:
-                        single.append(hand[previousCards])
+                        single.append([hand[previousCards]])
                 elif simplifiedHand[x+1] == 1:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 break
 
             #if the hand has 4 of the current card being scanned
@@ -1017,7 +1133,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1030,7 +1147,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1038,9 +1156,9 @@ class HillClimbAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isQuad.append(hand[previousCards])
+                    isQuad.append([hand[previousCards]])
                 previousCards = previousCards + 4
 
             #If the current hand has 3 of the current card being scanned
@@ -1072,7 +1190,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1084,7 +1203,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1092,9 +1212,9 @@ class HillClimbAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isTriplet.append(hand[previousCards])
+                    isTriplet.append([hand[previousCards]])
                 previousCards = previousCards + 3
 
             #If the current hand has 2 copies of the card being scanned
@@ -1109,7 +1229,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1121,7 +1242,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1129,9 +1251,9 @@ class HillClimbAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isPair.append(hand[previousCards])
+                    isPair.append([hand[previousCards]])
                 previousCards = previousCards + 2
 
             #If current hand only has 1 of the scanned card
@@ -1143,7 +1265,8 @@ class HillClimbAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1151,12 +1274,10 @@ class HillClimbAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 previousCards = previousCards + 1
-
-
 
         single = single + isPair + isTriplet + isQuad + isSequence + isRocket
         #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
@@ -1319,6 +1440,11 @@ class HillClimbAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+
+        #if 0
+        if len(hand) == 0:
+            return analyzedPlay
+
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
@@ -1491,6 +1617,101 @@ class HillClimbAI:
 
         typeOfPlay = analyzedPlay[0]
         rankOfPlay = analyzedPlay[1]
+        #if empty play, can play anything
+        if typeOfPlay == -1:
+            legalQuadSingles = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(singles)):
+                        if singles[y].value != quads[x][0].value:
+                            for z in range (len(singles)):
+                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
+                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                    legalQuadSingles.append(attachmentPlay)
+            legalQuadPairs = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(pairs)):
+                        if len(pairs) <=1:
+                            break
+                        if pairs[y][0].value != quads[x][0].value:
+                            for z in range (len(pairs)):
+                                if pairs[z][0].value != quads[x][0].value and pairs[z][0].value != pairs[y][0].value:
+                                    attachmentPlay = quads[x]+pairs[y]+pairs[z]
+                                    legalQuadPairs.append(attachmentPlay)
+            legalTripletSingleSequences = []
+            for x in range (len(tripletSequences)):
+                usedNumbers = []
+                for a in range (0, len(tripletSequences[x]), 3):
+                    usedNumbers.append(tripletSequences[x][a].value)
+                neededSingles = int(len(tripletSequences[x])/4)
+                foundSingles = []
+                for y in range (len(singles)):
+                    if usedNumbers.count(singles[y].value) == 0:
+                        foundSingles.append(singles[y])
+                if len(foundSingles) >= neededSingles:
+                    perm = permutations(foundSingles, neededSingles)
+                    for i in perm:
+                        attachmentPlay = tripletSequences[x]+list(i)
+                        legalTripletSingleSequences.append(attachmentPlay)
+            for x in range (len(triplets)):
+                if (triplets[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(triplets[x]), 3):
+                        usedNumbers.append(triplets[x][a].value)
+                    neededSingles = 1
+                    foundSingles = []
+                    for y in range (len(singles)):
+                        if usedNumbers.count(singles[y].value) == 0:
+                            foundSingles.append(singles[y])
+                    if len(foundSingles) >= neededSingles:
+                        perm = permutations(foundSingles, neededSingles)
+                        for i in perm:
+                            attachmentPlay = tripletSequences[x]+list(i)
+                            legalTripletSingleSequences.append(attachmentPlay)
+            legalTripletPairSequences = []
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(tripletSequences[x])/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            for x in range (len(triplets)):
+                if (triplets[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(triplets[x]), 3):
+                        usedNumbers.append(triplets[x][a].value)
+                    neededPairs = 1
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+
         #rocket: Can't be beaten
         if typeOfPlay == 0:
             return []
@@ -1544,6 +1765,32 @@ class HillClimbAI:
                             foundPairs.append(pairs[y])
                     if len(foundPairs) >= neededPairs:
                         finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalTripletPairSequences
+        '''
+        if typeOfPlay == 4:
+            legalTripletPairSequences = []
+            if analyzedPlay[2] == 5:
+                tripletSequences = triplets
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/5)*3)):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(play)/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
                         for r in range (len(foundPairs)):
                             firstPair = foundPairs[r]
                             finalFoundPairs.append(firstPair)
@@ -1579,6 +1826,7 @@ class HillClimbAI:
                                         finalFoundPairs.pop()
                                 finalFoundPairs.pop()
             return rockets + quads + legalTripletPairSequences
+            '''
         #Triplet sequence with single attachment, beatable by higher ranked triplet-with-single or rocket/bomb
         if typeOfPlay == 5:
             legalTripletSingleSequences = []
@@ -1640,7 +1888,7 @@ class HillClimbAI:
         if typeOfPlay == 11:
             legalSingles = []
             for x in range (len(singles)):
-                if singles[x].value > rankOfPlay:
+                if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
 
@@ -1715,15 +1963,52 @@ class HillClimbAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
+    def return_best_play_from_hand(self, hand):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = to_plays_array(valid_plays(self, hand))
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return poss_plays[value_of_plays.index(max(value_of_plays))]
+
+    #returns a (play, value) pair of expected values of plays
+    def evaluate_hand_dict(self, hand):
+        poss_plays = to_plays_array(valid_plays(self, hand))
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return dict(zip(poss_play, value_of_plays))
+
+    #find expected value of own hand, taking into account different plays
+    #that could be made on the current board
+    def evaluate_hand_given_play(self, hand, play):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = combine_play(self, hand, play)
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([value_lookup(card) for card in leftover_hand])
         return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
 
+    #find expected value of a hand, disregarding combinations of cards
+    def evaluate_hand_separate(self, hand):
+        return sum([value_lookup(card) for card in hand])
+
+    #find expected values of another player's hand in comparison to your own
+    #value > 0 means on average the your hand is better than their's
+    #value < 0 means on average the your hand is worse than their's
+    #requires other player hand size, your hand, and the cards still not played
+    def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
+        own_value = evaluate_hand_separate(hand)
+        total_other_value = evaluate_hand_separate(unplayed_cards)
+        other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
+        return own_value - other_value
+
     #return the best move based on expectiminimax using pruning
-    def get_move(self, hand):
+    def get_move(self, hand, play):
         poss_plays = combine_play(self, hand, play)
+        if (not poss_plays): return []
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return poss_plays[value_of_plays.index(max(value_of_plays))]
 
@@ -1808,9 +2093,9 @@ class SimulatedAnnealingAI:
                         isRocket.append(hand[previousCards+1])
 
                     else:
-                        single.append(hand[previousCards])
+                        single.append([hand[previousCards]])
                 elif simplifiedHand[x+1] == 1:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 break
 
             #if the hand has 4 of the current card being scanned
@@ -1844,7 +2129,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1857,7 +2143,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1865,9 +2152,9 @@ class SimulatedAnnealingAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isQuad.append(hand[previousCards])
+                    isQuad.append([hand[previousCards]])
                 previousCards = previousCards + 4
 
             #If the current hand has 3 of the current card being scanned
@@ -1899,7 +2186,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1911,7 +2199,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1919,9 +2208,9 @@ class SimulatedAnnealingAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isTriplet.append(hand[previousCards])
+                    isTriplet.append([hand[previousCards]])
                 previousCards = previousCards + 3
 
             #If the current hand has 2 copies of the card being scanned
@@ -1936,7 +2225,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 2) and (x+y+1 < 12)):
                         newPair = [hand[lookaheadCards], hand[lookaheadCards+1]]
                         runningPairSequence = runningPairSequence + newPair
-                        sequencePair.append(list(runningPairSequence))
+                        if (len(runningPairSequence) >=3):
+                            sequencePair.append(list(runningPairSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1948,7 +2238,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1956,9 +2247,9 @@ class SimulatedAnnealingAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    isPair.append(hand[previousCards])
+                    isPair.append([hand[previousCards]])
                 previousCards = previousCards + 2
 
             #If current hand only has 1 of the scanned card
@@ -1970,7 +2261,8 @@ class SimulatedAnnealingAI:
                     if ((simplifiedHand[x+y+1] >= 1) and (x+y+1 < 12)):
                         newSingle = [hand[lookaheadCards]]
                         runningSingleSequence= runningSingleSequence + newSingle
-                        sequenceSingle.append(list(runningSingleSequence))
+                        if (len(runningSingleSequence) >= 5):
+                            sequenceSingle.append(list(runningSingleSequence))
                         lookaheadCards = lookaheadCards + simplifiedHand[x+y+1]
                         cardInSequence = True
                     else:
@@ -1978,12 +2270,10 @@ class SimulatedAnnealingAI:
 
                 #setting single-attachment priority
                 if cardInSequence:
-                    isSequence.append(hand[previousCards])
+                    isSequence.append([hand[previousCards]])
                 else:
-                    single.append(hand[previousCards])
+                    single.append([hand[previousCards]])
                 previousCards = previousCards + 1
-
-
 
         single = single + isPair + isTriplet + isQuad + isSequence + isRocket
         #single = [single, isPair, isTriplet, isQuad, isSequence, isRocket]
@@ -2146,6 +2436,11 @@ class SimulatedAnnealingAI:
         hand.sort(key = lambda card: card.value)
         totalNumber = len(hand)
         analyzedPlay = [-1, -1, -1]
+
+        #if 0
+        if len(hand) == 0:
+            return analyzedPlay
+
         #if 1, must be single card
         if len(hand) == 1:
             analyzedPlay = [11, hand[0].value, 1]
@@ -2318,6 +2613,101 @@ class SimulatedAnnealingAI:
 
         typeOfPlay = analyzedPlay[0]
         rankOfPlay = analyzedPlay[1]
+        #if empty play, can play anything
+        if typeOfPlay == -1:
+            legalQuadSingles = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(singles)):
+                        if singles[y].value != quads[x][0].value:
+                            for z in range (len(singles)):
+                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
+                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                    legalQuadSingles.append(attachmentPlay)
+            legalQuadPairs = []
+            for x in range (len(quads)):
+                if quads[x][0].value > rankOfPlay:
+                    for y in range (len(pairs)):
+                        if len(pairs) <=1:
+                            break
+                        if pairs[y][0].value != quads[x][0].value:
+                            for z in range (len(pairs)):
+                                if pairs[z][0].value != quads[x][0].value and pairs[z][0].value != pairs[y][0].value:
+                                    attachmentPlay = quads[x]+pairs[y]+pairs[z]
+                                    legalQuadPairs.append(attachmentPlay)
+            legalTripletSingleSequences = []
+            for x in range (len(tripletSequences)):
+                usedNumbers = []
+                for a in range (0, len(tripletSequences[x]), 3):
+                    usedNumbers.append(tripletSequences[x][a].value)
+                neededSingles = int(len(tripletSequences[x])/4)
+                foundSingles = []
+                for y in range (len(singles)):
+                    if usedNumbers.count(singles[y].value) == 0:
+                        foundSingles.append(singles[y])
+                if len(foundSingles) >= neededSingles:
+                    perm = permutations(foundSingles, neededSingles)
+                    for i in perm:
+                        attachmentPlay = tripletSequences[x]+list(i)
+                        legalTripletSingleSequences.append(attachmentPlay)
+            for x in range (len(triplets)):
+                if (triplets[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(triplets[x]), 3):
+                        usedNumbers.append(triplets[x][a].value)
+                    neededSingles = 1
+                    foundSingles = []
+                    for y in range (len(singles)):
+                        if usedNumbers.count(singles[y].value) == 0:
+                            foundSingles.append(singles[y])
+                    if len(foundSingles) >= neededSingles:
+                        perm = permutations(foundSingles, neededSingles)
+                        for i in perm:
+                            attachmentPlay = tripletSequences[x]+list(i)
+                            legalTripletSingleSequences.append(attachmentPlay)
+            legalTripletPairSequences = []
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(tripletSequences[x])/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            for x in range (len(triplets)):
+                if (triplets[x][0].value > rankOfPlay):
+                    usedNumbers = []
+                    for a in range (0, len(triplets[x]), 3):
+                        usedNumbers.append(triplets[x][a].value)
+                    neededPairs = 1
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+
         #rocket: Can't be beaten
         if typeOfPlay == 0:
             return []
@@ -2371,6 +2761,32 @@ class SimulatedAnnealingAI:
                             foundPairs.append(pairs[y])
                     if len(foundPairs) >= neededPairs:
                         finalFoundPairs = []
+                        perm = permutations(foundPairs, neededPairs)
+                        for i in perm:
+                            i2 = list(i)
+                            attachmentPlay = tripletSequences[x]
+                            for j in range (len(i2)):
+                                attachmentPlay = attachmentPlay + i2[j]
+                                print(attachmentPlay)
+                            legalTripletPairSequences.append(attachmentPlay)
+            return rockets + quads + legalTripletPairSequences
+        '''
+        if typeOfPlay == 4:
+            legalTripletPairSequences = []
+            if analyzedPlay[2] == 5:
+                tripletSequences = triplets
+            for x in range (len(tripletSequences)):
+                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/5)*3)):
+                    usedNumbers = []
+                    for a in range (0, len(tripletSequences[x]), 3):
+                        usedNumbers.append(tripletSequences[x][a].value)
+                    neededPairs = int(len(play)/5)
+                    foundPairs = []
+                    for y in range (len(pairs)):
+                        if usedNumbers.count(pairs[y][0].value) == 0:
+                            foundPairs.append(pairs[y])
+                    if len(foundPairs) >= neededPairs:
+                        finalFoundPairs = []
                         for r in range (len(foundPairs)):
                             firstPair = foundPairs[r]
                             finalFoundPairs.append(firstPair)
@@ -2406,6 +2822,7 @@ class SimulatedAnnealingAI:
                                         finalFoundPairs.pop()
                                 finalFoundPairs.pop()
             return rockets + quads + legalTripletPairSequences
+            '''
         #Triplet sequence with single attachment, beatable by higher ranked triplet-with-single or rocket/bomb
         if typeOfPlay == 5:
             legalTripletSingleSequences = []
@@ -2467,7 +2884,7 @@ class SimulatedAnnealingAI:
         if typeOfPlay == 11:
             legalSingles = []
             for x in range (len(singles)):
-                if singles[x].value > rankOfPlay:
+                if singles[x][0].value > rankOfPlay:
                     legalSingles.append(singles[x])
             return rockets + quads + legalSingles
 
@@ -2542,47 +2959,60 @@ class SimulatedAnnealingAI:
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
         return max(value_of_plays)
 
+    def return_best_play_from_hand(self, hand):
+        poss_plays = to_plays_array(valid_plays(self, hand))
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return poss_plays[value_of_plays.index(max(value_of_plays))]
+
+    #find expected value of own hand, taking into account different plays
+    #that could be made on the current board
+    def evaluate_hand_given_play(self, hand, play):
+        #if hand empty then win
+        if (not hand): return 1000000
+        poss_plays = combine_play(self, hand, play)
+        value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
+        return max(value_of_plays)
+
     #find expected value of a play based on own hand
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([value_lookup(card) for card in leftover_hand])
         return leftover_quality - turn_penalty + evaluate_hand(self, leftover_hand)
 
-    #returns a (play, value) pair of expected values of plays
-    def evaluate_hand_dict(self, hand, play):
+    #find expected value of a hand, disregarding combinations of cards
+    def evaluate_hand_separate(self, hand):
+        return sum([value_lookup(card) for card in hand])
+
+    #find expected values of another player's hand in comparison to your own
+    #value > 0 means on average the your hand is better than their's
+    #value < 0 means on average the your hand is worse than their's
+    #requires other player hand size, your hand, and the cards still not played
+    def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
+        own_value = evaluate_hand_separate(hand)
+        total_other_value = evaluate_hand_separate(unplayed_cards)
+        other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
+        return own_value - other_value
+
+    #returns a sorted list of plays based on expected values
+    def evaluate_hand_list(self, hand, play):
         poss_plays = combine_play(self, hand, play)
         value_of_plays = [evaluate_play(self, hand, poss_play) for poss_play in poss_plays]
-        dict = dict(zip(poss_play, value_of_plays))
-        return sorted(dict.values())
+        indexes = sorted(range(len(value_of_plays)),key=lambda x:value_of_plays[x])
+        plays = [poss_plays[i] for i in indexes]
+        return plays
 
     #return the best move based on simulated annealing, given a hand and a turn (starting at 1)
     def get_move(self, hand, play, turn):
-        temperature = 10/turn
-        index = math.floor(random.random() * temperature)
-        dict = evaluate_hand_dict(self, hand, play)
-        if (index > len(dict)):
-            return dict.get(len(dict) - 1)
-        return dict.get(index)
+        temperature = 10./turn
+        index = int(math.floor(random.random() * temperature))
+        plays = evaluate_hand_list(self, hand, play)
+        if (not plays or 0 > index or index >= len(plays)): return []
+        if (index >= len(plays)):
+            return plays[len(plays) - 1]
+        return plays[index]
 
 #Other Actual Non-AI Players
 class Other:
     def __init__(self, order):
         self.order = order
         self.str = 'Other ' + str(order)
-
-#tests
-eai = ExpectiMiniMaxAI(1)
-hand = [Card(5, "hearts"), Card(6, "diamonds")]
-eai.valid_plays(hand)
-eai.evaluate_hand(hand)
-
-
-#tests
-hai = HillClimbAI(1)
-hand = [Card(5, "hearts"), Card(6, "diamonds")]
-hai.get_move(hand)
-
-#tests
-sai = SimulatedAnnealingAI(1)
-hand = [Card(5, "hearts"), Card(6, "diamonds")]
-sai.get_move(hand, 1) #move on turn 1
