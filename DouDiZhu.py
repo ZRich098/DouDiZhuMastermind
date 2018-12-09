@@ -63,19 +63,19 @@ class DDZ:
     #get the move they wish to make from current_player.
     def move(self, current_player):
         if(current_player == 0):
-            self.players[current_player].get_move(self.deck1, self.currentPlay)
+            return self.players[current_player].get_move(self.deck1, self.currentPlay)
 #        self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
-            self.players[current_player].get_move(self.deck2, self.currentPlay)
+            return self.players[current_player].get_move(self.deck2, self.currentPlay)
         else:
-            self.players[current_player].get_move(self.deck3,self.turn, self.currentPlay)
+            return self.players[current_player].get_move(self.deck3,self.turn, self.currentPlay)
 
 
     #update the Game State in response to a move
-    def update_game_state(self, move, current_player):
-        print(move)
-        if (move is not None):
-            for ele in move:
+    def update_game_state(self, mv, current_player):
+        print(mv)
+        if (mv is not None):
+            for ele in mv:
                 self.hands[current_player].remove(ele) #Removes every card that is being played
                 self.field.append(ele) #Append it to the list representing the table
         # if one of the players has no more cards, then they win, and if they're not the landlord, then, their
@@ -83,9 +83,9 @@ class DDZ:
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
             game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
-            print(current_player+" is playing "+ move)
-            update_game_state(move(current_player),(current_player+1)%3)
-            updateCurrentPlay(move(current_player))
+            print(str(current_player)+" is playing "+ str(mv))
+            self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
+            self.updateCurrentPlay(mv)
             self.turn += 1
 
     #Note for this function I have not decided how the stakes function should run yet so I have just hard coded it for now
