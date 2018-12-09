@@ -987,8 +987,8 @@ class ExpectiMiniMaxAI:
     #value < 0 means on average the your hand is worse than their's
     #requires other player hand size, your hand, and the cards still not played
     def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
-        own_value = evaluate_hand_separate(hand)
-        total_other_value = evaluate_hand_separate(unplayed_cards)
+        own_value = self.evaluate_hand_separate(hand)
+        total_other_value = self.evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
@@ -1994,8 +1994,8 @@ class HillClimbAI:
     #value < 0 means on average the your hand is worse than their's
     #requires other player hand size, your hand, and the cards still not played
     def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
-        own_value = evaluate_hand_separate(hand)
-        total_other_value = evaluate_hand_separate(unplayed_cards)
+        own_value = self.evaluate_hand_separate(hand)
+        total_other_value = self.evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
@@ -2979,8 +2979,8 @@ class SimulatedAnnealingAI:
     #value < 0 means on average the your hand is worse than their's
     #requires other player hand size, your hand, and the cards still not played
     def evaluate_other_player(self, other_player_hand_size, hand, unplayed_cards):
-        own_value = evaluate_hand_separate(hand)
-        total_other_value = evaluate_hand_separate(unplayed_cards)
+        own_value = self.evaluate_hand_separate(hand)
+        total_other_value = self.evaluate_hand_separate(unplayed_cards)
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
 
@@ -3019,6 +3019,7 @@ play = [Card(3,"a")]
 play = [Card(3,"a"), Card(3,"b")]
 
 hai = HillClimbAI(1)
+hai.combine_play(hand,play)
 hai.get_move(hand, play)
 
 sai = SimulatedAnnealingAI(1)
