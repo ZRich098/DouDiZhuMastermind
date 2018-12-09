@@ -2828,21 +2828,41 @@ class SimulatedAnnealingAI:
             legalTripletSingleSequences = []
             if analyzedPlay[2] == 4:
                 tripletSequences = triplets
-            for x in range (len(tripletSequences)):
-                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
-                    usedNumbers = []
-                    for a in range (0, len(tripletSequences[x]), 3):
-                        usedNumbers.append(tripletSequences[x][a].value)
-                    neededSingles = int(len(play)/4)
-                    foundSingles = []
-                    for y in range (len(singles)):
-                        if usedNumbers.count(singles[y][0].value) == 0:
-                            foundSingles.append(singles[y])
-                    if len(foundSingles) >= neededSingles:
-                        perm = permutations(foundSingles, neededSingles)
-                        for i in perm:
-                            attachmentPlay = tripletSequences[x]+list(i)
-                            legalTripletSingleSequences.append(attachmentPlay)
+                for x in range (len(tripletSequences)):
+                    if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                        usedNumbers = []
+                        for a in range (0, len(tripletSequences[x]), 3):
+                            usedNumbers.append(tripletSequences[x][a].value)
+                        neededSingles = int(len(play)/4)
+                        foundSingles = []
+                        for y in range (len(singles)):
+                            if usedNumbers.count(singles[y][0].value) == 0:
+                                foundSingles.append(singles[y])
+                        if len(foundSingles) >= neededSingles:
+                            perm = permutations(foundSingles, neededSingles)
+                            for i in perm:
+                                if isinstance(i, list):
+                                    attachmentPlay = tripletSequences[x]+i
+                                    legalTripletSingleSequences.append(attachmentPlay)
+                                else:
+                                    attachmentPlay = tripletSequences[x]+list(i)
+                                    legalTripletSingleSequences.append(attachmentPlay)
+            else:
+                for x in range (len(tripletSequences)):
+                    if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                        usedNumbers = []
+                        for a in range (0, len(tripletSequences[x]), 3):
+                            usedNumbers.append(tripletSequences[x][a].value)
+                        neededSingles = int(len(play)/4)
+                        foundSingles = []
+                        for y in range (len(singles)):
+                            if usedNumbers.count(singles[y][0].value) == 0:
+                                foundSingles.append(singles[y])
+                        if len(foundSingles) >= neededSingles:
+                            perm = permutations(foundSingles, neededSingles)
+                            for i in perm:
+                                attachmentPlay = tripletSequences[x]+list(i)
+                                legalTripletSingleSequences.append(attachmentPlay)
             return rockets + quads + legalTripletSingleSequences
         #standard triplet sequence
         if typeOfPlay == 6:
