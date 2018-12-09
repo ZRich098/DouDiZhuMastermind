@@ -611,10 +611,10 @@ class ExpectiMiniMaxAI:
             for x in range (len(quads)):
                 if quads[x][0].value > rankOfPlay:
                     for y in range (len(singles)):
-                        if singles[y].value != quads[x][0].value:
+                        if singles[y][0].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
-                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                if singles[z][0].value != quads[x][0].value and singles[z][0].value != singles[y][0].value and (singles[z][0].value + singles[y][0].value < 33):
+                                    attachmentPlay = quads[x]+[singles[y][0]]+[singles[z][0]]
                                     legalQuadSingles.append(attachmentPlay)
             legalQuadPairs = []
             for x in range (len(quads)):
@@ -635,8 +635,8 @@ class ExpectiMiniMaxAI:
                 neededSingles = int(len(tripletSequences[x])/4)
                 foundSingles = []
                 for y in range (len(singles)):
-                    if usedNumbers.count(singles[y].value) == 0:
-                        foundSingles.append(singles[y])
+                    if usedNumbers.count(singles[y][0].value) == 0:
+                        foundSingles.append(singles[y][0])
                 if len(foundSingles) >= neededSingles:
                     perm = permutations(foundSingles, neededSingles)
                     for i in perm:
@@ -650,8 +650,8 @@ class ExpectiMiniMaxAI:
                     neededSingles = 1
                     foundSingles = []
                     for y in range (len(singles)):
-                        if usedNumbers.count(singles[y].value) == 0:
-                            foundSingles.append(singles[y])
+                        if usedNumbers.count(singles[y][0].value) == 0:
+                            foundSingles.append(singles[y][0])
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
@@ -1615,10 +1615,10 @@ class HillClimbAI:
             for x in range (len(quads)):
                 if quads[x][0].value > rankOfPlay:
                     for y in range (len(singles)):
-                        if singles[y].value != quads[x][0].value:
+                        if singles[y][0].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
-                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                if singles[z][0].value != quads[x][0].value and singles[z][0].value != singles[y][0].value and (singles[z][0].value + singles[y][0].value < 33):
+                                    attachmentPlay = quads[x]+[singles[y][0]]+[singles[z][0]]
                                     legalQuadSingles.append(attachmentPlay)
             legalQuadPairs = []
             for x in range (len(quads)):
@@ -1639,8 +1639,8 @@ class HillClimbAI:
                 neededSingles = int(len(tripletSequences[x])/4)
                 foundSingles = []
                 for y in range (len(singles)):
-                    if usedNumbers.count(singles[y].value) == 0:
-                        foundSingles.append(singles[y])
+                    if usedNumbers.count(singles[y][0].value) == 0:
+                        foundSingles.append(singles[y][0])
                 if len(foundSingles) >= neededSingles:
                     perm = permutations(foundSingles, neededSingles)
                     for i in perm:
@@ -1654,8 +1654,8 @@ class HillClimbAI:
                     neededSingles = 1
                     foundSingles = []
                     for y in range (len(singles)):
-                        if usedNumbers.count(singles[y].value) == 0:
-                            foundSingles.append(singles[y])
+                        if usedNumbers.count(singles[y][0].value) == 0:
+                            foundSingles.append(singles[y][0])
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
@@ -2608,10 +2608,10 @@ class SimulatedAnnealingAI:
             for x in range (len(quads)):
                 if quads[x][0].value > rankOfPlay:
                     for y in range (len(singles)):
-                        if singles[y].value != quads[x][0].value:
+                        if singles[y][0].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
-                                    attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
+                                if singles[z][0].value != quads[x][0].value and singles[z][0].value != singles[y][0].value and (singles[z][0].value + singles[y][0].value < 33):
+                                    attachmentPlay = quads[x]+[singles[y][0]]+[singles[z][0]]
                                     legalQuadSingles.append(attachmentPlay)
             legalQuadPairs = []
             for x in range (len(quads)):
@@ -2632,8 +2632,8 @@ class SimulatedAnnealingAI:
                 neededSingles = int(len(tripletSequences[x])/4)
                 foundSingles = []
                 for y in range (len(singles)):
-                    if usedNumbers.count(singles[y].value) == 0:
-                        foundSingles.append(singles[y])
+                    if usedNumbers.count(singles[y][0].value) == 0:
+                        foundSingles.append(singles[y][0])
                 if len(foundSingles) >= neededSingles:
                     perm = permutations(foundSingles, neededSingles)
                     for i in perm:
@@ -2647,8 +2647,8 @@ class SimulatedAnnealingAI:
                     neededSingles = 1
                     foundSingles = []
                     for y in range (len(singles)):
-                        if usedNumbers.count(singles[y].value) == 0:
-                            foundSingles.append(singles[y])
+                        if usedNumbers.count(singles[y][0].value) == 0:
+                            foundSingles.append(singles[y][0])
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
                         for i in perm:
