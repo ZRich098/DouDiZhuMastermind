@@ -2995,9 +2995,8 @@ class SimulatedAnnealingAI:
     #return the best move based on simulated annealing, given a hand and a turn (starting at 1)
     def get_move(self, hand, play, turn):
         temperature = 10./turn
-        index = int(math.floor(random.random() * temperature))
         plays = self.evaluate_hand_list(hand, play)
-        plays.reverse()
+        index = int(math.floor(random.random() * temperature))%len(plays)
         if (not plays or 0 > index or index >= len(plays)): return []
         if (index >= len(plays)):
             return plays[len(plays) - 1]
