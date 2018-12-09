@@ -7,7 +7,7 @@ class DDZ:
     def __init__(self, player1, player2, player3):
         self.players = [player1, player2, player3]
         self.current_player = 0 #0 represents player1, 1 represents player2 and 2 represents player3
-        self.game_over = False
+        self.game_over_value = False
         self.field = []
         self.origDeck = [Card(3,'diamonds'),Card(3,'clubs'),Card(3,'hearts'),Card(3,'spades'),
                          Card(4,'diamonds'),Card(4,'clubs'),Card(4,'hearts'),Card(4,'spades'),
@@ -63,42 +63,49 @@ class DDZ:
     #get the move they wish to make from current_player.
     def move(self, current_player):
         if(current_player == 0):
-            r1 = self.players[current_player].get_move(self.deck1, self.currentPlay)
-
+            r1 = self.players[current_player].get_move(self.deck1, self.currentPlay,self.turn)
+            self.currentPlay = r1
             return r1
 #            self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
-            return self.players[current_player].get_move(self.deck2, self.currentPlay)
+            r2 = self.players[current_player].get_move(self.deck2, self.currentPlay,self.turn)
+            self.currentPlay = r2
+            return r2
         else:
-            return self.players[current_player].get_move(self.deck3, self.currentPlay,self.turn)
+            r3 = self.players[current_player].get_move(self.deck3, self.currentPlay,self.turn)
+            self.currentPlay = r3
+            return r3
+
+
 
 
     #update the Game State in response to a move
     def update_game_state(self, mv, current_player):
         if (mv is not None):
             for ele in mv:
-                self.hands[current_player].remove(ele) #Removes every card that is being played
-                self.field.append(ele) #Append it to the list representing the table
+                if (ele in self.hands[current_player]):
+                    self.hands[current_player].remove(ele) #Removes every card that is being played
+                    self.field.append(ele) #Append it to the list representing the table
         # if one of the players has no more cards, then they win, and if they're not the landlord, then, their
         # partner wins as well.
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
-            game_over(current_player)
+            self.game_over(current_player)
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
-#            print(str(current_player)+" is playing "+ str(mv))
+            print(str(current_player)+" is playing "+ str(mv))
             self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
             self.updateCurrentPlay(mv)
             self.turn += 1
 
     #Note for this function I have not decided how the stakes function should run yet so I have just hard coded it for now
     def game_over(self, current_player):
-        if(self.game_over == true and self.deck1 == 0): #if the game is over and player1's hand is empty
+        if(self.game_over_value == True and self.deck1 == 0): #if the game is over and player1's hand is empty
             print ("You have won Landlord!!")
             print ("Game over filthy Peasants")
-        elif(self.game_over == false and self.deck2 == 0): #if the game is over and player2's hand is empty
-            print ("You and your partner have won " + current_player)
+        elif(self.game_over_value == False and self.deck2 == 0): #if the game is over and player2's hand is empty
+            print ("You and your partner have won " + str(current_player))
             print ("Game over Landlord")
         else:  #if the game is over and player3's hand is empty
-            print ("You and your partner have won " + current_player)
+            print ("You and your partner have won " + str(current_player))
             print ("Game over Landlord")
 
     def updateLandlord(self):
@@ -127,8 +134,8 @@ def create_player(type, order):
 def main():
     #Parse players from Game State
 #    Player1 = 'ExpectiMiniMaxAI'
-    Player1 = 'HillClimbAI'
-    Player2 = 'HillClimbAI'
+    Player1 = 'SimulatedAnnealingAI'
+    Player2 = 'SimulatedAnnealingAI'
     Player3 = 'SimulatedAnnealingAI'
 
     game = DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
