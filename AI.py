@@ -1707,8 +1707,10 @@ class HillClimbAI:
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                             legalTripletPairs.append(attachmentPlay)
-            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
-
+            r1 =  rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+            print (r1)
+            return r1
+            
         #rocket: Can't be beaten
         if typeOfPlay == 0:
             return []
