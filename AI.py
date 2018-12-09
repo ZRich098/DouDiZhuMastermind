@@ -2611,9 +2611,12 @@ class SimulatedAnnealingAI:
         singleSequences = validPlays[6]
         #note that singles is constructed by concatenation, not multiple lists, so you can access it normally
         singles = validPlays[7]
-
-        typeOfPlay = analyzedPlay[0]
-        rankOfPlay = analyzedPlay[1]
+        
+        typeOfPlay = 0
+        rankOfPlay = 18
+        if (analyzedPlay is not None):
+            typeOfPlay = analyzedPlay[0]
+            rankOfPlay = analyzedPlay[1]
         #if empty play, can play anything
         if typeOfPlay == -1:
             legalQuadSingles = []
