@@ -1006,7 +1006,8 @@ class ExpectiMiniMaxAI:
         poss_plays = self.combine_play(hand, play)
         if (not poss_plays): return []
         value_of_plays = [self.evaluate_play(hand, poss_play, unplayed_cards, others_data, 3) for poss_play in poss_plays]
-        return poss_plays[value_of_plays.index(max(value_of_plays))]
+        max_index = value_of_plays.index(max(value_of_plays))
+        return poss_plays[max_index]
 
 class HillClimbAI:
     def __init__(self, order):
@@ -3010,8 +3011,7 @@ hand = [Card(5,"a"), Card(6,"b"), Card(6,"c"), Card(6,"a"), Card(6,"d"),
 Card(7,"a"), Card(8,"b"), Card(8,"c"),
 Card(10,"a"), Card(11,"b"), Card(12,"c"),
 Card(13,"a"), Card(14,"b"), Card(15,"c"),
-Card(15,"a"), Card(16,"b"), Card(17,"c")
-]
+Card(15,"a"), Card(16,"b"), Card(17,"c")]
 play = []
 play = [Card(3,"a")]
 play = [Card(3,"a"), Card(3,"b")]
