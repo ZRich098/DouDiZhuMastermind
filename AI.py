@@ -784,6 +784,34 @@ class ExpectiMiniMaxAI:
             17: 50 } #colored joker
         return table.get(card.value, 0)
 
+    #play numbers in order starting from 0
+    #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
+    def play_lookup(play_number,length)
+        table = {
+            0: 500,
+            1: 450,
+            2: length*80,
+            3: 100,
+            4: length*85,
+            5: 50,
+            6: length*90
+            7: 0}
+        return table.get(play_number,0)
+    
+    #find the estimated value of a hand to use as a base in evaluation
+    def evaluation_heuristic(hand):
+        
+        plays = valid_plays(hand)
+        sum_plays = 0
+        for x in range(plays):
+            for y in x:
+                sum_plays = sum_plays + play_lookup(x,len(y))
+        sum_cards = evaluate_hand_seperate(hand)
+        length_penalty = len(hand)*110
+        if (length_penalty == 0):
+            return 1000000
+        return sum_plays + sum_cards - length_penalty
+
     turn_penalty = 50
 
     def to_plays_array(array):
@@ -797,8 +825,8 @@ class ExpectiMiniMaxAI:
                         arr.append(e)
             else:
                 arr.append(e)
-        return arr
-
+        return ar
+        
     #find expected value of own hand, taking into account different plays that could be made
     def evaluate_hand(self, hand):
         #if hand empty then win
@@ -851,9 +879,26 @@ class ExpectiMiniMaxAI:
         other_value = total_other_value * other_player_hand_size / len(unplayed_cards)
         return own_value - other_value
     
-    #return the best move based on expectiminimax using pruning
-    def get_move(self):
-        return valid_plays[1]
+    #return the best move based on expectimax
+    def get_move((self, hand, unplayed_cards, hand_sizes, play):
+        '''def max_value(hand, unplayed_cards, hand_sizes, depth, play, max_depth):
+            if(depth == max_depth):
+                return (hand,evaluate_hand_given_play(hand, play))
+            best = -1000000;
+            for hand,value in 
+                
+        
+        def exp_value(hand, unplayed_cards, hand_sizes, depth, play, max_depth)
+            if(depth == max_depth):
+                return 
+            
+        def expectimax(hand, unplayed_cards, hand_sizes, max_depth):
+            alpha = -10000000
+            for plays in self.valid_plays(hand):
+                alpha = max(alpha, exp_val(hand, unplayed_cards, hand_sizes,depth+1, play, max_depth))
+            
+        return expectimax(hand, unplayed_cards, hand_sizes, play, 4)'''
+        return return_best_play_from_hand(hand):
 
 class HillClimbAI:
     def __init__(self, order):
@@ -1619,6 +1664,34 @@ class HillClimbAI:
             17: 50 } #colored joker
         return table.get(card.value, 0)
 
+    #play numbers in order starting from 0
+    #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
+    def play_lookup(play_number,length)
+        table = {
+            0: 500,
+            1: 450,
+            2: length*80,
+            3: 100,
+            4: length*85,
+            5: 50,
+            6: length*90
+            7: 0}
+        return table.get(play_number,0)
+    
+    #find the estimated value of a hand to use as a base in evaluation
+    def evaluation_heuristic(hand):
+        
+        plays = valid_plays(hand)
+        sum_plays = 0
+        for x in range(plays):
+            for y in x:
+                sum_plays = sum_plays + play_lookup(x,len(y))
+        sum_cards = evaluate_hand_seperate(hand)
+        length_penalty = len(hand)*110
+        if (length_penalty == 0):
+            return 1000000
+        return sum_plays + sum_cards - length_penalty
+    
     turn_penalty = 50
 
     def to_plays_array(array):
@@ -2418,6 +2491,34 @@ class SimulatedAnnealingAI:
             17: 50 } #colored joker
         return table.get(card.value, 0)
 
+    #play numbers in order starting from 0
+    #plays = [[rocket], [quad], [sequenceTriplet], [triplet], [sequencePair], [pair], [sequenceSingle], [single]]
+    def play_lookup(play_number,length)
+        table = {
+            0: 500,
+            1: 450,
+            2: length*80,
+            3: 100,
+            4: length*85,
+            5: 50,
+            6: length*90
+            7: 0}
+        return table.get(play_number,0)
+    
+    #find the estimated value of a hand to use as a base in evaluation
+    def evaluation_heuristic(hand):
+        
+        plays = valid_plays(hand)
+        sum_plays = 0
+        for x in range(plays):
+            for y in x:
+                sum_plays = sum_plays + play_lookup(x,len(y))
+        sum_cards = evaluate_hand_seperate(hand)
+        length_penalty = len(hand)*110
+        if (length_penalty == 0):
+            return 1000000
+        return sum_plays + sum_cards - length_penalty
+    
     turn_penalty = 50
 
     def to_plays_array(array):
