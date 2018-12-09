@@ -63,7 +63,7 @@ class DDZ:
     #get the move they wish to make from current_player.
     def move(self, current_player):
         if(current_player == 0):
-            self.players[current_player].get_move(self.deck2, self.currentPlay)
+            self.players[current_player].get_move(self.deck1, self.currentPlay)
 #        self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
             self.players[current_player].get_move(self.deck2, self.currentPlay)
@@ -72,7 +72,8 @@ class DDZ:
 
 
     #update the Game State in response to a move
-    def update_game_state(self,move, current_player):
+    def update_game_state(self, move, current_player):
+        print(move)
         for ele in move:
             self.hands[current_player].remove(ele) #Removes every card that is being played
             self.field.append(ele) #Append it to the list representing the table
@@ -130,6 +131,7 @@ def main():
     game = DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
     game.updateLandlord()
     game.hands[game.landlord] = game.hands[game.landlord] + game.hidden_cards
+    game.update_game_state(game.move(game.current_player),game.current_player)
 
 if __name__== '__main__':
     main()
