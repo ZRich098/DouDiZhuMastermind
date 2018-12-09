@@ -676,7 +676,6 @@ class ExpectiMiniMaxAI:
                             attachmentPlay = tripletSequences[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
@@ -696,7 +695,6 @@ class ExpectiMiniMaxAI:
                             attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
@@ -759,7 +757,6 @@ class ExpectiMiniMaxAI:
                             attachmentPlay = tripletSequences[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalTripletPairSequences
         '''
@@ -1681,7 +1678,6 @@ class HillClimbAI:
                             attachmentPlay = tripletSequences[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
@@ -1701,7 +1697,6 @@ class HillClimbAI:
                             attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
@@ -1764,7 +1759,6 @@ class HillClimbAI:
                             attachmentPlay = tripletSequences[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalTripletPairSequences
         '''
@@ -2674,7 +2668,6 @@ class SimulatedAnnealingAI:
                             attachmentPlay = tripletSequences[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             for x in range (len(triplets)):
                 if (triplets[x][0].value > rankOfPlay):
@@ -2694,7 +2687,6 @@ class SimulatedAnnealingAI:
                             attachmentPlay = triplets[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletSingleSequences + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
 
@@ -2757,7 +2749,6 @@ class SimulatedAnnealingAI:
                             attachmentPlay = tripletSequences[x]
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
-                                print(attachmentPlay)
                             legalTripletPairSequences.append(attachmentPlay)
             return rockets + quads + legalTripletPairSequences
         '''
