@@ -993,7 +993,7 @@ class ExpectiMiniMaxAI:
         return own_value - other_value
 
     #return the best move based on expectimax
-    def get_move((self, hand, unplayed_cards, hand_sizes, play):
+    def get_move(self, hand, unplayed_cards, hand_sizes, play):
         '''def max_value(hand, unplayed_cards, hand_sizes, depth, play, max_depth):
             if(depth == max_depth):
                 return (hand,evaluate_hand_given_play(hand, play))
@@ -1983,7 +1983,7 @@ class HillClimbAI:
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([self.value_lookup(card) for card in leftover_hand])
-        return leftover_quality - 50 + evaluation_heuristic(leftover_hand)
+        return leftover_quality - 50 + self.evaluation_heuristic(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
@@ -2928,7 +2928,7 @@ class SimulatedAnnealingAI:
         if (length_penalty == 0):
             return 1000000
         return sum_plays + sum_cards - length_penalty
-    
+
     def to_plays_array(array):
         arr = []
         for e in array:
@@ -2968,7 +2968,7 @@ class SimulatedAnnealingAI:
     def evaluate_play(self, hand, play):
         leftover_hand = [card for card in hand if card not in play]
         leftover_quality = sum([self.value_lookup(card) for card in leftover_hand])
-        return leftover_quality - 50 + evaluation_heuristic(leftover_hand)
+        return leftover_quality - 50 + self.evaluation_heuristic(leftover_hand)
 
     #find expected value of a hand, disregarding combinations of cards
     def evaluate_hand_separate(self, hand):
