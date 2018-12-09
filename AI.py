@@ -2738,9 +2738,9 @@ class SimulatedAnnealingAI:
             for x in range (len(quads)):
                 if quads[x][0].value > rankOfPlay:
                     for y in range (len(singles)):
-                        if singles[y].value != quads[x][0].value:
+                        if singles[y][0].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
+                                if singles[z][0].value != quads[x][0].value and singles[z][0].value != singles[y][0].value and (singles[z][0].value + singles[y][0].value < 33):
                                     attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
                                     legalQuadSingles.append(attachmentPlay)
             return rockets + quads + legalQuadSingles
@@ -2835,7 +2835,7 @@ class SimulatedAnnealingAI:
                     neededSingles = int(len(play)/4)
                     foundSingles = []
                     for y in range (len(singles)):
-                        if usedNumbers.count(singles[y].value) == 0:
+                        if usedNumbers.count(singles[y][0].value) == 0:
                             foundSingles.append(singles[y])
                     if len(foundSingles) >= neededSingles:
                         perm = permutations(foundSingles, neededSingles)
