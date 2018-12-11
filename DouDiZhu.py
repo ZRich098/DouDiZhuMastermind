@@ -64,16 +64,19 @@ class DDZ:
     def move(self, current_player):
         if(current_player == 0):
             r1 = self.players[current_player].get_move(self.deck1, self.currentPlay,self.turn)
-            self.currentPlay = r1
+            self.updateCurrentPlay(r1)
+            
             return r1
 #            self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
         elif(current_player == 1):
             r2 = self.players[current_player].get_move(self.deck2, self.currentPlay,self.turn)
-            self.currentPlay = r2
+            self.updateCurrentPlay(r2)
+            
             return r2
         else:
             r3 = self.players[current_player].get_move(self.deck3, self.currentPlay,self.turn)
-            self.currentPlay = r3
+            self.updateCurrentPlay(r3)
+            
             return r3
 
 
@@ -93,7 +96,6 @@ class DDZ:
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
             print(str(current_player)+" is playing "+ str(mv))
             print("\n")
-            self.updateCurrentPlay(mv)
             self.turn += 1
             self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
 
