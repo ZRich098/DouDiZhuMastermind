@@ -351,6 +351,7 @@ class ExpectiMiniMaxAI:
                             break
                     if noTripletFound == True:
                         return [False, sequenceStart]
+            return [False, sequenceStart]
 
     def check_quadplex_set_1(self, hand):
         prevHandValue = -1
@@ -468,7 +469,7 @@ class ExpectiMiniMaxAI:
             if checkedBomb[0]:
                 analyzedPlay = [1, checkedBomb[1], 4]
                 return analyzedPlay
-            elif checkedTripletsSingleAttachment[0]:
+            elif checkedTripletSingleAttachment[0]:
                 analyzedPlay = [5, checkedTripletSingleAttachment[1], 4]
                 return analyzedPlay
             #throw error
@@ -596,6 +597,7 @@ class ExpectiMiniMaxAI:
                     play = play + [plsub]
             else:
                 play = play + [pl]
+
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
         analyzedPlay = self.analyze_play(play)
         validPlays = self.valid_plays(hand)
@@ -609,9 +611,12 @@ class ExpectiMiniMaxAI:
         singleSequences = validPlays[6]
         #note that singles is constructed by concatenation, not multiple lists, so you can access it normally
         singles = validPlays[7]
-
-        typeOfPlay = analyzedPlay[0]
-        rankOfPlay = analyzedPlay[1]
+        
+        typeOfPlay = 0
+        rankOfPlay = 18
+        if (analyzedPlay is not None):
+            typeOfPlay = analyzedPlay[0]
+            rankOfPlay = analyzedPlay[1]
         #if empty play, can play anything
         if typeOfPlay == -1:
             legalQuadSingles = []
@@ -737,9 +742,9 @@ class ExpectiMiniMaxAI:
             for x in range (len(quads)):
                 if quads[x][0].value > rankOfPlay:
                     for y in range (len(singles)):
-                        if singles[y].value != quads[x][0].value:
+                        if singles[y][0].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
+                                if singles[z][0].value != quads[x][0].value and singles[z][0].value != singles[y][0].value and (singles[z][0].value + singles[y][0].value < 33):
                                     attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
                                     legalQuadSingles.append(attachmentPlay)
             return rockets + quads + legalQuadSingles
@@ -826,21 +831,41 @@ class ExpectiMiniMaxAI:
             legalTripletSingleSequences = []
             if analyzedPlay[2] == 4:
                 tripletSequences = triplets
-            for x in range (len(tripletSequences)):
-                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
-                    usedNumbers = []
-                    for a in range (0, len(tripletSequences[x]), 3):
-                        usedNumbers.append(tripletSequences[x][a].value)
-                    neededSingles = int(len(play)/4)
-                    foundSingles = []
-                    for y in range (len(singles)):
-                        if usedNumbers.count(singles[y].value) == 0:
-                            foundSingles.append(singles[y])
-                    if len(foundSingles) >= neededSingles:
-                        perm = permutations(foundSingles, neededSingles)
-                        for i in perm:
-                            attachmentPlay = tripletSequences[x]+list(i)
-                            legalTripletSingleSequences.append(attachmentPlay)
+                for x in range (len(tripletSequences)):
+                    if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                        usedNumbers = []
+                        for a in range (0, len(tripletSequences[x]), 3):
+                            usedNumbers.append(tripletSequences[x][a].value)
+                        neededSingles = int(len(play)/4)
+                        foundSingles = []
+                        for y in range (len(singles)):
+                            if usedNumbers.count(singles[y][0].value) == 0:
+                                foundSingles.append(singles[y])
+                        if len(foundSingles) >= neededSingles:
+                            perm = permutations(foundSingles, neededSingles)
+                            for i in perm:
+                                if isinstance(i, list):
+                                    attachmentPlay = tripletSequences[x]+i
+                                    legalTripletSingleSequences.append(attachmentPlay)
+                                else:
+                                    attachmentPlay = tripletSequences[x]+list(i)
+                                    legalTripletSingleSequences.append(attachmentPlay)
+            else:
+                for x in range (len(tripletSequences)):
+                    if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                        usedNumbers = []
+                        for a in range (0, len(tripletSequences[x]), 3):
+                            usedNumbers.append(tripletSequences[x][a].value)
+                        neededSingles = int(len(play)/4)
+                        foundSingles = []
+                        for y in range (len(singles)):
+                            if usedNumbers.count(singles[y][0].value) == 0:
+                                foundSingles.append(singles[y])
+                        if len(foundSingles) >= neededSingles:
+                            perm = permutations(foundSingles, neededSingles)
+                            for i in perm:
+                                attachmentPlay = tripletSequences[x]+list(i)
+                                legalTripletSingleSequences.append(attachmentPlay)
             return rockets + quads + legalTripletSingleSequences
         #standard triplet sequence
         if typeOfPlay == 6:
@@ -1367,6 +1392,7 @@ class HillClimbAI:
                             break
                     if noTripletFound == True:
                         return [False, sequenceStart]
+            return [False, sequenceStart]
 
     def check_quadplex_set_1(self, hand):
         prevHandValue = -1
@@ -1484,7 +1510,7 @@ class HillClimbAI:
             if checkedBomb[0]:
                 analyzedPlay = [1, checkedBomb[1], 4]
                 return analyzedPlay
-            elif checkedTripletsSingleAttachment[0]:
+            elif checkedTripletSingleAttachment[0]:
                 analyzedPlay = [5, checkedTripletSingleAttachment[1], 4]
                 return analyzedPlay
             #throw error
@@ -1612,6 +1638,7 @@ class HillClimbAI:
                     play = play + [plsub]
             else:
                 play = play + [pl]
+
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
         analyzedPlay = self.analyze_play(play)
         validPlays = self.valid_plays(hand)
@@ -1625,9 +1652,12 @@ class HillClimbAI:
         singleSequences = validPlays[6]
         #note that singles is constructed by concatenation, not multiple lists, so you can access it normally
         singles = validPlays[7]
-
-        typeOfPlay = analyzedPlay[0]
-        rankOfPlay = analyzedPlay[1]
+        
+        typeOfPlay = 0
+        rankOfPlay = 18
+        if (analyzedPlay is not None):
+            typeOfPlay = analyzedPlay[0]
+            rankOfPlay = analyzedPlay[1]
         #if empty play, can play anything
         if typeOfPlay == -1:
             legalQuadSingles = []
@@ -1721,9 +1751,8 @@ class HillClimbAI:
                             for j in range (len(i2)):
                                 attachmentPlay = attachmentPlay + i2[j]
                             legalTripletPairs.append(attachmentPlay)
-            r1 =  rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
-            return r1
-            
+            return rockets + quads + legalQuadSingles + legalQuadPairs + legalTripletPairSequences + legalTripletPairs + legalTripletSingleSequences + legalTripletSingles + tripletSequences + triplets + pairSequences + pairs + singleSequences + singles
+
         #rocket: Can't be beaten
         if typeOfPlay == 0:
             return []
@@ -1754,9 +1783,9 @@ class HillClimbAI:
             for x in range (len(quads)):
                 if quads[x][0].value > rankOfPlay:
                     for y in range (len(singles)):
-                        if singles[y].value != quads[x][0].value:
+                        if singles[y][0].value != quads[x][0].value:
                             for z in range (len(singles)):
-                                if singles[z].value != quads[x][0].value and singles[z].value != singles[y].value and (singles[z].value + singles[y].value < 33):
+                                if singles[z][0].value != quads[x][0].value and singles[z][0].value != singles[y][0].value and (singles[z][0].value + singles[y][0].value < 33):
                                     attachmentPlay = quads[x]+[singles[y]]+[singles[z]]
                                     legalQuadSingles.append(attachmentPlay)
             return rockets + quads + legalQuadSingles
@@ -1843,21 +1872,41 @@ class HillClimbAI:
             legalTripletSingleSequences = []
             if analyzedPlay[2] == 4:
                 tripletSequences = triplets
-            for x in range (len(tripletSequences)):
-                if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
-                    usedNumbers = []
-                    for a in range (0, len(tripletSequences[x]), 3):
-                        usedNumbers.append(tripletSequences[x][a].value)
-                    neededSingles = int(len(play)/4)
-                    foundSingles = []
-                    for y in range (len(singles)):
-                        if usedNumbers.count(singles[y].value) == 0:
-                            foundSingles.append(singles[y])
-                    if len(foundSingles) >= neededSingles:
-                        perm = permutations(foundSingles, neededSingles)
-                        for i in perm:
-                            attachmentPlay = tripletSequences[x]+list(i)
-                            legalTripletSingleSequences.append(attachmentPlay)
+                for x in range (len(tripletSequences)):
+                    if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                        usedNumbers = []
+                        for a in range (0, len(tripletSequences[x]), 3):
+                            usedNumbers.append(tripletSequences[x][a].value)
+                        neededSingles = int(len(play)/4)
+                        foundSingles = []
+                        for y in range (len(singles)):
+                            if usedNumbers.count(singles[y][0].value) == 0:
+                                foundSingles.append(singles[y])
+                        if len(foundSingles) >= neededSingles:
+                            perm = permutations(foundSingles, neededSingles)
+                            for i in perm:
+                                if isinstance(i, list):
+                                    attachmentPlay = tripletSequences[x]+i
+                                    legalTripletSingleSequences.append(attachmentPlay)
+                                else:
+                                    attachmentPlay = tripletSequences[x]+list(i)
+                                    legalTripletSingleSequences.append(attachmentPlay)
+            else:
+                for x in range (len(tripletSequences)):
+                    if (tripletSequences[x][0].value > rankOfPlay) and (len(tripletSequences[x]) == (int(len(play)/4)*3)):
+                        usedNumbers = []
+                        for a in range (0, len(tripletSequences[x]), 3):
+                            usedNumbers.append(tripletSequences[x][a].value)
+                        neededSingles = int(len(play)/4)
+                        foundSingles = []
+                        for y in range (len(singles)):
+                            if usedNumbers.count(singles[y][0].value) == 0:
+                                foundSingles.append(singles[y])
+                        if len(foundSingles) >= neededSingles:
+                            perm = permutations(foundSingles, neededSingles)
+                            for i in perm:
+                                attachmentPlay = tripletSequences[x]+list(i)
+                                legalTripletSingleSequences.append(attachmentPlay)
             return rockets + quads + legalTripletSingleSequences
         #standard triplet sequence
         if typeOfPlay == 6:
