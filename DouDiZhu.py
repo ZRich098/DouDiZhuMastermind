@@ -27,6 +27,7 @@ class DDZ:
         self.landlord = 0 # The landlord represented as an integer
         self.currentPlay = [] #Current play on the board
         self.turn = 1 #Turn number
+        self.prevPlay = []
 
 
 
@@ -46,81 +47,104 @@ class DDZ:
     def stakes(self):
         return 3
 
-    def unPlayed(self,current_player):
+    def unPlayed(self,player):
         list = []
         for card in self.origDeck:
-            if card not in self.field + self.hands[current_player]:
+            if card not in self.field + self.hands[self.current_player]:
                 list.append(card)
         return list
 
+    def updateCurrentPlayer(self):
+        self.current_player = (self.current_player + 1) %3 
 
     def updateCurrentPlay(self,move):
+        self.prevPlay.clear()
+        self.prevPlay = self.currentPlay.copy()
         self.currentPlay.clear()
         self.currentPlay = move
+        print("Player "+str(self.current_player)+" is playing "+ str(move))
+        print("\n")
+        self.updateCurrentPlayer()
 
 
+    def use(self,mov):
+        if (mov is not None):
+            for ele in mov:
+                if (ele in self.hands[self.current_player]):
+                    self.hands[self.current_player].remove(ele) #Removes every card that is being played
+                    self.field.append(ele) #Append it to the list representing the table
 
     #get the move they wish to make from current_player.
-    def move(self, current_player):
-        if(current_player == 0):
-            r1 = self.players[current_player].get_move(self.deck1,self.unPlayed(current_player),((len(self.deck2),self.sameTeam(current_player, ((current_player+1)%3))),(len(self.deck3),self.sameTeam(current_player, ((current_player+2)%3)))),self.currentPlay)
+    def move(self):
+        if(self.current_player == 0):
+            
+            if(self.prevPlay != [] and self.currentPlay == []):
+                r1 = self.players[self.current_player].get_move(self.hands[self.current_player],self.unPlayed(self.current_player),((len(self.deck2),self.sameTeam(self.current_player, ((self.current_player+1)%3))),(len(self.deck3),self.sameTeam(self.current_player, ((self.current_player+2)%3)))),self.prevPlay)
+            else:
+                r1 = self.players[self.current_player].get_move(self.hands[self.current_player],self.unPlayed(self.current_player),((len(self.deck2),self.sameTeam(self.current_player, ((self.current_player+1)%3))),(len(self.deck3),self.sameTeam(self.current_player, ((self.current_player+2)%3)))),self.currentPlay)
+            self.use(r1)
+            
             self.updateCurrentPlay(r1)
             
-            return r1
+             
 #            self.players[current_player].get_move(self.deck1,len(self.deck2),len(self.deck3),unPlayed())
-        elif(current_player == 1):
-            r2 = self.players[current_player].get_move(self.deck2, self.currentPlay)
+        elif(self.current_player == 1):
+            if(self.prevPlay != [] and self.currentPlay == []):
+                r2 = self.players[self.current_player].get_move(self.hands[self.current_player], self.prevPlay)
+            else:
+                r2 = self.players[self.current_player].get_move(self.hands[self.current_player], self.currentPlay)
+            self.use(r2)
+            
             self.updateCurrentPlay(r2)
             
-            return r2
+            
         else:
-            r3 = self.players[current_player].get_move(self.deck3, self.currentPlay,self.turn)
+            if(self.prevPlay != [] and self.currentPlay == []):
+                r3 = self.players[self.current_player].get_move(self.hands[self.current_player], self.prevPlay,self.turn)
+            else:
+                r3 = self.players[self.current_player].get_move(self.hands[self.current_player], self.currentPlay,self.turn)
+            self.use(r3)
+            
             self.updateCurrentPlay(r3)
             
-            return r3
+            
 
 
 
 
     #update the Game State in response to a move
-    def update_game_state(self, mv, current_player):
-        if (mv is not None):
-            for ele in mv:
-                if (ele in self.hands[current_player]):
-                    self.hands[current_player].remove(ele) #Removes every card that is being played
-                    self.field.append(ele) #Append it to the list representing the table
+    def update_game_state(self, mv):
+
         # if one of the players has no more cards, then they win, and if they're not the landlord, then, their
         # partner wins as well.
         if(len(self.deck1) == 0 or len(self.deck2) == 0 or len(self.deck3) == 0):
-            self.game_over(current_player)
+            self.game_over()
         else: # Otherwise, we update the game state with the moves of each of the players after every turn.
-            print("Player "+str(current_player)+" is playing "+ str(mv))
-            print("\n")
             self.turn += 1
-            self.update_game_state((self.move((current_player+1)%3)),(current_player+1)%3)
+            self.update_game_state(self.move())
 
     #Note for this function I have not decided how the stakes function should run yet so I have just hard coded it for now
-    def game_over(self, current_player):
+    def game_over(self):
         if(self.game_over_value == True and self.deck1 == 0): #if the game is over and player1's hand is empty
             if(self.landlord == 0):
                 print ("You have won Landlord!!")
                 print ("Game over filthy Peasants")
             else:
-                print ("You and your partner have won " + str(current_player))
+                print ("You and your partner have won " + str(self.current_player))
                 print ("Game over Landlord")
         elif(self.game_over_value == False and self.deck2 == 0): #if the game is over and player2's hand is empty
             if(self.landlord == 0):
                 print ("You have won Landlord!!")
                 print ("Game over filthy Peasants")
             else:
-                print ("You and your partner have won " + str(current_player))
+                print ("You and your partner have won " + str(self.current_player))
                 print ("Game over Landlord")
         else:  #if the game is over and player3's hand is empty
             if(self.landlord == 0):
                 print ("You have won Landlord!!")
                 print ("Game over filthy Peasants")
             else:
-                print ("You and your partner have won " + str(current_player))
+                print ("You and your partner have won " + str(self.current_player))
                 print ("Game over Landlord")
      
     def sameTeam(self,p1,p2):
@@ -162,7 +186,7 @@ def main():
     game = DDZ(create_player(Player1, 1), create_player(Player2, 2), create_player(Player3, 3))
     game.landlord = game.updateLandlord()
     game.hands[game.landlord] = game.hands[game.landlord] + game.hidden_cards
-    game.update_game_state(game.move(game.current_player),game.current_player)
+    game.update_game_state(game.move())
 
 if __name__== '__main__':
     main()
