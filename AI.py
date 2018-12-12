@@ -879,7 +879,7 @@ class ExpectiMiniMaxAI:
             legalTriplets = []
             for x in range (len(triplets)):
                 if triplets[x][0].value > rankOfPlay:
-                    legalTriplets.append(triples[x])
+                    legalTriplets.append(triplets[x])
             return rockets + quads + legalTriplets
         #pair sequence
         if typeOfPlay == 8:
@@ -1920,7 +1920,7 @@ class HillClimbAI:
             legalTriplets = []
             for x in range (len(triplets)):
                 if triplets[x][0].value > rankOfPlay:
-                    legalTriplets.append(triples[x])
+                    legalTriplets.append(triplets[x])
             return rockets + quads + legalTriplets
         #pair sequence
         if typeOfPlay == 8:
@@ -2950,7 +2950,7 @@ class SimulatedAnnealingAI:
             legalTriplets = []
             for x in range (len(triplets)):
                 if triplets[x][0].value > rankOfPlay:
-                    legalTriplets.append(triples[x])
+                    legalTriplets.append(triplets[x])
             return rockets + quads + legalTriplets
         #pair sequence
         if typeOfPlay == 8:
