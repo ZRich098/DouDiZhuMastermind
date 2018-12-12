@@ -588,7 +588,14 @@ class ExpectiMiniMaxAI:
     #combinedPlays[] defined as a list of all legal plays of cards, where each play is a list of cards.
     #Note that this function will return the empty list if there are no legal plays. Functions utilizing combine_play
     #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
-    def combine_play(self, hand, play):
+    def combine_play(self, hand, playPre):
+        play = []
+        for pl in playPre:
+            if isinstance(pl, list):
+                for plsub in pl:
+                    play = play + [plsub]
+            else:
+                play = play + [pl]
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
         analyzedPlay = self.analyze_play(play)
         validPlays = self.valid_plays(hand)
@@ -1597,7 +1604,14 @@ class HillClimbAI:
     #combinedPlays[] defined as a list of all legal plays of cards, where each play is a list of cards.
     #Note that this function will return the empty list if there are no legal plays. Functions utilizing combine_play
     #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
-    def combine_play(self, hand, play):
+    def combine_play(self, hand, playPre):
+        play = []
+        for pl in playPre:
+            if isinstance(pl, list):
+                for plsub in pl:
+                    play = play + [plsub]
+            else:
+                play = play + [pl]
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
         analyzedPlay = self.analyze_play(play)
         validPlays = self.valid_plays(hand)
@@ -2597,7 +2611,15 @@ class SimulatedAnnealingAI:
     #combinedPlays[] defined as a list of all legal plays of cards, where each play is a list of cards.
     #Note that this function will return the empty list if there are no legal plays. Functions utilizing combine_play
     #should take note of this case and treat it as no-legal-plays-possible (i.e. needs to pass).
-    def combine_play(self, hand, play):
+    def combine_play(self, hand, playPre):
+        play = []
+        for pl in playPre:
+            if isinstance(pl, list):
+                for plsub in pl:
+                    play = play + [plsub]
+            else:
+                play = play + [pl]
+
         #THEY SHOULD ALL BE SORTED, DOUBLE CHECK THIS
         analyzedPlay = self.analyze_play(play)
         validPlays = self.valid_plays(hand)
